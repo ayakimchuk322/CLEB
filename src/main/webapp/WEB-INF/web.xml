@@ -4,14 +4,36 @@
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
+	<context-param>
+		<!-- Hard-coded place to temporarily store uploaded books -->
+		<param-name>file-temp-upload</param-name>
+		<param-value>/mnt/sda7/servers/data/Books/temp/</param-value>
+		<description>Location to temporarily store uploaded books</description>
+	</context-param>
+	<context-param>
+		<!-- Hard-coded place to store uploaded books -->
+		<param-name>file-store</param-name>
+		<param-value>/mnt/sda7/servers/data/Books/</param-value>
+		<description>Location to store uploaded books</description>
+	</context-param>
 	<servlet>
 		<servlet-name>Uploader</servlet-name>
 		<display-name>Uploader</display-name>
 		<description></description>
-		<servlet-class>cleb.Uploader</servlet-class>
+		<servlet-class>cleb.uploading.Uploader</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DuplicateChecker</servlet-name>
+		<display-name>DuplicateChecker</display-name>
+		<description></description>
+		<servlet-class>cleb.uploading.DuplicateChecker</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
 		<url-pattern>/Uploader</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DuplicateChecker</servlet-name>
+		<url-pattern>/DuplicateChecker</url-pattern>
 	</servlet-mapping>
 </web-app>

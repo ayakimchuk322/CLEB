@@ -1,4 +1,4 @@
-package cleb;
+package cleb.uploading;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,19 +19,22 @@ import javax.servlet.http.HttpServletResponse;
  * This servlet handles uploading user books onto server.
  */
 public class Uploader extends HttpServlet {
-    //  UID To satisfy compiler
+    // UID To satisfy compiler
     private static final long serialVersionUID = 1L;
 
     private boolean isMultipart;
-    private String filePath;
+    private String tempFolderPath;
     // Max book size to be uploaded (10MB)
     private int maxFileSize = 10 * 1024 * 1024;
     private File file;
 
+    private String fileName;
+
     @Override
     public void init() {
-	// Get the file location where it would be stored.
-	filePath = getServletContext().getInitParameter("file-upload");
+	// Directory for temporary storing uploaded books - till it's checked by
+	// DuplicateChecker servlet
+	tempFolderPath = getServletContext().getInitParameter("file-temp-upload");
     }
 
     @Override
@@ -77,16 +81,16 @@ public class Uploader extends HttpServlet {
 		if (!fi.isFormField()) {
 		    // Get the uploaded file parameters
 		    String fieldName = fi.getFieldName();
-		    String fileName = fi.getName();
+		    fileName = fi.getName();
 		    String contentType = fi.getContentType();
 		    boolean isInMemory = fi.isInMemory();
 		    long sizeInBytes = fi.getSize();
 		    // Write the file
 		    if (fileName.lastIndexOf("\\") >= 0) {
-			file = new File(filePath + fileName
+			file = new File(tempFolderPath + fileName
 				.substring(fileName.lastIndexOf("\\")));
 		    } else {
-			file = new File(filePath + fileName
+			file = new File(tempFolderPath + fileName
 				.substring(fileName.lastIndexOf("\\") + 1));
 		    }
 		    fi.write(file);
@@ -95,6 +99,14 @@ public class Uploader extends HttpServlet {
 	    }
 	    out.println("</body>");
 	    out.println("</html>");
+
+	    String bookParameter = "book=" + fileName;
+
+	    System.out.println(bookParameter);
+
+	    RequestDispatcher dispatcher = getServletContext()
+		    .getRequestDispatcher("/DuplicateChecker?" + bookParameter);
+	    dispatcher.forward(request, response);
 	} catch (Exception ex) {
 	    System.out.println(ex);
 	}

@@ -3,5 +3,15 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+	<display-name>Archetype Created Web Application</display-name>
+	<servlet>
+		<servlet-name>Uploader</servlet-name>
+		<display-name>Uploader</display-name>
+		<description></description>
+		<servlet-class>cleb.Uploader</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Uploader</servlet-name>
+		<url-pattern>/Uploader</url-pattern>
+	</servlet-mapping>
 </web-app>

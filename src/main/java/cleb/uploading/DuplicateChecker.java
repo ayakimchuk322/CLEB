@@ -94,7 +94,7 @@ public class DuplicateChecker extends HttpServlet {
 	    } else {
 		// This book is new, proceed with XML validation
 		RequestDispatcher dispatcher = request
-			.getRequestDispatcher("/Validator");
+			.getRequestDispatcher("/BookValidator");
 		dispatcher.forward(request, response);
 	    }
 	} else {

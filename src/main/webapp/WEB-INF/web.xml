@@ -46,6 +46,12 @@
 		<description></description>
 		<servlet-class>cleb.uploading.DuplicateChecker</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Validator</servlet-name>
+		<display-name>Validator</display-name>
+		<description></description>
+		<servlet-class>cleb.uploading.Validator</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
 		<url-pattern>/Uploader</url-pattern>
@@ -53,5 +59,9 @@
 	<servlet-mapping>
 		<servlet-name>DuplicateChecker</servlet-name>
 		<url-pattern>/DuplicateChecker</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Validator</servlet-name>
+		<url-pattern>/Validator</url-pattern>
 	</servlet-mapping>
 </web-app>

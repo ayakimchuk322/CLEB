@@ -102,8 +102,6 @@ public class Uploader extends HttpServlet {
 
 	    String bookParameter = "book=" + fileName;
 
-	    System.out.println(bookParameter);
-
 	    RequestDispatcher dispatcher = getServletContext()
 		    .getRequestDispatcher("/DuplicateChecker?" + bookParameter);
 	    dispatcher.forward(request, response);

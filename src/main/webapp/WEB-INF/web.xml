@@ -19,8 +19,20 @@
 	<context-param>
 		<!-- PostgreSQL db -->
 		<param-name>database</param-name>
-		<param-value>jdbc:postgresql://127.0.0.1:5432/cleb</param-value>
+		<param-value>jdbc:postgresql://localhost:5432/cleb</param-value>
 		<description>URL for connection to db</description>
+	</context-param>
+	<context-param>
+		<!-- PostgreSQL user -->
+		<param-name>dbuser</param-name>
+		<param-value>clebadmin</param-value>
+		<description>database user</description>
+	</context-param>
+	<context-param>
+		<!-- PostgreSQL user password-->
+		<param-name>dbpass</param-name>
+		<param-value>admincleb</param-value>
+		<description>database user password</description>
 	</context-param>
 	<servlet>
 		<servlet-name>Uploader</servlet-name>

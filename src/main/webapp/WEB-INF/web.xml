@@ -52,6 +52,12 @@
 		<description></description>
 		<servlet-class>cleb.uploading.BookValidator</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Saver</servlet-name>
+		<display-name>Saver</display-name>
+		<description></description>
+		<servlet-class>cleb.uploading.Saver</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
 		<url-pattern>/Uploader</url-pattern>
@@ -63,5 +69,9 @@
 	<servlet-mapping>
 		<servlet-name>BookValidator</servlet-name>
 		<url-pattern>/BookValidator</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Saver</servlet-name>
+		<url-pattern>/Saver</url-pattern>
 	</servlet-mapping>
 </web-app>

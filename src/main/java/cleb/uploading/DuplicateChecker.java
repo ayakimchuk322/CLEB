@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -87,7 +88,17 @@ public class DuplicateChecker extends HttpServlet {
 	if (md5sum != null) {
 	    long fileSize = tempBookFile.length();
 
-	    checkBookPresence(md5sum, fileSize);
+	    if (checkBookPresence(md5sum, fileSize)) {
+		// There is already this book in library, inform user
+		// TODO add forwarding to page and inform user
+	    } else {
+		// This book is new, proceed with XML validation
+		RequestDispatcher dispatcher = request
+			.getRequestDispatcher("/Validator");
+		dispatcher.forward(request, response);
+	    }
+	} else {
+	    // TODO add forwarding to page with error
 	}
     }
 

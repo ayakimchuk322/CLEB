@@ -29,7 +29,7 @@
 		<description>database user</description>
 	</context-param>
 	<context-param>
-		<!-- PostgreSQL user password-->
+		<!-- PostgreSQL user password -->
 		<param-name>dbpass</param-name>
 		<param-value>admincleb</param-value>
 		<description>database user password</description>
@@ -47,10 +47,10 @@
 		<servlet-class>cleb.uploading.DuplicateChecker</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>Validator</servlet-name>
-		<display-name>Validator</display-name>
+		<servlet-name>BookValidator</servlet-name>
+		<display-name>BookValidator</display-name>
 		<description></description>
-		<servlet-class>cleb.uploading.Validator</servlet-class>
+		<servlet-class>cleb.uploading.BookValidator</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -61,7 +61,7 @@
 		<url-pattern>/DuplicateChecker</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>Validator</servlet-name>
-		<url-pattern>/Validator</url-pattern>
+		<servlet-name>BookValidator</servlet-name>
+		<url-pattern>/BookValidator</url-pattern>
 	</servlet-mapping>
 </web-app>

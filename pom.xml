@@ -38,6 +38,12 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
 		</dependency>
+		<!-- JDBC driver for PostgreSQL db -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4.1209.jre7</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>cleb</finalName>

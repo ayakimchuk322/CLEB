@@ -16,6 +16,12 @@
 		<param-value>/mnt/sda7/servers/data/Books/</param-value>
 		<description>Location to store uploaded books</description>
 	</context-param>
+	<context-param>
+		<!-- PostgreSQL db -->
+		<param-name>database</param-name>
+		<param-value>jdbc:postgresql://127.0.0.1:5432/cleb</param-value>
+		<description>URL for connection to db</description>
+	</context-param>
 	<servlet>
 		<servlet-name>Uploader</servlet-name>
 		<display-name>Uploader</display-name>

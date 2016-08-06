@@ -21,9 +21,11 @@ public class DuplicateChecker extends HttpServlet {
 
     private String tempFolderPath;
     private String folderPath;
+    private String dbURL;
 
     /**
-     * Initializes two parameters - temporary folder and storing folder.
+     * Initializes uploading parameters - temporary folder and storing folder,
+     * jdbc driver.
      */
     @Override
     public void init() {
@@ -32,7 +34,17 @@ public class DuplicateChecker extends HttpServlet {
 	tempFolderPath = getServletContext()
 		.getInitParameter("file-temp-upload");
 	// Directory to store uploaded books
-	folderPath = getServletContext().getInitParameter("file-upload");
+	folderPath = getServletContext().getInitParameter("file-store");
+
+	// Initialize PostgreSQl driver
+	try {
+	    Class.forName("org.postgresql.Driver");
+	} catch (ClassNotFoundException e) {
+	    e.printStackTrace();
+	}
+
+	// Initialize database URL for driver
+	dbURL = getServletContext().getInitParameter("database");
     }
 
     @Override

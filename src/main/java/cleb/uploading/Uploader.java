@@ -3,6 +3,7 @@ package cleb.uploading;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +16,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cleb.book.BookType;
+
 /**
  * This servlet handles uploading user books onto server.
  */
+// TODO remove e.printstacktraces
 public class Uploader extends HttpServlet {
     // UID To satisfy compiler
     private static final long serialVersionUID = 1L;
@@ -29,12 +33,14 @@ public class Uploader extends HttpServlet {
     private File file;
 
     private String fileName;
+    private String fileType;
 
     @Override
     public void init() {
 	// Directory for temporary storing uploaded books - till it's checked by
 	// DuplicateChecker servlet
-	tempFolderPath = getServletContext().getInitParameter("file-temp-upload");
+	tempFolderPath = getServletContext()
+		.getInitParameter("file-temp-upload");
     }
 
     @Override
@@ -42,24 +48,42 @@ public class Uploader extends HttpServlet {
 	    throws ServletException, IOException {
 	// Check that we have a file upload request
 	isMultipart = ServletFileUpload.isMultipartContent(request);
-	response.setContentType("text/html");
-	java.io.PrintWriter out = response.getWriter();
 	if (!isMultipart) {
-	    out.println("<html>");
-	    out.println("<head>");
-	    out.println("<title>Servlet upload</title>");
-	    out.println("</head>");
-	    out.println("<body>");
-	    out.println("<p>No file uploaded</p>");
-	    out.println("</body>");
-	    out.println("</html>");
 	    return;
+	    // TODO show error page to user
 	}
+
+	if (!getFile(request)) {
+	    return;
+	    // TODO show error page to user
+	}
+
+	// Forward request to next servlet - DuplicateChecker, including
+	// reference for uploaded book
+	String bookParameter = "book=" + fileName;
+	RequestDispatcher dispatcher = getServletContext()
+		.getRequestDispatcher("/DuplicateChecker?" + bookParameter);
+	dispatcher.forward(request, response);
+    }
+
+    /**
+     * This method gets the file, checks if its type is supported by the library
+     * and writes supported file into temporary directory.
+     *
+     * @param request
+     *        HttpServletRequest passed down from doPost method to extract the
+     *        file
+     * @return true, if file type is supported and the file was successfully
+     *         written and false - otherwise.
+     */
+    private boolean getFile(HttpServletRequest request) {
+	boolean uploaded = false;
 
 	DiskFileItemFactory factory = new DiskFileItemFactory();
 
 	// Create a new file upload handler
 	ServletFileUpload upload = new ServletFileUpload(factory);
+
 	// Maximum file size to be uploaded.
 	upload.setSizeMax(maxFileSize);
 
@@ -70,22 +94,26 @@ public class Uploader extends HttpServlet {
 	    // Process the uploaded file items
 	    Iterator<FileItem> iterator = fileItems.iterator();
 
-	    out.println("<html>");
-	    out.println("<head>");
-	    out.println("<title>Servlet upload</title>");
-	    out.println("</head>");
-	    out.println("<body>");
-
 	    while (iterator.hasNext()) {
 		FileItem fi = iterator.next();
 		if (!fi.isFormField()) {
-		    // Get the uploaded file parameters
-		    String fieldName = fi.getFieldName();
+		    // Get the uploaded file name and extension
 		    fileName = fi.getName();
-		    String contentType = fi.getContentType();
-		    boolean isInMemory = fi.isInMemory();
-		    long sizeInBytes = fi.getSize();
-		    // Write the file
+		    fileType = FilenameUtils.getExtension(fileName);
+
+		    // Check if the file type supported by library
+		    // Unsupported file types or files without extension will
+		    // throw exception
+		    try {
+			BookType.valueOf(fileType.toUpperCase());
+		    } catch (IllegalArgumentException
+			    | NullPointerException e) {
+			uploaded = false;
+
+			return uploaded;
+		    }
+
+		    // File type supported, OK to write the file
 		    if (fileName.lastIndexOf("\\") >= 0) {
 			file = new File(tempFolderPath + fileName
 				.substring(fileName.lastIndexOf("\\")));
@@ -94,20 +122,16 @@ public class Uploader extends HttpServlet {
 				.substring(fileName.lastIndexOf("\\") + 1));
 		    }
 		    fi.write(file);
-		    out.println("Uploaded Filename: " + fileName + "<br>");
+
+		    uploaded = true;
 		}
 	    }
-	    out.println("</body>");
-	    out.println("</html>");
-
-	    String bookParameter = "book=" + fileName;
-
-	    RequestDispatcher dispatcher = getServletContext()
-		    .getRequestDispatcher("/DuplicateChecker?" + bookParameter);
-	    dispatcher.forward(request, response);
-	} catch (Exception ex) {
-	    System.out.println(ex);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    uploaded = false;
 	}
+
+	return uploaded;
     }
 
 }

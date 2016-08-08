@@ -7,6 +7,8 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoField;
 import java.util.Iterator;
 import java.util.List;
 
@@ -114,14 +116,21 @@ public class Uploader extends HttpServlet {
 		    }
 
 		    // File type supported, OK to write the file
+		    // Add random prefix to file name based on current time
+		    String prefix = String.valueOf(
+			    Instant.now().get(ChronoField.MILLI_OF_SECOND))
+			    + "-";
+
 		    if (fileName.lastIndexOf("\\") >= 0) {
-			file = new File(tempFolderPath + fileName
+			file = new File(tempFolderPath + prefix + fileName
 				.substring(fileName.lastIndexOf("\\")));
 		    } else {
-			file = new File(tempFolderPath + fileName
+			file = new File(tempFolderPath + prefix + fileName
 				.substring(fileName.lastIndexOf("\\") + 1));
 		    }
+
 		    fi.write(file);
+		    fileName = prefix + fileName;
 
 		    uploaded = true;
 		}

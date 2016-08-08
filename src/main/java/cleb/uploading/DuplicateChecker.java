@@ -1,6 +1,7 @@
 package cleb.uploading;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -89,8 +90,10 @@ public class DuplicateChecker extends HttpServlet {
 	    long fileSize = tempBookFile.length();
 
 	    if (checkBookPresence(md5sum, fileSize)) {
-		// There is already this book in library, inform user
+		// There is already this book in library, delete this book in
+		// temporary directory and inform user
 		// TODO add forwarding to page and inform user
+		FileUtils.deleteQuietly(tempBookFile);
 	    } else {
 		// This book is new, proceed with XML validation
 		RequestDispatcher dispatcher = request

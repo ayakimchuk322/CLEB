@@ -24,6 +24,9 @@ public class BookValidator extends HttpServlet {
 
     private Document document;
 
+    /**
+     * Initializes temporary directory.
+     */
     @Override
     public void init() throws ServletException {
 	// Directory for temporary storing uploaded books - till it's checked by

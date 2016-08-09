@@ -47,59 +47,63 @@ public class DuplicateChecker extends HttpServlet {
      */
     @Override
     public void init() {
-	// Directory for temporary storing uploaded books - till it's checked by
-	// this servlet
-	tempFolderPath = getServletContext()
-		.getInitParameter("file-temp-upload");
+        // Directory for temporary storing uploaded books - till it's checked by
+        // this servlet
+        tempFolderPath = getServletContext()
+                .getInitParameter("file-temp-upload");
 
-	// Initialize PostgreSQl driver
-	try {
-	    Class.forName("org.postgresql.Driver");
-	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
-	}
+        // Initialize PostgreSQl driver
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-	// Initialize database URL for driver
-	dbURL = getServletContext().getInitParameter("database");
+        // Initialize database URL for driver
+        dbURL = getServletContext().getInitParameter("database");
 
-	// Initialize database user
-	dbuser = getServletContext().getInitParameter("dbuser");
+        // Initialize database user
+        dbuser = getServletContext().getInitParameter("dbuser");
 
-	// Initialize database user password
-	dbpass = getServletContext().getInitParameter("dbpass");
+        // Initialize database user password
+        dbpass = getServletContext().getInitParameter("dbpass");
     }
 
     @Override
     protected void doGet(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
+            HttpServletResponse response) throws ServletException, IOException {
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
+            HttpServletResponse response) throws ServletException, IOException {
 
-	String tempBookPath = tempFolderPath + request.getParameter("book");
-	File tempBookFile = new File(tempBookPath);
+        String tempBookPath = tempFolderPath
+                + (String) request.getAttribute("book");
+        File tempBookFile = new File(tempBookPath);
 
-	String md5sum = getMd5sum(tempBookFile);
+        String md5sum = getMd5sum(tempBookFile);
 
-	if (md5sum != null) {
-	    long fileSize = tempBookFile.length();
+        if (md5sum != null) {
+            long fileSize = tempBookFile.length();
 
-	    if (checkBookPresence(md5sum, fileSize)) {
-		// There is already this book in library, delete this book in
-		// temporary directory and inform user
-		// TODO add forwarding to page and inform user
-		FileUtils.deleteQuietly(tempBookFile);
-	    } else {
-		// This book is new, proceed with XML validation
-		RequestDispatcher dispatcher = request
-			.getRequestDispatcher("/BookValidator");
-		dispatcher.forward(request, response);
-	    }
-	} else {
-	    // TODO add forwarding to page with error
-	}
+            if (checkBookPresence(md5sum, fileSize)) {
+                // There is already this book in library, delete this book in
+                // temporary directory and inform user
+                // TODO add forwarding to page and inform user
+                FileUtils.deleteQuietly(tempBookFile);
+            } else {
+                // This book is new, proceed with XML validation
+                request.setAttribute("md5", md5sum);
+                request.setAttribute("size", fileSize);
+
+                RequestDispatcher dispatcher = request
+                        .getRequestDispatcher("/BookValidator");
+                dispatcher.forward(request, response);
+            }
+        } else {
+            // TODO add forwarding to page with error
+        }
     }
 
     /**
@@ -110,17 +114,17 @@ public class DuplicateChecker extends HttpServlet {
      * @return String representing this book MD5 sum value
      */
     private String getMd5sum(File file) {
-	String md5sum = null;
+        String md5sum = null;
 
-	try (FileInputStream fileIn = new FileInputStream(file);
-	     BufferedInputStream bufferIn = new BufferedInputStream(fileIn);) {
+        try (FileInputStream fileIn = new FileInputStream(file);
+             BufferedInputStream bufferIn = new BufferedInputStream(fileIn);) {
 
-	    md5sum = DigestUtils.md5Hex(IOUtils.toByteArray(bufferIn));
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+            md5sum = DigestUtils.md5Hex(IOUtils.toByteArray(bufferIn));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	return md5sum;
+        return md5sum;
     }
 
     /**
@@ -137,30 +141,30 @@ public class DuplicateChecker extends HttpServlet {
      *         file size, otherwise - false
      */
     private boolean checkBookPresence(String md5sum, long fileSize) {
-	boolean present = false;
+        boolean present = false;
 
-	try {
-	    Connection connection = DriverManager.getConnection(dbURL, dbuser,
-		    dbpass);
+        try {
+            Connection connection = DriverManager.getConnection(dbURL, dbuser,
+                    dbpass);
 
-	    PreparedStatement pstatement = connection.prepareStatement(query);
-	    pstatement.setString(1, md5sum);
-	    pstatement.setLong(2, fileSize);
+            PreparedStatement pstatement = connection.prepareStatement(query);
+            pstatement.setString(1, md5sum);
+            pstatement.setLong(2, fileSize);
 
-	    ResultSet results = pstatement.executeQuery();
+            ResultSet results = pstatement.executeQuery();
 
-	    while (results.next()) {
-		if (results.getInt(1) > 0) {
-		    present = true;
-		} else {
-		    present = false;
-		}
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+            while (results.next()) {
+                if (results.getInt(1) > 0) {
+                    present = true;
+                } else {
+                    present = false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	return present;
+        return present;
     }
 
 }

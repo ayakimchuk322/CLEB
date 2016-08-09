@@ -1,7 +1,5 @@
 package cleb.uploading;
 
-import org.jdom2.Document;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -11,6 +9,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ISaver {
 
-    public void getBasicInfo(HttpServletRequest request, Document doc);
+    public void getBasicInfo(HttpServletRequest request, Object book);
 
 }

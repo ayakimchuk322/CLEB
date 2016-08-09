@@ -68,13 +68,16 @@ public class FB2Saver extends HttpServlet implements ISaver {
     // TODO add javadoc
     @Override
     public synchronized void getBasicInfo(HttpServletRequest request,
-            Document doc) {
+            Object book) {
 
         // Information about file, will go into db
         String fileName = (String) request.getAttribute("book");
         String fileType = (String) request.getAttribute("type");
         Long fileSize = (Long) request.getAttribute("size");
         String md5 = (String) request.getAttribute("md5");
+
+        // Necessary cast to process with book
+        Document doc = (Document) book;
 
         // Document root and namespace
         Element root = doc.getRootElement();

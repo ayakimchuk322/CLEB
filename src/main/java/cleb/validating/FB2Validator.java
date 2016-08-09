@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  * This servlet validates new fb2 books.
  */
 // TODO remove e.prinstacktraces
-public class FB2Validator extends HttpServlet implements BookValidator {
+public class FB2Validator extends HttpServlet implements IValidator {
+
     private static final long serialVersionUID = 1L;
 
     private String tempFolderPath;

@@ -3,7 +3,7 @@ package cleb.validating;
 import java.io.File;
 
 /**
- * This interface contains necessary method to validate uploaded books. Any
+ * This interface contains necessary method to validate uploaded book. Any
  * concrete validator should implement this interface and override its
  * validateBook method based on book type.
  */

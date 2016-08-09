@@ -25,7 +25,6 @@ import cleb.book.BookType;
  */
 // TODO remove e.printstacktraces
 public class Uploader extends HttpServlet {
-    // UID To satisfy compiler
     private static final long serialVersionUID = 1L;
 
     private boolean isMultipart;
@@ -39,33 +38,36 @@ public class Uploader extends HttpServlet {
 
     @Override
     public void init() {
-	// Directory for temporary storing uploaded books - till it's checked by
-	// DuplicateChecker servlet
-	tempFolderPath = getServletContext()
-		.getInitParameter("file-temp-upload");
+        // Directory for temporary storing uploaded books - till it's checked by
+        // DuplicateChecker servlet
+        tempFolderPath = getServletContext()
+                .getInitParameter("file-temp-upload");
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-	// Check that we have a file upload request
-	isMultipart = ServletFileUpload.isMultipartContent(request);
-	if (!isMultipart) {
-	    return;
-	    // TODO show error page to user
-	}
+            throws ServletException, IOException {
+        // Check that we have a file upload request
+        isMultipart = ServletFileUpload.isMultipartContent(request);
+        if (!isMultipart) {
+            return;
+            // TODO show error page to user
+        }
 
-	if (!getFile(request)) {
-	    return;
-	    // TODO show error page to user
-	}
+        if (!getFile(request)) {
+            return;
+            // TODO show error page to user
+        }
 
-	// Forward request to next servlet - DuplicateChecker, including
-	// reference for uploaded book
-	String bookParameter = "book=" + fileName;
-	RequestDispatcher dispatcher = getServletContext()
-		.getRequestDispatcher("/DuplicateChecker?" + bookParameter);
-	dispatcher.forward(request, response);
+        // Forward request to next servlet - DuplicateChecker, including
+        // reference for uploaded book
+        request.setAttribute("book", fileName);
+        request.setAttribute("type", fileType);
+
+        RequestDispatcher dispatcher = getServletContext()
+                .getRequestDispatcher("/DuplicateChecker");
+
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -79,68 +81,72 @@ public class Uploader extends HttpServlet {
      *         written and false - otherwise.
      */
     private boolean getFile(HttpServletRequest request) {
-	boolean uploaded = false;
+        boolean uploaded = false;
 
-	DiskFileItemFactory factory = new DiskFileItemFactory();
+        // Create a new file upload handler
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        ServletFileUpload upload = new ServletFileUpload(factory);
 
-	// Create a new file upload handler
-	ServletFileUpload upload = new ServletFileUpload(factory);
+        // Maximum file size to be uploaded.
+        upload.setSizeMax(maxFileSize);
 
-	// Maximum file size to be uploaded.
-	upload.setSizeMax(maxFileSize);
+        try {
+            // Parse the request to get file items.
+            List<FileItem> fileItems = upload.parseRequest(request);
 
-	try {
-	    // Parse the request to get file items.
-	    List<FileItem> fileItems = upload.parseRequest(request);
+            // Process the uploaded file items
+            Iterator<FileItem> iterator = fileItems.iterator();
 
-	    // Process the uploaded file items
-	    Iterator<FileItem> iterator = fileItems.iterator();
+            while (iterator.hasNext()) {
+                FileItem fi = iterator.next();
+                if (!fi.isFormField()) {
+                    // Get the uploaded file name and extension
+                    fileName = fi.getName();
+                    fileType = FilenameUtils.getExtension(fileName);
 
-	    while (iterator.hasNext()) {
-		FileItem fi = iterator.next();
-		if (!fi.isFormField()) {
-		    // Get the uploaded file name and extension
-		    fileName = fi.getName();
-		    fileType = FilenameUtils.getExtension(fileName);
+                    // Check if the file type supported by library
+                    // Unsupported file types or files without extension will
+                    // throw exception
+                    try {
+                        BookType.valueOf(fileType.toUpperCase());
+                    } catch (IllegalArgumentException
+                            | NullPointerException e) {
+                        uploaded = false;
 
-		    // Check if the file type supported by library
-		    // Unsupported file types or files without extension will
-		    // throw exception
-		    try {
-			BookType.valueOf(fileType.toUpperCase());
-		    } catch (IllegalArgumentException
-			    | NullPointerException e) {
-			uploaded = false;
+                        return uploaded;
+                    }
 
-			return uploaded;
-		    }
+                    // File type is supported, OK to write the file
+                    // Add random prefix to file name based on current time
+                    String prefix = String.valueOf(
+                            Instant.now().get(ChronoField.MILLI_OF_SECOND))
+                            + "-";
 
-		    // File type supported, OK to write the file
-		    // Add random prefix to file name based on current time
-		    String prefix = String.valueOf(
-			    Instant.now().get(ChronoField.MILLI_OF_SECOND))
-			    + "-";
+                    // TODO get what this piece of code is doing???
+                    // if (fileName.lastIndexOf("\\") >= 0) {
+                    // file = new File(tempFolderPath + prefix + fileName
+                    // .substring(fileName.lastIndexOf("\\")));
+                    // } else {
+                    // file = new File(tempFolderPath + prefix + fileName
+                    // .substring(fileName.lastIndexOf("\\") + 1));
+                    // }
 
-		    if (fileName.lastIndexOf("\\") >= 0) {
-			file = new File(tempFolderPath + prefix + fileName
-				.substring(fileName.lastIndexOf("\\")));
-		    } else {
-			file = new File(tempFolderPath + prefix + fileName
-				.substring(fileName.lastIndexOf("\\") + 1));
-		    }
+                    file = new File(tempFolderPath + prefix + fileName);
 
-		    fi.write(file);
-		    fileName = prefix + fileName;
+                    fi.write(file);
 
-		    uploaded = true;
-		}
-	    }
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    uploaded = false;
-	}
+                    // Update fileName with added prefix
+                    fileName = prefix + fileName;
 
-	return uploaded;
+                    uploaded = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            uploaded = false;
+        }
+
+        return uploaded;
     }
 
 }

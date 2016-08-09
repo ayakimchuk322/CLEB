@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * book into storing directory.
  */
 // TODO remove e.printstacktraces
-public class Saver extends HttpServlet {
+public class Saver extends HttpServlet implements ISaver {
     private static final long serialVersionUID = 1L;
 
     private String tempFolderPath;
@@ -52,11 +52,6 @@ public class Saver extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         String tempBookPath = tempFolderPath
@@ -71,7 +66,8 @@ public class Saver extends HttpServlet {
     }
 
     // TODO add javadoc
-    private synchronized void getBasicInfo(HttpServletRequest request,
+    @Override
+    public synchronized void getBasicInfo(HttpServletRequest request,
             Document doc) {
 
         // Information about file, will go into db

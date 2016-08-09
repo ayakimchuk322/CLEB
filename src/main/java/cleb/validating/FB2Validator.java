@@ -1,4 +1,4 @@
-package cleb.uploading;
+package cleb.validating;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This servlet validates new books.
+ * This servlet validates new fb2 books.
  */
 // TODO remove e.prinstacktraces
-public class BookValidator extends HttpServlet {
+public class FB2Validator extends HttpServlet implements BookValidator {
     private static final long serialVersionUID = 1L;
 
     private String tempFolderPath;
@@ -33,12 +33,6 @@ public class BookValidator extends HttpServlet {
         // this servlet
         tempFolderPath = getServletContext()
                 .getInitParameter("file-temp-upload");
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     @Override
@@ -59,19 +53,20 @@ public class BookValidator extends HttpServlet {
     }
 
     /**
-     * This method validates given book to be valid xml file.
+     * This method validates given fb2 book.
      *
      * @param file
-     *        fb2 book (xml file) to validate
+     *        fb2 book to validate
      * @return true, if given file is valid xml and false - otherwise
      */
-    // Currently this method simply builds DOM tree from given file and catches
-    // exceptions, if no exception is thrown during building - file should be
-    // valid
+    // Currently this method simply builds DOM tree from given file (fb2
+    // internally uses XML) and catches exceptions, if no exception is thrown
+    // during building - file should be valid
     // TODO add validation against actual xsd schema
     // For now, not all books pass validation against xsd, maybe it is caused by
     // using different schemas while creating those books
-    private boolean validateBook(File file) {
+    @Override
+    public boolean validateBook(File file) {
         boolean validated = false;
 
         SAXBuilder builder = new SAXBuilder();

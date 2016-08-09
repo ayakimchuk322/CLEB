@@ -46,7 +46,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
         if (validateBook(tempBookFile)) {
             request.setAttribute("doc", document);
             RequestDispatcher dispatcher = request
-                    .getRequestDispatcher("/Saver");
+                    .getRequestDispatcher("/FB2Saver");
             dispatcher.forward(request, response);
         } else {
             // TODO inform user about malformed book

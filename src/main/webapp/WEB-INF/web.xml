@@ -53,10 +53,10 @@
 		<servlet-class>cleb.validating.FB2Validator</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>Saver</servlet-name>
-		<display-name>Saver</display-name>
+		<servlet-name>FB2Saver</servlet-name>
+		<display-name>FB2Saver</display-name>
 		<description></description>
-		<servlet-class>cleb.uploading.Saver</servlet-class>
+		<servlet-class>cleb.uploading.FB2Saver</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -71,7 +71,7 @@
 		<url-pattern>/FB2Validator</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>Saver</servlet-name>
-		<url-pattern>/Saver</url-pattern>
+		<servlet-name>FB2Saver</servlet-name>
+		<url-pattern>/FB2Saver</url-pattern>
 	</servlet-mapping>
 </web-app>

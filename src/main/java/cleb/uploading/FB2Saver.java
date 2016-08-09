@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * book into storing directory.
  */
 // TODO remove e.printstacktraces
-public class Saver extends HttpServlet implements ISaver {
+public class FB2Saver extends HttpServlet implements ISaver {
     private static final long serialVersionUID = 1L;
 
     private String tempFolderPath;

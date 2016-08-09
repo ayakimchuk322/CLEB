@@ -29,32 +29,33 @@ public class BookValidator extends HttpServlet {
      */
     @Override
     public void init() throws ServletException {
-	// Directory for temporary storing uploaded books - till it's checked by
-	// this servlet
-	tempFolderPath = getServletContext()
-		.getInitParameter("file-temp-upload");
+        // Directory for temporary storing uploaded books - till it's checked by
+        // this servlet
+        tempFolderPath = getServletContext()
+                .getInitParameter("file-temp-upload");
     }
 
     @Override
     protected void doGet(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
+            HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
-	String tempBookPath = tempFolderPath + request.getParameter("book");
-	File tempBookFile = new File(tempBookPath);
+            HttpServletResponse response) throws ServletException, IOException {
+        String tempBookPath = tempFolderPath
+                + (String) request.getAttribute("book");
+        File tempBookFile = new File(tempBookPath);
 
-	if (validateBook(tempBookFile)) {
-	    request.setAttribute("doc", document);
-	    RequestDispatcher dispatcher = request
-		    .getRequestDispatcher("/Saver");
-	    dispatcher.forward(request, response);
-	} else {
-	    // TODO inform user about malformed book
-	}
+        if (validateBook(tempBookFile)) {
+            request.setAttribute("doc", document);
+            RequestDispatcher dispatcher = request
+                    .getRequestDispatcher("/Saver");
+            dispatcher.forward(request, response);
+        } else {
+            // TODO inform user about malformed book
+        }
     }
 
     /**
@@ -71,21 +72,21 @@ public class BookValidator extends HttpServlet {
     // For now, not all books pass validation against xsd, maybe it is caused by
     // using different schemas while creating those books
     private boolean validateBook(File file) {
-	boolean validated = false;
+        boolean validated = false;
 
-	SAXBuilder builder = new SAXBuilder();
-	try {
-	    document = builder.build(file);
+        SAXBuilder builder = new SAXBuilder();
+        try {
+            document = builder.build(file);
 
-	    validated = true;
-	} catch (JDOMException e) {
-	    e.printStackTrace();
-	    validated = false;
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+            validated = true;
+        } catch (JDOMException e) {
+            e.printStackTrace();
+            validated = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	return validated;
+        return validated;
     }
 
 }

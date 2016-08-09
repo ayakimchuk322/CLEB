@@ -8,7 +8,7 @@ import java.io.File;
  * validateBook method based on book type.
  */
 // FIXME improve javadoc comments throughout all project!!!
-public interface BookValidator {
+public interface IValidator {
 
     public boolean validateBook(File file);
 

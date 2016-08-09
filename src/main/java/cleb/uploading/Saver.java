@@ -38,6 +38,19 @@ public class Saver extends HttpServlet {
         folderPath = getServletContext().getInitParameter("file-store");
     }
 
+    /**
+     * Cleans temporary directory in case there are left some uploaded but
+     * unprocessed books.
+     */
+    @Override
+    public void destroy() {
+        try {
+            FileUtils.cleanDirectory(new File(tempFolderPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -46,18 +59,28 @@ public class Saver extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        String tempBookPath = tempFolderPath + request.getParameter("book");
-        String bookPath = folderPath + request.getParameter("book");
+        String tempBookPath = tempFolderPath
+                + (String) request.getAttribute("book");
+        String bookPath = folderPath + (String) request.getAttribute("book");
 
         document = (Document) request.getAttribute("doc");
 
-        getBasicInfo(document);
+        getBasicInfo(request, document);
 
         storeInDir(tempBookPath, bookPath);
     }
 
     // TODO add javadoc
-    private synchronized void getBasicInfo(Document doc) {
+    private synchronized void getBasicInfo(HttpServletRequest request,
+            Document doc) {
+
+        // Information about file, will go into db
+        String fileName = (String) request.getAttribute("book");
+        String fileType = (String) request.getAttribute("type");
+        Long fileSize = (Long) request.getAttribute("size");
+        String md5 = (String) request.getAttribute("md5");
+
+        // Document root and namespace
         Element root = doc.getRootElement();
         Namespace ns = root.getNamespace();
 
@@ -73,7 +96,7 @@ public class Saver extends HttpServlet {
         Element publishInfoEl = null;
         Element yearEl = null;
 
-        // Information that will go into db
+        // Information about book, will go into db
         String genre = "";
         String authorFirstName = "";
         String authorLastName = "";

@@ -47,10 +47,10 @@
 		<servlet-class>cleb.uploading.DuplicateChecker</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>BookValidator</servlet-name>
-		<display-name>BookValidator</display-name>
+		<servlet-name>FB2Validator</servlet-name>
+		<display-name>FB2Validator</display-name>
 		<description></description>
-		<servlet-class>cleb.uploading.BookValidator</servlet-class>
+		<servlet-class>cleb.validating.FB2Validator</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>Saver</servlet-name>
@@ -67,8 +67,8 @@
 		<url-pattern>/DuplicateChecker</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>BookValidator</servlet-name>
-		<url-pattern>/BookValidator</url-pattern>
+		<servlet-name>FB2Validator</servlet-name>
+		<url-pattern>/FB2Validator</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Saver</servlet-name>

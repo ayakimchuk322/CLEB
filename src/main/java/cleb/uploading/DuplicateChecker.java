@@ -20,11 +20,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cleb.validating.factory.ValidatorFactory;
+
 /**
  * This servlet checks if newly uploading book is not already in library.
  */
 // TODO remove e.printStackTrace's
 public class DuplicateChecker extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     private String tempFolderPath;
@@ -94,11 +97,17 @@ public class DuplicateChecker extends HttpServlet {
                 FileUtils.deleteQuietly(tempBookFile);
             } else {
                 // This book is new, proceed with XML validation
+                // Necessary attributes for further processing
                 request.setAttribute("md5", md5sum);
                 request.setAttribute("size", fileSize);
 
+                // Get the string reference for concrete validator
+                String type = (String) request.getAttribute("type");
+                ValidatorFactory factory = new ValidatorFactory(type);
+                String validator = factory.getValidator();
+
                 RequestDispatcher dispatcher = request
-                        .getRequestDispatcher("/BookValidator");
+                        .getRequestDispatcher(validator);
                 dispatcher.forward(request, response);
             }
         } else {

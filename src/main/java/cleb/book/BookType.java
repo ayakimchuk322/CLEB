@@ -9,10 +9,10 @@ public enum BookType {
     private final String type;
 
     private BookType(String type) {
-	this.type = type;
+        this.type = type;
     }
 
     public String type() {
-	return this.type;
+        return this.type;
     }
 }

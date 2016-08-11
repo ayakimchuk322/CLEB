@@ -56,7 +56,7 @@
 		<servlet-name>FB2Saver</servlet-name>
 		<display-name>FB2Saver</display-name>
 		<description></description>
-		<servlet-class>cleb.uploading.FB2Saver</servlet-class>
+		<servlet-class>cleb.saving.FB2Saver</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>

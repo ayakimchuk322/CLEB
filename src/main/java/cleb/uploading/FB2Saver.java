@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This servlet stores basic information about book in database and places the
- * book into storing directory.
+ * This servlet stores basic information about fb2 book in database and places
+ * the book into storing directory.
  */
 // TODO remove e.printstacktraces
 public class FB2Saver extends HttpServlet implements ISaver {
@@ -60,21 +60,23 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
         document = (Document) request.getAttribute("doc");
 
-        getBasicInfo(request, document);
+        if (getBasicInfo(request, document)) {
+            storeInDir(tempBookPath, bookPath);
+        } else {
+            // TODO show user error page
+        }
 
-        storeInDir(tempBookPath, bookPath);
     }
 
-    // TODO add javadoc
     @Override
-    public synchronized void getBasicInfo(HttpServletRequest request,
+    public synchronized boolean getBasicInfo(HttpServletRequest request,
             Object book) {
 
         // Information about file, will go into db
         String fileName = (String) request.getAttribute("book");
-        String fileType = (String) request.getAttribute("type");
-        Long fileSize = (Long) request.getAttribute("size");
         String md5 = (String) request.getAttribute("md5");
+        Long fileSize = (Long) request.getAttribute("size");
+        String fileType = (String) request.getAttribute("type");
 
         // Necessary cast to process with book
         Document doc = (Document) book;
@@ -103,7 +105,8 @@ public class FB2Saver extends HttpServlet implements ISaver {
         String seqName = "";
         String seqNumber = "";
         String published = "";
-        // String uploadedBy;
+        // FIXME add logic to identify uploader
+        String uploadedBy = "ADMIN";
 
         // Not all books have all these items, that's why every one statement
         // below covered in try catch block
@@ -163,24 +166,10 @@ public class FB2Saver extends HttpServlet implements ISaver {
             published = yearEl.getText();
         } catch (NullPointerException e) {
         }
-    }
 
-    // TODO add method to store this book in db
-
-    /**
-     * Moves book from temporary to storing directory.
-     *
-     * @param srcFile
-     *        Path to file in temporary directory
-     * @param destFile
-     *        Path to file in storing directory
-     */
-    private void storeInDir(String srcFile, String destFile) {
-        try {
-            FileUtils.moveFile(new File(srcFile), new File(destFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return storeInDB(fileName, md5, fileSize, fileType, genre,
+                authorFirstName, authorLastName, title, seqName, seqNumber,
+                published, uploadedBy);
     }
 
 }

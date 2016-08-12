@@ -58,6 +58,12 @@
 		<description></description>
 		<servlet-class>cleb.saving.FB2Saver</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>EPUBValidator</servlet-name>
+		<display-name>EPUBValidator</display-name>
+		<description></description>
+		<servlet-class>cleb.validating.EPUBValidator</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
 		<url-pattern>/Uploader</url-pattern>
@@ -73,5 +79,9 @@
 	<servlet-mapping>
 		<servlet-name>FB2Saver</servlet-name>
 		<url-pattern>/FB2Saver</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EPUBValidator</servlet-name>
+		<url-pattern>/EPUBValidator</url-pattern>
 	</servlet-mapping>
 </web-app>

@@ -65,6 +65,17 @@ public class FB2Saver extends HttpServlet implements ISaver {
         Long fileSize = (Long) request.getAttribute("size");
         String fileType = (String) request.getAttribute("type");
 
+        // Information about book, will go into db
+        String genre = "";
+        String authorFirstName = "";
+        String authorLastName = "";
+        String title = "";
+        String seqName = "";
+        String seqNumber = "";
+        String published = "";
+        // FIXME add logic to identify uploader
+        String uploadedBy = "ADMIN";
+
         // Necessary cast to process with book
         Document doc = (Document) book;
 
@@ -83,17 +94,6 @@ public class FB2Saver extends HttpServlet implements ISaver {
         Element sequenceEl = null;
         Element publishInfoEl = null;
         Element yearEl = null;
-
-        // Information about book, will go into db
-        String genre = "";
-        String authorFirstName = "";
-        String authorLastName = "";
-        String title = "";
-        String seqName = "";
-        String seqNumber = "";
-        String published = "";
-        // FIXME add logic to identify uploader
-        String uploadedBy = "ADMIN";
 
         // Not all books have all these items, that's why every one statement
         // below covered in try catch block

@@ -76,7 +76,7 @@ public class Uploader extends HttpServlet {
 
         // Forward request to next servlet - DuplicateChecker, including
         // reference for uploaded book
-        request.setAttribute("book", fileName);
+        request.setAttribute("file", fileName);
         request.setAttribute("type", fileType);
 
         RequestDispatcher dispatcher = getServletContext()

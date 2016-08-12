@@ -40,10 +40,10 @@ public class FB2Saver extends HttpServlet implements ISaver {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("book");
-        String bookPath = folderPath + (String) request.getAttribute("book");
+                + (String) request.getAttribute("file");
+        String bookPath = folderPath + (String) request.getAttribute("file");
 
-        document = (Document) request.getAttribute("doc");
+        document = (Document) request.getAttribute("book");
 
         if (getBasicInfo(request, document)) {
             storeInDir(tempBookPath, bookPath);
@@ -58,7 +58,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
             Object book) {
 
         // Information about file, will go into db
-        String fileName = (String) request.getAttribute("book");
+        String fileName = (String) request.getAttribute("file");
         String md5 = (String) request.getAttribute("md5");
         Long fileSize = (Long) request.getAttribute("size");
         String fileType = (String) request.getAttribute("type");

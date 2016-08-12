@@ -1,7 +1,5 @@
 package cleb.validating;
 
-import org.jdom2.Document;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -19,7 +17,9 @@ public class EPUBValidator extends HttpServlet implements IValidator {
 
     private String tempFolderPath;
 
-    private Document document;
+    // XXX zip object?
+    // TODO rename attributes passing by servlets (esp book)
+    private Object document;
 
     /**
      * Initializes temporary directory.
@@ -36,11 +36,11 @@ public class EPUBValidator extends HttpServlet implements IValidator {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("book");
+                + (String) request.getAttribute("file");
         File tempBookFile = new File(tempBookPath);
 
         if (validateBook(tempBookFile)) {
-            request.setAttribute("doc", document);
+            request.setAttribute("book", document);
             RequestDispatcher dispatcher = request
                     .getRequestDispatcher("/EPUBSaver");
             dispatcher.forward(request, response);
@@ -56,6 +56,8 @@ public class EPUBValidator extends HttpServlet implements IValidator {
      *        epub book to validate
      * @return true, if given file is valid epub book and false - otherwise
      */
+    // Valid epub book should be valid zip archive with certain directory
+    // structure inside
     @Override
     public boolean validateBook(File file) {
         boolean validated = false;

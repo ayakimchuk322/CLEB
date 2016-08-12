@@ -40,11 +40,11 @@ public class FB2Validator extends HttpServlet implements IValidator {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("book");
+                + (String) request.getAttribute("file");
         File tempBookFile = new File(tempBookPath);
 
         if (validateBook(tempBookFile)) {
-            request.setAttribute("doc", document);
+            request.setAttribute("book", document);
             RequestDispatcher dispatcher = request
                     .getRequestDispatcher("/FB2Saver");
             dispatcher.forward(request, response);

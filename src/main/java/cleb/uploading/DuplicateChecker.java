@@ -82,7 +82,7 @@ public class DuplicateChecker extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
 
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("book");
+                + (String) request.getAttribute("file");
         File tempBookFile = new File(tempBookPath);
 
         String md5sum = getMd5sum(tempBookFile);

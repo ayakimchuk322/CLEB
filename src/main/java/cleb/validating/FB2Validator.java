@@ -23,7 +23,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
 
     private String tempFolderPath;
 
-    private Document document;
+    private Document book;
 
     /**
      * Initializes temporary directory.
@@ -44,7 +44,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
         File tempBookFile = new File(tempBookPath);
 
         if (validateBook(tempBookFile)) {
-            request.setAttribute("book", document);
+            request.setAttribute("book", book);
             RequestDispatcher dispatcher = request
                     .getRequestDispatcher("/FB2Saver");
             dispatcher.forward(request, response);
@@ -72,7 +72,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
 
         SAXBuilder builder = new SAXBuilder();
         try {
-            document = builder.build(file);
+            book = builder.build(file);
 
             validated = true;
         } catch (JDOMException e) {

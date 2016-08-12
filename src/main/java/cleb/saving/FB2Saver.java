@@ -1,11 +1,9 @@
 package cleb.saving;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -36,19 +34,6 @@ public class FB2Saver extends HttpServlet implements ISaver {
                 .getInitParameter("file-temp-upload");
         // Directory to store uploaded books
         folderPath = getServletContext().getInitParameter("file-store");
-    }
-
-    /**
-     * Cleans temporary directory in case there are left some uploaded but
-     * unprocessed books.
-     */
-    @Override
-    public void destroy() {
-        try {
-            FileUtils.cleanDirectory(new File(tempFolderPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

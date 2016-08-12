@@ -3,6 +3,7 @@ package cleb.uploading;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -43,6 +44,19 @@ public class Uploader extends HttpServlet {
         // DuplicateChecker servlet
         tempFolderPath = getServletContext()
                 .getInitParameter("file-temp-upload");
+    }
+
+    /**
+     * Cleans temporary directory in case there are left some uploaded but
+     * unprocessed books.
+     */
+    @Override
+    public void destroy() {
+        try {
+            FileUtils.cleanDirectory(new File(tempFolderPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

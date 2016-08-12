@@ -58,7 +58,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
      *
      * @param file
      *        fb2 book to validate
-     * @return true, if given file is valid xml and false - otherwise
+     * @return true, if given file is valid fb2 book and false - otherwise
      */
     // Currently this method simply builds DOM tree from given file (fb2
     // internally uses XML) and catches exceptions, if no exception is thrown

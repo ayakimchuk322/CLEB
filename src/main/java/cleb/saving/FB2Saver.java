@@ -24,7 +24,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
     private String folderPath;
 
-    private Document document;
+    private Object book;
 
     /**
      * Initializes temporary and storing directories.
@@ -45,9 +45,9 @@ public class FB2Saver extends HttpServlet implements ISaver {
                 + (String) request.getAttribute("file");
         String bookPath = folderPath + (String) request.getAttribute("file");
 
-        document = (Document) request.getAttribute("book");
+        book = request.getAttribute("book");
 
-        if (getBasicInfo(request, document)) {
+        if (getBasicInfo(request, book)) {
             storeInDir(tempBookPath, bookPath);
         } else {
             // TODO show user error page

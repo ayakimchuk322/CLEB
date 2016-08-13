@@ -72,6 +72,8 @@ public class EPUBValidator extends HttpServlet implements IValidator {
                     // Any valid epub book should contain these two files
                     book.getFileHeader("META-INF/container.xml").getFileName();
                     book.getFileHeader("mimetype").getFileName();
+
+                    validated = true;
                 } catch (NullPointerException e) {
                     validated = false;
                 }

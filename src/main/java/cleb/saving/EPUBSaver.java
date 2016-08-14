@@ -58,6 +58,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
         if (getBasicInfo(request, book)) {
             storeInDir(tempBookPath, bookPath);
+            saveCover(book, (String) request.getAttribute("file"));
         } else {
             // TODO show user error page
         }
@@ -158,6 +159,10 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         return storeInDB(fileName, md5, fileSize, fileType, genre,
                 authorFirstName, authorLastName, title, seqName, seqNumber,
                 published, uploadedBy);
+    }
+
+    private void saveCover(Object book, String name) {
+
     }
 
     /**

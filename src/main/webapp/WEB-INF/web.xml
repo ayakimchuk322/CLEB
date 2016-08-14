@@ -17,6 +17,12 @@
 		<description>Location to store uploaded books</description>
 	</context-param>
 	<context-param>
+		<!-- Hard-coded place to store books covers -->
+		<param-name>book-covers</param-name>
+		<param-value>/mnt/sda7/servers/data/Books/covers/</param-value>
+		<description>Location to store uploaded books</description>
+	</context-param>
+	<context-param>
 		<!-- PostgreSQL db -->
 		<param-name>database</param-name>
 		<param-value>jdbc:postgresql://localhost:5432/cleb</param-value>

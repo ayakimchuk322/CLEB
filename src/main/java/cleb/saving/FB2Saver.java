@@ -4,7 +4,12 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Base64;
+import java.util.Base64.Decoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +26,8 @@ public class FB2Saver extends HttpServlet implements ISaver {
     private static final long serialVersionUID = 1L;
 
     private String tempFolderPath;
-
     private String folderPath;
+    private String coversPath;
 
     private Object book;
 
@@ -33,22 +38,25 @@ public class FB2Saver extends HttpServlet implements ISaver {
     public void init() throws ServletException {
         // Directory for temporary storing uploaded books
         tempFolderPath = getServletContext()
-                .getInitParameter("file-temp-upload");
+            .getInitParameter("file-temp-upload");
         // Directory to store uploaded books
         folderPath = getServletContext().getInitParameter("file-store");
+        // Directory to store books covers
+        coversPath = getServletContext().getInitParameter("book-covers");
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+        HttpServletResponse response) throws ServletException, IOException {
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("file");
+            + (String) request.getAttribute("file");
         String bookPath = folderPath + (String) request.getAttribute("file");
 
         book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
             storeInDir(tempBookPath, bookPath);
+            saveCover(book, (String) request.getAttribute("file"));
         } else {
             // TODO show user error page
         }
@@ -57,7 +65,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
     @Override
     public synchronized boolean getBasicInfo(HttpServletRequest request,
-            Object book) {
+        Object book) {
 
         // Information about file, will go into db
         String fileName = (String) request.getAttribute("file");
@@ -155,8 +163,64 @@ public class FB2Saver extends HttpServlet implements ISaver {
         }
 
         return storeInDB(fileName, md5, fileSize, fileType, genre,
-                authorFirstName, authorLastName, title, seqName, seqNumber,
-                published, uploadedBy);
+            authorFirstName, authorLastName, title, seqName, seqNumber,
+            published, uploadedBy);
+    }
+
+    private void saveCover(Object book, String name) {
+        // Necessary cast to process with book
+        Document doc = (Document) book;
+
+        // Document root and namespace
+        Element root = doc.getRootElement();
+        Namespace ns = root.getNamespace();
+
+        // Get the base64 encoded cover image
+        Element binaryEl;
+        try {
+            binaryEl = root.getChild("binary", ns);
+        } catch (NullPointerException e) {
+            // This book has no cover
+            return;
+        }
+        String binaryText = binaryEl.getText();
+
+        // Get the file type (jpeg/png)
+        String coverType = binaryEl.getAttributeValue("content-type");
+        String extension = "";
+
+        switch (coverType) {
+            case "image/jpeg":
+                extension = ".jpeg";
+                break;
+            case "image/png":
+                extension = ".png";
+                break;
+            // Handle some possible exotic extension
+            default:
+                extension = "." + coverType.substring(6);
+        }
+
+        // Decode it into byte array
+        Decoder decoder;
+        byte[] bytes;
+        try {
+            decoder = Base64.getDecoder();
+            bytes = decoder.decode(binaryText);
+        } catch (Exception e) {
+            return;
+        }
+
+        // Write out decoded image into appropriate file
+        File cover = new File(coversPath + name + extension);
+        try (
+             FileOutputStream fileOut = new FileOutputStream(cover);
+             BufferedOutputStream bufferOut = new BufferedOutputStream(
+                 fileOut);) {
+            bufferOut.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

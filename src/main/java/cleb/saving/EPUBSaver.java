@@ -30,8 +30,10 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     private static final long serialVersionUID = 1L;
 
     private String tempFolderPath;
-
     private String folderPath;
+    private String coversPath;
+
+    private String fileName;
 
     private Object book;
 
@@ -42,23 +44,27 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     public void init() throws ServletException {
         // Directory for temporary storing uploaded books
         tempFolderPath = getServletContext()
-                .getInitParameter("file-temp-upload");
+            .getInitParameter("file-temp-upload");
         // Directory to store uploaded books
         folderPath = getServletContext().getInitParameter("file-store");
+        // Directory to store books covers
+        coversPath = getServletContext().getInitParameter("book-covers");
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("file");
-        String bookPath = folderPath + (String) request.getAttribute("file");
+        HttpServletResponse response) throws ServletException, IOException {
+
+        fileName = (String) request.getAttribute("file");
+
+        String tempBookPath = tempFolderPath + fileName;
+        String bookPath = folderPath + fileName;
 
         book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
             storeInDir(tempBookPath, bookPath);
-            saveCover(book, (String) request.getAttribute("file"));
+            saveCover(book, fileName);
         } else {
             // TODO show user error page
         }
@@ -66,7 +72,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     }
 
     @Override
-    public boolean getBasicInfo(HttpServletRequest request, Object book) {
+    public synchronized boolean getBasicInfo(HttpServletRequest request,
+        Object book) {
 
         // Information about file, will go into db
         String fileName = (String) request.getAttribute("file");
@@ -90,7 +97,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
         // Add random suffix to temporary directory based on current time
         String suffix = String
-                .valueOf(Instant.now().get(ChronoField.MILLI_OF_SECOND));
+            .valueOf(Instant.now().get(ChronoField.MILLI_OF_SECOND));
 
         // Extract META-INF/container.xml and get the location of content.opf
         // It's location inside book differs from book to book
@@ -102,8 +109,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
             SAXBuilder builder = new SAXBuilder();
 
-            Document containerxmlDoc = builder.build(
-                    new File(containerxmlPath + "/META-INF/container.xml"));
+            Document containerxmlDoc = builder
+                .build(new File(containerxmlPath + "/META-INF/container.xml"));
 
             // container.xml root and namespace
             Element containerxmlRoot = containerxmlDoc.getRootElement();
@@ -111,14 +118,14 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
             // content.opf location inside epub book
             String contentopfPath = containerxmlRoot
-                    .getChild("rootfiles", containerxmlNs)
-                    .getChild("rootfile", containerxmlNs)
-                    .getAttributeValue("full-path");
+                .getChild("rootfiles", containerxmlNs)
+                .getChild("rootfile", containerxmlNs)
+                .getAttributeValue("full-path");
 
             zip.extractFile(contentopfPath, containerxmlPath);
 
             Document contentopfDoc = builder
-                    .build(new File(containerxmlPath + contentopfPath));
+                .build(new File(containerxmlPath + contentopfPath));
 
             // content.opf root and namespace
             Element contentopfRoot = contentopfDoc.getRootElement();
@@ -157,8 +164,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         }
 
         return storeInDB(fileName, md5, fileSize, fileType, genre,
-                authorFirstName, authorLastName, title, seqName, seqNumber,
-                published, uploadedBy);
+            authorFirstName, authorLastName, title, seqName, seqNumber,
+            published, uploadedBy);
     }
 
     private void saveCover(Object book, String name) {

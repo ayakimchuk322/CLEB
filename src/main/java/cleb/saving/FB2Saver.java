@@ -29,6 +29,8 @@ public class FB2Saver extends HttpServlet implements ISaver {
     private String folderPath;
     private String coversPath;
 
+    private String fileName;
+
     private Object book;
 
     /**
@@ -48,15 +50,17 @@ public class FB2Saver extends HttpServlet implements ISaver {
     @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
-        String tempBookPath = tempFolderPath
-            + (String) request.getAttribute("file");
-        String bookPath = folderPath + (String) request.getAttribute("file");
+
+        fileName = (String) request.getAttribute("file");
+
+        String tempBookPath = tempFolderPath + fileName;
+        String bookPath = folderPath + fileName;
 
         book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
             storeInDir(tempBookPath, bookPath);
-            saveCover(book, (String) request.getAttribute("file"));
+            saveCover(book, fileName);
         } else {
             // TODO show user error page
         }

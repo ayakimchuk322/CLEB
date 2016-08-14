@@ -58,16 +58,16 @@ public interface ISaver {
      * @return true if transaction was successful and false - otherwise.
      */
     public default boolean storeInDB(String fileName, String md5, Long fileSize,
-            String fileType, String genre, String authorFirstName,
-            String authorLastName, String title, String seqName,
-            String seqNumber, String published, String uploadedBy) {
+        String fileType, String genre, String authorFirstName,
+        String authorLastName, String title, String seqName, String seqNumber,
+        String published, String uploadedBy) {
 
         Book book = new Book(fileName, md5, fileSize, fileType, genre,
-                authorFirstName, authorLastName, title, seqName, seqNumber,
-                published, uploadedBy);
+            authorFirstName, authorLastName, title, seqName, seqNumber,
+            published, uploadedBy);
 
         SessionFactory factory = new Configuration().configure()
-                .buildSessionFactory();
+            .buildSessionFactory();
 
         Transaction transaction = null;
 
@@ -103,5 +103,18 @@ public interface ISaver {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Implementation of this method should get cover from uploaded book and
+     * store it in special directory for covers. Cover should be saved under
+     * specific name - it constists of the book file name and image extension
+     * (jpeg/png).
+     *
+     * @param book
+     *        Object representing actual book
+     * @param name
+     *        Book file name
+     */
+    public void saveCover(Object book, String name);
 
 }

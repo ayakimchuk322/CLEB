@@ -168,7 +168,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
             published, uploadedBy);
     }
 
-    private void saveCover(Object book, String name) {
+    @Override
+    public void saveCover(Object book, String name) {
         // Necessary cast to process with book
         ZipFile zip = (ZipFile) book;
 

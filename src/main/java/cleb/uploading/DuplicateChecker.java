@@ -33,7 +33,9 @@ public class DuplicateChecker extends HttpServlet {
     private String tempFolderPath;
 
     private String dbURL;
+
     private String dbuser;
+
     private String dbpass;
 
     // Prepared query (statement)
@@ -53,7 +55,7 @@ public class DuplicateChecker extends HttpServlet {
         // Directory for temporary storing uploaded books - till it's checked by
         // this servlet
         tempFolderPath = getServletContext()
-                .getInitParameter("file-temp-upload");
+            .getInitParameter("file-temp-upload");
 
         // Initialize PostgreSQl driver
         try {
@@ -74,15 +76,15 @@ public class DuplicateChecker extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+        HttpServletResponse response) throws ServletException, IOException {
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+        HttpServletResponse response) throws ServletException, IOException {
 
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("file");
+            + (String) request.getAttribute("file");
         File tempBookFile = new File(tempBookPath);
 
         String md5sum = getMd5sum(tempBookFile);
@@ -107,7 +109,7 @@ public class DuplicateChecker extends HttpServlet {
                 String validator = factory.getValidator();
 
                 RequestDispatcher dispatcher = request
-                        .getRequestDispatcher(validator);
+                    .getRequestDispatcher(validator);
                 dispatcher.forward(request, response);
             }
         } else {
@@ -125,7 +127,8 @@ public class DuplicateChecker extends HttpServlet {
     private String getMd5sum(File file) {
         String md5sum = null;
 
-        try (FileInputStream fileIn = new FileInputStream(file);
+        try (
+             FileInputStream fileIn = new FileInputStream(file);
              BufferedInputStream bufferIn = new BufferedInputStream(fileIn);) {
 
             md5sum = DigestUtils.md5Hex(IOUtils.toByteArray(bufferIn));
@@ -152,11 +155,12 @@ public class DuplicateChecker extends HttpServlet {
     private boolean checkBookPresence(String md5sum, long fileSize) {
         boolean present = false;
 
-        try {
-            Connection connection = DriverManager.getConnection(dbURL, dbuser,
-                    dbpass);
+        try (
+             Connection connection = DriverManager.getConnection(dbURL, dbuser,
+                 dbpass);
+             PreparedStatement pstatement = connection
+                 .prepareStatement(query);) {
 
-            PreparedStatement pstatement = connection.prepareStatement(query);
             pstatement.setString(1, md5sum);
             pstatement.setLong(2, fileSize);
 

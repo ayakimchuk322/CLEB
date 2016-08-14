@@ -63,8 +63,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
-            storeInDir(tempBookPath, bookPath);
             saveCover(book, fileName);
+            storeInDir(tempBookPath, bookPath);
         } else {
             // TODO show user error page
         }
@@ -169,7 +169,50 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     }
 
     private void saveCover(Object book, String name) {
+        // Necessary cast to process with book
+        ZipFile zip = (ZipFile) book;
 
+        // To not overheat system with deep search for cover (since different
+        // epub books have it under different names and in different folders -
+        // which will result in additional parsing of 2 xml files)
+        // simply try extract it with a few most used names
+        try {
+            zip.extractFile("cover.jpeg", coversPath, null, name + ".jpeg");
+            return;
+        } catch (ZipException e) {
+        }
+
+        try {
+            zip.extractFile("OPS/cover.jpeg", coversPath, null, name + ".jpeg");
+            return;
+        } catch (ZipException e) {
+        }
+
+        try {
+            zip.extractFile("OPS/images/cover.jpeg", coversPath, null,
+                name + ".jpeg");
+            return;
+        } catch (ZipException e) {
+        }
+
+        try {
+            zip.extractFile("cover.png", coversPath, null, name + ".png");
+            return;
+        } catch (ZipException e) {
+        }
+
+        try {
+            zip.extractFile("OPS/cover.png", coversPath, null, name + ".png");
+            return;
+        } catch (ZipException e) {
+        }
+
+        try {
+            zip.extractFile("OPS/images/cover.png", coversPath, null,
+                name + ".png");
+            return;
+        } catch (ZipException e) {
+        }
     }
 
     /**

@@ -4,42 +4,68 @@
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
+
+	<!-- Hard-coded place to temporarily store uploaded books -->
 	<context-param>
-		<!-- Hard-coded place to temporarily store uploaded books -->
 		<param-name>file-temp-upload</param-name>
 		<param-value>/mnt/sda7/servers/data/Books/temp/</param-value>
 		<description>Location to temporarily store uploaded books</description>
 	</context-param>
+
+	<!-- Hard-coded place to store uploaded books -->
 	<context-param>
-		<!-- Hard-coded place to store uploaded books -->
 		<param-name>file-store</param-name>
 		<param-value>/mnt/sda7/servers/data/Books/</param-value>
 		<description>Location to store uploaded books</description>
 	</context-param>
+
+	<!-- Hard-coded place to store books covers -->
 	<context-param>
-		<!-- Hard-coded place to store books covers -->
 		<param-name>book-covers</param-name>
 		<param-value>/mnt/sda7/servers/data/Books/covers/</param-value>
 		<description>Location to store uploaded books</description>
 	</context-param>
+
+	<!-- PostgreSQL db -->
 	<context-param>
-		<!-- PostgreSQL db -->
 		<param-name>database</param-name>
 		<param-value>jdbc:postgresql://localhost:5432/cleb</param-value>
 		<description>URL for connection to db</description>
 	</context-param>
+
+	<!-- PostgreSQL user -->
 	<context-param>
-		<!-- PostgreSQL user -->
 		<param-name>dbuser</param-name>
 		<param-value>clebadmin</param-value>
 		<description>database user</description>
 	</context-param>
+
+	<!-- PostgreSQL user password -->
 	<context-param>
-		<!-- PostgreSQL user password -->
 		<param-name>dbpass</param-name>
 		<param-value>admincleb</param-value>
 		<description>database user password</description>
 	</context-param>
+
+	<!-- Shiro mapping -->
+	<listener>
+		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>ShiroFilter</filter-name>
+		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>ShiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>Uploader</servlet-name>
 		<display-name>Uploader</display-name>
@@ -76,6 +102,14 @@
 		<description></description>
 		<servlet-class>cleb.saving.EPUBSaver</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>AuthStarter</servlet-name>
+		<display-name>AuthStarter</display-name>
+		<description></description>
+		<load-on-startup>0</load-on-startup>
+		<servlet-class>cleb.security.AuthStarter</servlet-class>
+	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
 		<url-pattern>/Uploader</url-pattern>
@@ -100,22 +134,9 @@
 		<servlet-name>EPUBSaver</servlet-name>
 		<url-pattern>/EPUBSaver</url-pattern>
 	</servlet-mapping>
-	<!-- Shiro mapping -->
-	<listener>
-		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-	</listener>
+	<servlet-mapping>
+		<servlet-name>AuthStarter</servlet-name>
+		<url-pattern>/AuthStarter</url-pattern>
+	</servlet-mapping>
 
-	<filter>
-		<filter-name>ShiroFilter</filter-name>
-		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>ShiroFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
 </web-app>

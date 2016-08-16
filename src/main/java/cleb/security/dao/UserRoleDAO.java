@@ -23,7 +23,7 @@ public class UserRoleDAO {
 
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
-            roles = session.createQuery("from userroles where email=?")
+            roles = session.createQuery("from Userrole where email=?")
                 .setParameter(0, email).list();
             transaction.commit();
         } catch (Exception e) {

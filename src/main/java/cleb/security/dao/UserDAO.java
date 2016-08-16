@@ -21,7 +21,7 @@ public class UserDAO {
 
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
-            user = (User) session.createQuery("from users where email=?")
+            user = (User) session.createQuery("from User where email=?")
                 .setParameter(0, email).uniqueResult();
             transaction.commit();
         } catch (Exception e) {

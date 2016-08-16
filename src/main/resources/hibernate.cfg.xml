@@ -14,5 +14,9 @@
 		<property name="format_sql">true</property>
 
 		<mapping class="cleb.book.Book" />
+
+		<mapping class="cleb.security.tables.RolePermission" />
+		<mapping class="cleb.security.tables.User" />
+		<mapping class="cleb.security.tables.UserRole" />
 	</session-factory>
 </hibernate-configuration>

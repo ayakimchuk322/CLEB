@@ -7,6 +7,15 @@
 </head>
 <body>
 
+  <%
+      String message = (String) request.getAttribute("message");
+  %>
+  <%
+      if (message != null) {
+          out.print(message);
+      }
+  %>
+
   <h1>Register</h1>
 
   <form action="register" method="post">

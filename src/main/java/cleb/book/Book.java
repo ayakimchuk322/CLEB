@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * This class represents a single book entity in a database.
  */
 @Entity
-@Table(name = "Books")
+@Table(name = "books")
 public class Book {
 
     @Id

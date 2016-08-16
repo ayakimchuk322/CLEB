@@ -24,7 +24,7 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "email")
-    private long email;
+    private String email;
     @Column(name = "salt")
     private String salt;
 
@@ -32,7 +32,7 @@ public class User {
 
     }
 
-    public User(String userName, String password, long email, String salt) {
+    public User(String userName, String password, String email, String salt) {
         this.userName = userName;
         this.password = password;
         this.email = email;
@@ -63,11 +63,11 @@ public class User {
         this.password = password;
     }
 
-    public long getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(long email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 

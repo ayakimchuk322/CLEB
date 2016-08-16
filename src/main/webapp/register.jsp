@@ -14,7 +14,7 @@
     <br />
     E-Mail <input type="text" name="email" />
     <br />
-    Password <input type="password" name="p" />
+    Password <input type="password" name="password" />
     <br />
     <input type="submit" value="Register" />
   </form>

@@ -43,7 +43,7 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Check for both email and password being not null
+        // Check for name, email and password being not null
         if (name == null || email == null || password == null) {
             // Inform user about wrong parameters
             request.setAttribute("message",

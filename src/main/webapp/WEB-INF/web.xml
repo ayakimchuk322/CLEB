@@ -109,6 +109,12 @@
 		<load-on-startup>0</load-on-startup>
 		<servlet-class>cleb.security.AuthStarter</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>RegisterServlet</servlet-name>
+		<display-name>RegisterServlet</display-name>
+		<description></description>
+		<servlet-class>cleb.security.servlets.RegisterServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -137,6 +143,10 @@
 	<servlet-mapping>
 		<servlet-name>AuthStarter</servlet-name>
 		<url-pattern>/AuthStarter</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/register</url-pattern>
 	</servlet-mapping>
 
 </web-app>

@@ -20,6 +20,7 @@ import cleb.security.tables.User;
 import cleb.security.tables.UserRole;
 
 // TODO add javadoc
+// FIXME add check before registering if not registered already
 public class RegisterServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -84,7 +85,7 @@ public class RegisterServlet extends HttpServlet {
         String plainTextPassword) {
         // Create new user
         User user = new User();
-        user.setUserName(email);
+        user.setUserName(name);
         user.setEmail(email);
 
         generatePassword(user, plainTextPassword);

@@ -7,12 +7,21 @@
 </head>
 <body>
 
+  <%
+      String message = (String) request.getAttribute("message");
+  %>
+  <%
+      if (message != null) {
+          out.print(message);
+      }
+  %>
+
   <h1>Login</h1>
 
   <form action="login" method="post">
     E-Mail <input type="text" name="email" />
     <br />
-    Password <input type="password" name="p" />
+    Password <input type="password" name="password" />
     <br />
     Remember Me <input type="checkbox" name="rememberMe" value="true" />
     <br />

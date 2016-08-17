@@ -13,6 +13,10 @@
 		<property name="show_sql">true</property>
 		<property name="format_sql">true</property>
 
+		<!--To get rid of: Disabling contextual LOB creation as createClob() method threw
+			error : java.lang.reflect.InvocationTargetException -->
+		<property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
+
 		<mapping class="cleb.book.Book" />
 
 		<mapping class="cleb.security.tables.RolePermission" />

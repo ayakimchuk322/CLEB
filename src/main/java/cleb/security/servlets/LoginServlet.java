@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// TODO add javadoc
 // TODO add loggin to file
 public class LoginServlet extends HttpServlet {
 
@@ -67,12 +66,23 @@ public class LoginServlet extends HttpServlet {
             }
         }
 
-        // Show login.jsp page
+        // Show index.jsp page
         RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/login.jsp");
+            .getRequestDispatcher("/index.jsp");
         dispatcher.include(request, response);
     }
 
+    /**
+     * Tries to login user with provided email and password.
+     *
+     * @param email
+     *        String with user entered email
+     * @param password
+     *        String with user entered password
+     * @param rememberMe
+     *        Boolean with true if remember me was checked and false otherwise.
+     * @return True if user was successfully loged in and false otherwise.
+     */
     private boolean tryLogin(String email, String password,
         Boolean rememberMe) {
         // Get the currently executing user:

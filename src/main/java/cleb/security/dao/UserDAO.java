@@ -1,9 +1,12 @@
 package cleb.security.dao;
 
+import static cleb.uploading.util.JDBCPoolUtil.getConnection;
+
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.hibernate.Session;
+import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
@@ -24,16 +27,21 @@ public class UserDAO {
      * @return User object. Caution should be taken as object potentially can be
      *         null if no user with given email exists.
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "rawtypes" })
     public static User getUserByEmail(String email) {
         User user = null;
 
+        // Create session and transaction
         SessionFactory factory = new Configuration().configure()
             .buildSessionFactory();
 
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        builder.connection(getConnection());
+
         Transaction transaction = null;
 
-        try (Session session = factory.openSession()) {
+        try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
             user = (User) session.createQuery("from User where email=?")
                 .setParameter(0, email).uniqueResult();
@@ -57,6 +65,7 @@ public class UserDAO {
      * @return True if user was successfully added to database and false
      *         otherwise.
      */
+    @SuppressWarnings("rawtypes")
     public static boolean registrate(String name, String email,
         String plainTextPassword) {
         // Check if no user with same email already exists in db
@@ -81,12 +90,17 @@ public class UserDAO {
         role.setRoleName("reader");
 
         // Proceed with db
+        // Create session and transaction
         SessionFactory factory = new Configuration().configure()
             .buildSessionFactory();
 
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        builder.connection(getConnection());
+
         Transaction transaction = null;
 
-        try (Session session = factory.openSession()) {
+        try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
             // Save user in db
             session.save(user);

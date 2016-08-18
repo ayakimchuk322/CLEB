@@ -1,5 +1,7 @@
 package cleb.uploading;
 
+import static cleb.uploading.util.JDBCPoolUtil.getConnection;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -9,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,12 +33,6 @@ public class DuplicateChecker extends HttpServlet {
 
     private String tempFolderPath;
 
-    private String dbURL;
-
-    private String dbuser;
-
-    private String dbpass;
-
     // Prepared query (statement)
     //@formatter:off
     private final String query = "SELECT COUNT(*) "
@@ -47,8 +42,7 @@ public class DuplicateChecker extends HttpServlet {
     //@formatter:on
 
     /**
-     * Initializes uploading parameters - temporary directory, jdbc driver and
-     * db credentials.
+     * Initializes temporary directory.
      */
     @Override
     public void init() {
@@ -56,22 +50,6 @@ public class DuplicateChecker extends HttpServlet {
         // this servlet
         tempFolderPath = getServletContext()
             .getInitParameter("file-temp-upload");
-
-        // Initialize PostgreSQl driver
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        // Initialize database URL for driver
-        dbURL = getServletContext().getInitParameter("database");
-
-        // Initialize database user
-        dbuser = getServletContext().getInitParameter("dbuser");
-
-        // Initialize database user password
-        dbpass = getServletContext().getInitParameter("dbpass");
     }
 
     @Override
@@ -156,8 +134,7 @@ public class DuplicateChecker extends HttpServlet {
         boolean present = false;
 
         try (
-             Connection connection = DriverManager.getConnection(dbURL, dbuser,
-                 dbpass);
+             Connection connection = getConnection();
              PreparedStatement pstatement = connection
                  .prepareStatement(query);) {
 

@@ -1,7 +1,10 @@
 package cleb.uploading.saving;
 
+import static cleb.uploading.util.JDBCPoolUtil.getConnection;
+
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
+import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
@@ -57,21 +60,28 @@ public interface ISaver {
      *
      * @return true if transaction was successful and false - otherwise.
      */
+    @SuppressWarnings("rawtypes")
     public default boolean storeInDB(String fileName, String md5, Long fileSize,
         String fileType, String genre, String authorFirstName,
         String authorLastName, String title, String seqName, String seqNumber,
         String published, String uploadedBy) {
 
+        // Create new Book object
         Book book = new Book(fileName, md5, fileSize, fileType, genre,
             authorFirstName, authorLastName, title, seqName, seqNumber,
             published, uploadedBy);
 
+        // Create session and transaction
         SessionFactory factory = new Configuration().configure()
             .buildSessionFactory();
 
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        builder.connection(getConnection());
+
         Transaction transaction = null;
 
-        try (Session session = factory.openSession()) {
+        try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
             session.save(book);
             transaction.commit();

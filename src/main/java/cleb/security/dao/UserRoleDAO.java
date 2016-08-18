@@ -1,6 +1,9 @@
 package cleb.security.dao;
 
+import static cleb.uploading.util.JDBCPoolUtil.getConnection;
+
 import org.hibernate.Session;
+import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
@@ -25,16 +28,21 @@ public class UserRoleDAO {
      *         should be taken as this list potentially can be null if no user
      *         with given email exists.
      */
-    @SuppressWarnings({ "deprecation", "unchecked" })
+    @SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
     public static List<UserRole> getUserRolesByEmail(String email) {
         List<UserRole> roles = null;
 
+        // Create session and transaction
         SessionFactory factory = new Configuration().configure()
             .buildSessionFactory();
 
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        builder.connection(getConnection());
+
         Transaction transaction = null;
 
-        try (Session session = factory.openSession()) {
+        try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
             roles = session.createQuery("from Userrole where email=?")
                 .setParameter(0, email).list();
@@ -52,13 +60,19 @@ public class UserRoleDAO {
      * @param role
      *        UserRole object with setted email and role.
      */
+    @SuppressWarnings("rawtypes")
     public static void addRole(UserRole role) {
+        // Create session and transaction
         SessionFactory factory = new Configuration().configure()
             .buildSessionFactory();
 
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        builder.connection(getConnection());
+
         Transaction transaction = null;
 
-        try (Session session = factory.openSession()) {
+        try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
             session.save(role);
             transaction.commit();

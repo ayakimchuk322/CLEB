@@ -33,7 +33,7 @@ public class UserRoleDAO {
         return roles;
     }
 
-    public static void insert(UserRole role) {
+    public static void addRole(UserRole role) {
         SessionFactory factory = new Configuration().configure()
             .buildSessionFactory();
 

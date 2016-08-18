@@ -55,7 +55,6 @@ public class JDBCPoolUtil extends HttpServlet {
             "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"
                 + "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
         dataSource = new DataSource(poolProps);
-        // datasource.setPoolProperties(p);
     }
 
     public static Connection getConnection() {

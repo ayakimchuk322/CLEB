@@ -11,9 +11,19 @@ import org.hibernate.cfg.Configuration;
 import cleb.security.tables.User;
 import cleb.security.tables.UserRole;
 
-// TODO add javadoc
+/**
+ * This utility class used to provide api for working with users in database.
+ */
 public class UserDAO {
 
+    /**
+     * This method returns user with specified email.
+     *
+     * @param email
+     *        String representing user email
+     * @return User object. Caution should be taken as object potentially can be
+     *         null if no user with given email exists.
+     */
     @SuppressWarnings("deprecation")
     public static User getUserByEmail(String email) {
         User user = null;
@@ -35,7 +45,19 @@ public class UserDAO {
         return user;
     }
 
-    public static void registrate(String name, String email,
+    /**
+     * Registers new user in database.
+     *
+     * @param name
+     *        String with user name
+     * @param email
+     *        String with user email
+     * @param plainTextPassword
+     *        String with user password, not encrypted
+     * @return True if user was successfully added to database and false
+     *         otherwise.
+     */
+    public static boolean registrate(String name, String email,
         String plainTextPassword) {
         // Check if no user with same email already exists in db
         User checked = getUserByEmail(email);
@@ -43,7 +65,7 @@ public class UserDAO {
             // TODO add some meaningful message
             System.err.println("NOPE");
 
-            return;
+            return false;
         }
 
         // OK, create new user
@@ -73,15 +95,27 @@ public class UserDAO {
             session.save(role);
 
             transaction.commit();
+
+            return true;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
 
             e.printStackTrace();
+
+            return false;
         }
     }
 
+    /**
+     * Hashes user password and adds salt for randomizing it.
+     *
+     * @param user
+     *        User object which password to hash
+     * @param plainTextPassword
+     *        String with not encrypted user password
+     */
     private static void generatePassword(User user, String plainTextPassword) {
         RandomNumberGenerator rng = new SecureRandomNumberGenerator();
         Object salt = rng.nextBytes();

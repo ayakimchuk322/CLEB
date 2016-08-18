@@ -10,7 +10,8 @@ import java.util.List;
 import cleb.security.tables.UserRole;
 
 /**
- * This utility class used to provide api for working with user roles in db.
+ * This utility class used to provide api for working with user roles in
+ * database.
  */
 public class UserRoleDAO {
 

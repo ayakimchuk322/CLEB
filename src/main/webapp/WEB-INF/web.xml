@@ -121,6 +121,13 @@
 		<description></description>
 		<servlet-class>cleb.security.servlets.LoginServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>JDBCPoolUtil</servlet-name>
+		<display-name>JDBCPoolUtil</display-name>
+		<description></description>
+		<load-on-startup>0</load-on-startup>
+		<servlet-class>cleb.uploading.util.JDBCPoolUtil</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -157,6 +164,10 @@
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
 		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>JDBCPoolUtil</servlet-name>
+		<url-pattern>/jdbcpoolutil</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

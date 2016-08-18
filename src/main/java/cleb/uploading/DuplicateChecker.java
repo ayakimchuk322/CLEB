@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cleb.validating.factory.ValidatorFactory;
+import cleb.uploading.validating.factory.ValidatorFactory;
 
 /**
  * This servlet checks if newly uploading book is not already in library.

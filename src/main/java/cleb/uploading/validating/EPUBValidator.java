@@ -1,4 +1,4 @@
-package cleb.validating;
+package cleb.uploading.validating;
 
 import java.io.File;
 import java.io.IOException;

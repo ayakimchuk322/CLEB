@@ -1,4 +1,4 @@
-package cleb.validating.factory;
+package cleb.uploading.validating.factory;
 
 /**
  * This factory class manages supporting multiple types of e-books, it's

@@ -1,4 +1,4 @@
-package cleb.validating;
+package cleb.uploading.validating;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;

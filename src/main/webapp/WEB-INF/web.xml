@@ -82,25 +82,25 @@
 		<servlet-name>FB2Validator</servlet-name>
 		<display-name>FB2Validator</display-name>
 		<description></description>
-		<servlet-class>cleb.validating.FB2Validator</servlet-class>
+		<servlet-class>cleb.uploading.validating.FB2Validator</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>FB2Saver</servlet-name>
 		<display-name>FB2Saver</display-name>
 		<description></description>
-		<servlet-class>cleb.saving.FB2Saver</servlet-class>
+		<servlet-class>cleb.uploading.saving.FB2Saver</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>EPUBValidator</servlet-name>
 		<display-name>EPUBValidator</display-name>
 		<description></description>
-		<servlet-class>cleb.validating.EPUBValidator</servlet-class>
+		<servlet-class>cleb.uploading.validating.EPUBValidator</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>EPUBSaver</servlet-name>
 		<display-name>EPUBSaver</display-name>
 		<description></description>
-		<servlet-class>cleb.saving.EPUBSaver</servlet-class>
+		<servlet-class>cleb.uploading.saving.EPUBSaver</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>AuthStarter</servlet-name>

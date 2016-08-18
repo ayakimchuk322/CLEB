@@ -9,6 +9,7 @@ import org.apache.shiro.realm.jdbc.JdbcRealm;
 import cleb.security.dao.UserDAO;
 import cleb.security.tables.User;
 
+// TODO add javadoc
 public class ClebRealm extends JdbcRealm {
 
     @Override

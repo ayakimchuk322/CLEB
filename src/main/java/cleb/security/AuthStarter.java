@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 /**
  * Servlet implementation class AuthStarter
  */
+// TODO add javadoc
 public class AuthStarter extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

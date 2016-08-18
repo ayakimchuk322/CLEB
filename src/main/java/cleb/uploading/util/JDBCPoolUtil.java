@@ -9,7 +9,10 @@ import java.sql.SQLException;
 import javax.servlet.http.HttpServlet;
 
 // TODO remove e printstacktrace
-// TODO add javadoc
+/**
+ * This utility class instantiates connection pool and provides methods for
+ * working with connections.
+ */
 public class JDBCPoolUtil extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -57,6 +60,11 @@ public class JDBCPoolUtil extends HttpServlet {
         dataSource = new DataSource(poolProps);
     }
 
+    /**
+     * Attempts to return idle connection from connection pool.
+     *
+     * @return Free connection from pool
+     */
     public static Connection getConnection() {
         Connection connection = null;
         try {
@@ -68,6 +76,15 @@ public class JDBCPoolUtil extends HttpServlet {
         return connection;
     }
 
+    /**
+     * Attempts to close connection. Classes that use connections from this
+     * connection pool should call getConnection method inside
+     * try-with-resources for efficient closing instead of manually calling this
+     * method.
+     *
+     * @param connection
+     *        Connection object to close
+     */
     public static void closeConnection(Connection connection) {
         if (connection != null) {
             try {

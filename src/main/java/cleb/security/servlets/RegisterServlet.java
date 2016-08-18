@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// TODO add javadoc
-// FIXME add check before registering if not registered already
 public class RegisterServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -45,13 +43,12 @@ public class RegisterServlet extends HttpServlet {
             registrate(name, email, password);
 
             // Inform user about successfull registering
-            request.setAttribute("message", "User created. "
-                + "You can now <a href='login.jsp'>login</a>.");
+            request.setAttribute("message", "User created. You can now login.");
         }
 
-        // Show register.jsp page
+        // Show login.jsp page
         RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/register.jsp");
+            .getRequestDispatcher("/login.jsp");
         dispatcher.include(request, response);
     }
 

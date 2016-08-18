@@ -56,7 +56,9 @@ public class JDBCPoolUtil extends HttpServlet {
         poolProps.setRemoveAbandoned(true);
         poolProps.setJdbcInterceptors(
             "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"
-                + "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
+                + "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;"
+                + "org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer");
+
         dataSource = new DataSource(poolProps);
     }
 

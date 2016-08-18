@@ -1,5 +1,6 @@
 package cleb.security.dao;
 
+import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 
 import org.hibernate.Session;
@@ -8,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import java.sql.Connection;
 import java.util.List;
 
 import cleb.security.tables.UserRole;
@@ -38,7 +40,8 @@ public class UserRoleDAO {
 
         SessionBuilder builder = factory.withOptions();
         // Supply connection from connection pool
-        builder.connection(getConnection());
+        Connection connection = getConnection();
+        builder.connection(connection);
 
         Transaction transaction = null;
 
@@ -49,6 +52,8 @@ public class UserRoleDAO {
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
 
         return roles;
@@ -68,7 +73,8 @@ public class UserRoleDAO {
 
         SessionBuilder builder = factory.withOptions();
         // Supply connection from connection pool
-        builder.connection(getConnection());
+        Connection connection = getConnection();
+        builder.connection(connection);
 
         Transaction transaction = null;
 
@@ -82,6 +88,8 @@ public class UserRoleDAO {
             }
 
             e.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
     }
 

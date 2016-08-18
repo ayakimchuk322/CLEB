@@ -1,6 +1,7 @@
 package cleb.security.dao;
 
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
+import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
 
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -10,6 +11,8 @@ import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+
+import java.sql.Connection;
 
 import cleb.security.tables.User;
 import cleb.security.tables.UserRole;
@@ -37,7 +40,8 @@ public class UserDAO {
 
         SessionBuilder builder = factory.withOptions();
         // Supply connection from connection pool
-        builder.connection(getConnection());
+        Connection connection = getConnection();
+        builder.connection(connection);
 
         Transaction transaction = null;
 
@@ -48,6 +52,8 @@ public class UserDAO {
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
 
         return user;
@@ -68,13 +74,15 @@ public class UserDAO {
     @SuppressWarnings("rawtypes")
     public static boolean registrate(String name, String email,
         String plainTextPassword) {
+        boolean registered = false;
+
         // Check if no user with same email already exists in db
         User checked = getUserByEmail(email);
         if (checked != null) {
             // TODO add some meaningful message
             System.err.println("NOPE");
 
-            return false;
+            return registered;
         }
 
         // OK, create new user
@@ -96,7 +104,8 @@ public class UserDAO {
 
         SessionBuilder builder = factory.withOptions();
         // Supply connection from connection pool
-        builder.connection(getConnection());
+        Connection connection = getConnection();
+        builder.connection(connection);
 
         Transaction transaction = null;
 
@@ -110,7 +119,7 @@ public class UserDAO {
 
             transaction.commit();
 
-            return true;
+            registered = true;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -118,8 +127,12 @@ public class UserDAO {
 
             e.printStackTrace();
 
-            return false;
+            registered = false;
+        } finally {
+            closeConnection(connection);
         }
+
+        return registered;
     }
 
     /**

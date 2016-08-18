@@ -1,5 +1,6 @@
 package cleb.uploading.saving;
 
+import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 
 import org.apache.commons.io.FileUtils;
@@ -11,6 +12,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,6 +67,7 @@ public interface ISaver {
         String fileType, String genre, String authorFirstName,
         String authorLastName, String title, String seqName, String seqNumber,
         String published, String uploadedBy) {
+        boolean stored = false;
 
         // Create new Book object
         Book book = new Book(fileName, md5, fileSize, fileType, genre,
@@ -77,7 +80,8 @@ public interface ISaver {
 
         SessionBuilder builder = factory.withOptions();
         // Supply connection from connection pool
-        builder.connection(getConnection());
+        Connection connection = getConnection();
+        builder.connection(connection);
 
         Transaction transaction = null;
 
@@ -85,6 +89,8 @@ public interface ISaver {
             transaction = session.beginTransaction();
             session.save(book);
             transaction.commit();
+
+            stored = true;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -92,10 +98,12 @@ public interface ISaver {
 
             e.printStackTrace();
 
-            return false;
+            stored = false;
+        } finally {
+            closeConnection(connection);
         }
 
-        return true;
+        return stored;
     }
 
     /**

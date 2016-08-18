@@ -37,7 +37,16 @@ public class UserDAO {
 
     public static void registrate(String name, String email,
         String plainTextPassword) {
-        // Create new user
+        // Check if no user with same email already exists in db
+        User checked = getUserByEmail(email);
+        if (checked != null) {
+            // TODO add some meaningful message
+            System.err.println("NOPE");
+
+            return;
+        }
+
+        // OK, create new user
         User user = new User();
         user.setUserName(name);
         user.setEmail(email);

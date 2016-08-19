@@ -90,6 +90,7 @@ public class UserDAO {
         user.setUserName(name);
         user.setEmail(email);
 
+        // Encrypt user password
         generatePassword(user, plainTextPassword);
 
         // Create 'reader' role for new user

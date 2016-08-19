@@ -105,8 +105,7 @@ public class DuplicateChecker extends HttpServlet {
     private String getMd5sum(File file) {
         String md5sum = null;
 
-        try (
-             FileInputStream fileIn = new FileInputStream(file);
+        try (FileInputStream fileIn = new FileInputStream(file);
              BufferedInputStream bufferIn = new BufferedInputStream(fileIn);) {
 
             md5sum = DigestUtils.md5Hex(IOUtils.toByteArray(bufferIn));
@@ -133,8 +132,7 @@ public class DuplicateChecker extends HttpServlet {
     private boolean checkBookPresence(String md5sum, long fileSize) {
         boolean present = false;
 
-        try (
-             Connection connection = getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement pstatement = connection
                  .prepareStatement(query);) {
 

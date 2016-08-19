@@ -47,11 +47,12 @@ public class JDBCPoolUtil extends HttpServlet {
         poolProps.setValidationInterval(30000);
         poolProps.setTimeBetweenEvictionRunsMillis(30000);
         poolProps.setMaxActive(20);
-        poolProps.setInitialSize(10);
+        poolProps.setMaxIdle(10);
+        poolProps.setMinIdle(5);
+        poolProps.setInitialSize(5);
         poolProps.setMaxWait(10000);
         poolProps.setRemoveAbandonedTimeout(60);
         poolProps.setMinEvictableIdleTimeMillis(30000);
-        poolProps.setMinIdle(10);
         poolProps.setLogAbandoned(true);
         poolProps.setRemoveAbandoned(true);
         poolProps.setJdbcInterceptors(

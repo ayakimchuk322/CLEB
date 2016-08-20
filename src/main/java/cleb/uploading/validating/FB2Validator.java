@@ -40,9 +40,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
         tempFolderPath = getServletContext()
             .getInitParameter("file-temp-upload");
 
-        if (logger.isInfoEnabled()) {
-            logger.info("FB2Validator initialized");
-        }
+        logger.info("FB2Validator initialized");
     }
 
     @Override
@@ -83,24 +81,16 @@ public class FB2Validator extends HttpServlet implements IValidator {
         try {
             book = builder.build(file);
 
-            if (logger.isInfoEnabled()) {
-                logger.info(String.format("File \"%s\" successfully validated",
-                    file.getName()));
-            }
+            logger.info("File \"{}\" successfully validated", file.getName());
 
             validated = true;
         } catch (JDOMException e) {
-            if (logger.isErrorEnabled()) {
-                logger.error(String.format(
-                    "File \"%s\" is not a valid fb2 book", file.getName()));
-            }
+            logger.error("File \"{}\" is not a valid fb2 book", file.getName(),
+                e);
 
             validated = false;
         } catch (IOException e) {
-            if (logger.isErrorEnabled()) {
-                logger.error(String.format("Can not validate book \"%s\"",
-                    file.getName()));
-            }
+            logger.error("Can not validate book \"{}\"", file.getName(), e);
 
             validated = false;
         }

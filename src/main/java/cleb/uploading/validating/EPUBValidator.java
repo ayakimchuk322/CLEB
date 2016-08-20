@@ -1,5 +1,8 @@
 package cleb.uploading.validating;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -17,7 +20,12 @@ import net.lingala.zip4j.exception.ZipException;
  */
 // TODO remove e.printstacktraces
 public class EPUBValidator extends HttpServlet implements IValidator {
+
     private static final long serialVersionUID = 1L;
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(EPUBValidator.class.getName());
 
     private String tempFolderPath;
 
@@ -31,20 +39,22 @@ public class EPUBValidator extends HttpServlet implements IValidator {
         // Directory for temporary storing uploaded books - till it's checked by
         // this servlet
         tempFolderPath = getServletContext()
-                .getInitParameter("file-temp-upload");
+            .getInitParameter("file-temp-upload");
+
+        logger.info("EPUBValidator initialized");
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+        HttpServletResponse response) throws ServletException, IOException {
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("file");
+            + (String) request.getAttribute("file");
         File tempBookFile = new File(tempBookPath);
 
         if (validateBook(tempBookFile)) {
             request.setAttribute("book", book);
             RequestDispatcher dispatcher = request
-                    .getRequestDispatcher("/EPUBSaver");
+                .getRequestDispatcher("/EPUBSaver");
             dispatcher.forward(request, response);
         } else {
             // TODO inform user about malformed book
@@ -73,15 +83,24 @@ public class EPUBValidator extends HttpServlet implements IValidator {
                     book.getFileHeader("META-INF/container.xml").getFileName();
                     book.getFileHeader("mimetype").getFileName();
 
+                    logger.info("File \"{}\" successfully validated",
+                        file.getName());
+
                     validated = true;
                 } catch (NullPointerException e) {
+                    logger.warn("File \"{}\" is not a valid epub book",
+                        file.getName());
+
                     validated = false;
                 }
             } else {
+                logger.warn("File \"{}\" is not a valid epub book",
+                    file.getName());
+
                 validated = false;
             }
         } catch (ZipException e) {
-            e.printStackTrace();
+            logger.error("Can not validate book \"{}\"", file.getName(), e);
         }
 
         return validated;

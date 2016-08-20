@@ -1,6 +1,8 @@
 package cleb.uploading.saving;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -29,6 +31,10 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
     private static final long serialVersionUID = 1L;
 
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(EPUBSaver.class.getName());
+
     private String tempFolderPath;
     private String folderPath;
     private String coversPath;
@@ -49,6 +55,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         folderPath = getServletContext().getInitParameter("file-store");
         // Directory to store books covers
         coversPath = getServletContext().getInitParameter("book-covers");
+
+        logger.info("EPUBSaver initialized");
     }
 
     @Override
@@ -65,6 +73,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         if (getBasicInfo(request, book)) {
             saveCover(book, fileName);
             storeInDir(tempBookPath, bookPath);
+
+            logger.info("Book \"{}\" saved", fileName);
         } else {
             // TODO show user error page
         }
@@ -157,8 +167,15 @@ public class EPUBSaver extends HttpServlet implements ISaver {
             } catch (NullPointerException e) {
             }
 
-        } catch (ZipException | JDOMException | IOException e) {
-            e.printStackTrace();
+        } catch (ZipException e) {
+            logger.error("Can not extract information from book \"{}\"",
+                fileName, e);
+        } catch (JDOMException e) {
+            logger.error("Can not parse information about book \"{}\"",
+                fileName, e);
+        } catch (IOException e) {
+            logger.error("Can not read information about book \"{}\"", fileName,
+                e);
         } finally {
             cleanTmpDir(containerxmlPath);
         }
@@ -213,6 +230,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
                 name + ".png");
             return;
         } catch (ZipException e) {
+            logger.warn("Book \"{}\" has no cover", name);
         }
     }
 

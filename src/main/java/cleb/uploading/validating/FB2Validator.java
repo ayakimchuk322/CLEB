@@ -1,5 +1,7 @@
 package cleb.uploading.validating;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -16,10 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * This servlet validates new fb2 books.
  */
-// TODO remove e.prinstacktraces
 public class FB2Validator extends HttpServlet implements IValidator {
 
     private static final long serialVersionUID = 1L;
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(FB2Validator.class.getName());
 
     private String tempFolderPath;
 
@@ -33,20 +38,24 @@ public class FB2Validator extends HttpServlet implements IValidator {
         // Directory for temporary storing uploaded books - till it's checked by
         // this servlet
         tempFolderPath = getServletContext()
-                .getInitParameter("file-temp-upload");
+            .getInitParameter("file-temp-upload");
+
+        if (logger.isInfoEnabled()) {
+            logger.info("FB2Validator initialized");
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+        HttpServletResponse response) throws ServletException, IOException {
         String tempBookPath = tempFolderPath
-                + (String) request.getAttribute("file");
+            + (String) request.getAttribute("file");
         File tempBookFile = new File(tempBookPath);
 
         if (validateBook(tempBookFile)) {
             request.setAttribute("book", book);
             RequestDispatcher dispatcher = request
-                    .getRequestDispatcher("/FB2Saver");
+                .getRequestDispatcher("/FB2Saver");
             dispatcher.forward(request, response);
         } else {
             // TODO inform user about malformed book
@@ -74,12 +83,26 @@ public class FB2Validator extends HttpServlet implements IValidator {
         try {
             book = builder.build(file);
 
+            if (logger.isInfoEnabled()) {
+                logger.info(String.format("File \"%s\" successfully validated",
+                    file.getName()));
+            }
+
             validated = true;
         } catch (JDOMException e) {
-            e.printStackTrace();
+            if (logger.isErrorEnabled()) {
+                logger.error(String.format(
+                    "File \"%s\" is not a valid fb2 book", file.getName()));
+            }
+
             validated = false;
         } catch (IOException e) {
-            e.printStackTrace();
+            if (logger.isErrorEnabled()) {
+                logger.error(String.format("Can not validate book \"%s\"",
+                    file.getName()));
+            }
+
+            validated = false;
         }
 
         return validated;

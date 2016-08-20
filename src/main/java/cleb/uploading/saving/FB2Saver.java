@@ -1,5 +1,8 @@
 package cleb.uploading.saving;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -20,10 +23,13 @@ import javax.servlet.http.HttpServletResponse;
  * This servlet stores basic information about fb2 book in database and places
  * the book into storing directory.
  */
-// TODO remove e.printstacktraces
 public class FB2Saver extends HttpServlet implements ISaver {
 
     private static final long serialVersionUID = 1L;
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(FB2Saver.class.getName());
 
     private String tempFolderPath;
     private String folderPath;
@@ -45,6 +51,10 @@ public class FB2Saver extends HttpServlet implements ISaver {
         folderPath = getServletContext().getInitParameter("file-store");
         // Directory to store books covers
         coversPath = getServletContext().getInitParameter("book-covers");
+
+        if (logger.isInfoEnabled()) {
+            logger.info("FB2Saver initialized");
+        }
     }
 
     @Override
@@ -61,6 +71,10 @@ public class FB2Saver extends HttpServlet implements ISaver {
         if (getBasicInfo(request, book)) {
             storeInDir(tempBookPath, bookPath);
             saveCover(book, fileName);
+
+            if (logger.isInfoEnabled()) {
+                logger.info(String.format("Book \"%s\" saved", fileName));
+            }
         } else {
             // TODO show user error page
         }
@@ -218,13 +232,11 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
         // Write out decoded image into appropriate file
         File cover = new File(coversPath + name + extension);
-        try (
-             FileOutputStream fileOut = new FileOutputStream(cover);
+        try (FileOutputStream fileOut = new FileOutputStream(cover);
              BufferedOutputStream bufferOut = new BufferedOutputStream(
                  fileOut);) {
             bufferOut.write(bytes);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

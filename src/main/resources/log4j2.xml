@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Properties>
+		<Property name="log-path">/mnt/sda7/servers/data/logs</Property>
+	</Properties>
+
+	<!-- Appender for logging into console -->
+	<Appenders>
+		<Console name="Console-Appender" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n
+				</pattern>
+			</PatternLayout>
+		</Console>
+
+		<!-- Appender for saving into file -->
+		<!-- For uploading, validating and saving classes -->
+		<File name="Uploading-File-Appender" fileName="${log-path}/uploading.log">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n
+				</pattern>
+			</PatternLayout>
+		</File>
+	</Appenders>
+
+	<Loggers>
+		<!-- Logger for FB2Saver class -->
+		<Logger name="cleb.uploading.saving.FB2Saver" level="all" additivity="false">
+			<AppenderRef ref="Uploading-File-Appender" level="all" />
+		</Logger>
+
+		<!-- Logger for FB2Validator class -->
+		<Logger name="cleb.uploading.validating.FB2Validator" level="all" additivity="false">
+			<AppenderRef ref="Uploading-File-Appender" level="all" />
+		</Logger>
+	</Loggers>
+</Configuration>

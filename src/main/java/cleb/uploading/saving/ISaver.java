@@ -26,7 +26,6 @@ import cleb.book.Book;
  * This interface also contains default methods for storing book in database and
  * in storing directory.
  */
-// TODO remove e.printstacktraces
 public interface ISaver {
 
     /**
@@ -96,8 +95,6 @@ public interface ISaver {
                 transaction.rollback();
             }
 
-            e.printStackTrace();
-
             stored = false;
         } finally {
             closeConnection(connection);
@@ -118,7 +115,6 @@ public interface ISaver {
         try {
             FileUtils.moveFile(new File(srcFile), new File(destFile));
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

@@ -84,7 +84,7 @@ public class DuplicateChecker extends HttpServlet {
                 FileUtils.deleteQuietly(tempBookFile);
             } else {
                 // This book is new, proceed with validation
-                logger.info("Book \"{}\" is not a duplicate", tempBookPath);
+                logger.info("Book \"{}\" is not a duplicate", tempBookFile);
                 // Necessary attributes for further processing
                 request.setAttribute("md5", md5sum);
                 request.setAttribute("size", fileSize);
@@ -99,7 +99,7 @@ public class DuplicateChecker extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            logger.error("md5 sum for file \"{}\" is null", tempBookPath);
+            logger.error("md5 sum for file \"{}\" is null", tempBookFile);
         }
     }
 

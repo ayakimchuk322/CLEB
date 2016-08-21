@@ -18,7 +18,6 @@ import net.lingala.zip4j.exception.ZipException;
 /**
  * This servlet validates new epub books.
  */
-// TODO remove e.printstacktraces
 public class EPUBValidator extends HttpServlet implements IValidator {
 
     private static final long serialVersionUID = 1L;

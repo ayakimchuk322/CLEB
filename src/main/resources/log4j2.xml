@@ -1,39 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
 	<Properties>
+		<!-- Hard-coded directory for logs -->
 		<Property name="log-path">/mnt/sda7/servers/data/logs</Property>
 	</Properties>
 
-	<!-- Appender for logging into console -->
 	<Appenders>
+		<!-- Appender for logging into console -->
 		<Console name="Console-Appender" target="SYSTEM_OUT">
+			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout>
 				<pattern>
-					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg %ex{short}%n%n
 				</pattern>
 			</PatternLayout>
 		</Console>
 
 		<!-- Appender for saving into file -->
 		<!-- For uploading, validating and saving classes -->
-		<File name="Uploading-File-Appender" fileName="${log-path}/uploading.log">
+		<RandomAccessFile name="Uploading-File-Appender" fileName="${log-path}/uploading.log">
 			<PatternLayout>
 				<pattern>
-					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg %ex{short}%n%n
 				</pattern>
 			</PatternLayout>
-		</File>
+		</RandomAccessFile>
+
+		<!-- Appender for saving into file -->
+		<!-- For uploading, validating and saving classes - only ERRORs -->
+		<RandomAccessFile name="Uploading-File-Errors-Appender" fileName="${log-path}/uploading_errors.log">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
+				</pattern>
+			</PatternLayout>
+		</RandomAccessFile>
 	</Appenders>
 
 	<Loggers>
+		<!-- Logger for all events -->
+		<Root level="ALL">
+			<AppenderRef ref="Console-Appender" />
+		</Root>
+
 		<!-- Logger for FB2Saver class -->
-		<Logger name="cleb.uploading.saving.FB2Saver" level="all" additivity="false">
-			<AppenderRef ref="Uploading-File-Appender" level="all" />
+		<Logger name="cleb.uploading.saving.FB2Saver" level="ALL" additivity="FALSE">
+			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
+			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
 		</Logger>
 
 		<!-- Logger for FB2Validator class -->
-		<Logger name="cleb.uploading.validating.FB2Validator" level="all" additivity="false">
-			<AppenderRef ref="Uploading-File-Appender" level="all" />
+		<Logger name="cleb.uploading.validating.FB2Validator" level="ALL" additivity="FALSE">
+			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
+			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
+		</Logger>
+
+		<!-- Logger for EPUBSaver class -->
+		<Logger name="cleb.uploading.saving.EPUBSaver" level="ALL" additivity="FALSE">
+			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
+			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
+		</Logger>
+
+		<!-- Logger for EPUBValidator class -->
+		<Logger name="cleb.uploading.saving.EPUBValidator" level="ALL" additivity="FALSE">
+			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
+			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
 		</Logger>
 	</Loggers>
 </Configuration>

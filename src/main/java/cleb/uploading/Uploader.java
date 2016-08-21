@@ -34,7 +34,6 @@ public class Uploader extends HttpServlet {
     private static final Logger logger = LogManager
         .getLogger(Uploader.class.getName());
 
-
     // TODO replace fields with local variables
     private boolean isMultipart;
     private String tempFolderPath;
@@ -152,15 +151,6 @@ public class Uploader extends HttpServlet {
                     // Add random prefix to file name based on current time
                     String prefix = String.valueOf(
                         Instant.now().get(ChronoField.MILLI_OF_SECOND)) + "-";
-
-                    // TODO get what this piece of code is doing???
-                    // if (fileName.lastIndexOf("\\") >= 0) {
-                    // file = new File(tempFolderPath + prefix + fileName
-                    // .substring(fileName.lastIndexOf("\\")));
-                    // } else {
-                    // file = new File(tempFolderPath + prefix + fileName
-                    // .substring(fileName.lastIndexOf("\\") + 1));
-                    // }
 
                     file = new File(tempFolderPath + prefix + fileName);
 

@@ -26,7 +26,6 @@ import net.lingala.zip4j.exception.ZipException;
  * This servlet stores basic information about epub book in database and places
  * the book into storing directory.
  */
-// TODO remove e.printstacktraces
 public class EPUBSaver extends HttpServlet implements ISaver {
 
     private static final long serialVersionUID = 1L;
@@ -74,7 +73,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
             saveCover(book, fileName);
             storeInDir(tempBookPath, bookPath);
 
-            logger.info("Book \"{}\" saved", fileName);
+            logger.info("Book \"{}\" successfully saved", fileName);
         } else {
             // TODO show user error page
         }
@@ -86,7 +85,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         Object book) {
 
         // Information about file, will go into db
-        String fileName = (String) request.getAttribute("file");
+        // file attribute extracted in doPost method
         String md5 = (String) request.getAttribute("md5");
         Long fileSize = (Long) request.getAttribute("size");
         String fileType = (String) request.getAttribute("type");
@@ -230,7 +229,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
                 name + ".png");
             return;
         } catch (ZipException e) {
-            logger.warn("Book \"{}\" has no cover", name);
+            logger.warn("Book \"{}\" has no cover", fileName);
         }
     }
 

@@ -58,6 +58,7 @@ public class LoginServlet extends HttpServlet {
         if (email == null || password == null || email.length() == 0
             || password.length() == 0) {
             // Inform user about wrong parameters
+
             logger.warn("Empty user email and/or password");
         } else {
             // Try to login

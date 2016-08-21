@@ -71,7 +71,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
             storeInDir(tempBookPath, bookPath);
             saveCover(book, fileName);
 
-            logger.info("Book \"{}\" saved", fileName);
+            logger.info("Book \"{}\" successfully saved", fileName);
         } else {
             // TODO show user error page
         }
@@ -226,7 +226,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
             binaryText = binaryText.replaceAll("\\s+", "");
         } catch (NullPointerException e) {
             // This book has no cover
-            logger.warn("Book \"{}\" has no cover", name);
+            logger.warn("Book \"{}\" has no cover", fileName);
 
             return;
         }
@@ -254,7 +254,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
             decoder = Base64.getDecoder();
             bytes = decoder.decode(binaryText);
         } catch (Exception e) {
-            logger.error("Can not decode cover for book \"{}\"", name, e);
+            logger.error("Can not decode cover for book \"{}\"", fileName, e);
 
             return;
         }
@@ -266,7 +266,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
                  fileOut);) {
             bufferOut.write(bytes);
         } catch (IOException e) {
-            logger.error("Can not save cover for book\"{}\"", name, e);
+            logger.error("Can not save cover for book\"{}\"", fileName, e);
         }
     }
 

@@ -131,11 +131,11 @@ public class UserDAO {
                 transaction.rollback();
             }
 
+            registered = false;
+
             logger.error(
                 "Can not register new user with name \"{}\", email \"{}\"",
                 name, email, e);
-
-            registered = false;
         } finally {
             closeConnection(connection);
         }

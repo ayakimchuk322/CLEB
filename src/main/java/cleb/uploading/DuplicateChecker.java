@@ -32,10 +32,13 @@ public class DuplicateChecker extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(DuplicateChecker.class.getName());
 
     private String tempFolderPath;
+
+    private String fileName;
 
     // Prepared query (statement)
     //@formatter:off
@@ -68,6 +71,8 @@ public class DuplicateChecker extends HttpServlet {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
+        fileName = (String) request.getAttribute("file");
+
         String tempBookPath = tempFolderPath
             + (String) request.getAttribute("file");
         File tempBookFile = new File(tempBookPath);
@@ -84,7 +89,6 @@ public class DuplicateChecker extends HttpServlet {
                 FileUtils.deleteQuietly(tempBookFile);
             } else {
                 // This book is new, proceed with validation
-                logger.info("Book \"{}\" is not a duplicate", tempBookFile);
                 // Necessary attributes for further processing
                 request.setAttribute("md5", md5sum);
                 request.setAttribute("size", fileSize);
@@ -99,7 +103,7 @@ public class DuplicateChecker extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            logger.error("md5 sum for file \"{}\" is null", tempBookFile);
+            logger.error("md5 sum for file \"{}\" is null", fileName);
         }
     }
 
@@ -118,7 +122,8 @@ public class DuplicateChecker extends HttpServlet {
 
             md5sum = DigestUtils.md5Hex(IOUtils.toByteArray(bufferIn));
         } catch (IOException e) {
-            logger.error("Can not calculate md5 sum for file \"{}\"", file, e);
+            logger.error("Can not calculate md5 sum for file \"{}\"", fileName,
+                e);
         }
 
         return md5sum;
@@ -152,12 +157,17 @@ public class DuplicateChecker extends HttpServlet {
             while (results.next()) {
                 if (results.getInt(1) > 0) {
                     present = true;
+
+                    logger.info("Book \"{}\" is already in library", fileName);
                 } else {
                     present = false;
+
+                    logger.info("Book \"{}\" is not a duplicate", fileName);
                 }
             }
         } catch (SQLException e) {
-            logger.error("Can not check if book is already in library", e);
+            logger.error("Can not check if book \"{}\" is presented in library",
+                fileName, e);
         }
 
         return present;

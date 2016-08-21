@@ -45,6 +45,7 @@ public class RegisterServlet extends HttpServlet {
             || name.length() == 0 || email.length() == 0
             || password.length() == 0) {
             // Inform user about wrong parameters
+
             logger.warn("Empty user name, email and/or password");
         } else {
             // Proceed with saving in db

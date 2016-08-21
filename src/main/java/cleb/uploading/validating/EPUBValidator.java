@@ -29,6 +29,8 @@ public class EPUBValidator extends HttpServlet implements IValidator {
 
     private String tempFolderPath;
 
+    private String fileName;
+
     private ZipFile book;
 
     /**
@@ -47,8 +49,10 @@ public class EPUBValidator extends HttpServlet implements IValidator {
     @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
-        String tempBookPath = tempFolderPath
-            + (String) request.getAttribute("file");
+
+        fileName = (String) request.getAttribute("file");
+
+        String tempBookPath = tempFolderPath + fileName;
         File tempBookFile = new File(tempBookPath);
 
         if (validateBook(tempBookFile)) {
@@ -83,24 +87,22 @@ public class EPUBValidator extends HttpServlet implements IValidator {
                     book.getFileHeader("META-INF/container.xml").getFileName();
                     book.getFileHeader("mimetype").getFileName();
 
-                    logger.info("File \"{}\" successfully validated",
-                        file.getName());
-
                     validated = true;
-                } catch (NullPointerException e) {
-                    logger.warn("File \"{}\" is not a valid epub book",
-                        file.getName());
 
+                    logger.info("Book \"{}\" successfully validated", fileName);
+                } catch (NullPointerException e) {
                     validated = false;
+
+                    logger.warn("Book \"{}\" is not a valid epub book",
+                        fileName);
                 }
             } else {
-                logger.warn("File \"{}\" is not a valid epub book",
-                    file.getName());
-
                 validated = false;
+
+                logger.warn("Book \"{}\" is not a valid epub book", fileName);
             }
         } catch (ZipException e) {
-            logger.error("Can not validate book \"{}\"", file.getName(), e);
+            logger.error("Can not validate book \"{}\"", fileName, e);
         }
 
         return validated;

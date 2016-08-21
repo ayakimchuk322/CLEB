@@ -28,6 +28,8 @@ public class FB2Validator extends HttpServlet implements IValidator {
 
     private String tempFolderPath;
 
+    private String fileName;
+
     private Document book;
 
     /**
@@ -46,8 +48,10 @@ public class FB2Validator extends HttpServlet implements IValidator {
     @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
-        String tempBookPath = tempFolderPath
-            + (String) request.getAttribute("file");
+
+        fileName = (String) request.getAttribute("file");
+
+        String tempBookPath = tempFolderPath + fileName;
         File tempBookFile = new File(tempBookPath);
 
         if (validateBook(tempBookFile)) {
@@ -81,18 +85,17 @@ public class FB2Validator extends HttpServlet implements IValidator {
         try {
             book = builder.build(file);
 
-            logger.info("File \"{}\" successfully validated", file.getName());
-
             validated = true;
+
+            logger.info("Book \"{}\" successfully validated", fileName);
         } catch (JDOMException e) {
-            logger.error("File \"{}\" is not a valid fb2 book", file.getName(),
-                e);
-
             validated = false;
+
+            logger.error("Book \"{}\" is not a valid fb2 book", fileName, e);
         } catch (IOException e) {
-            logger.error("Can not validate book \"{}\"", file.getName(), e);
-
             validated = false;
+
+            logger.error("Can not validate book \"{}\"", fileName, e);
         }
 
         return validated;

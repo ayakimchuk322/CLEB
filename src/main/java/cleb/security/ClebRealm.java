@@ -11,7 +11,10 @@ import org.apache.shiro.realm.jdbc.JdbcRealm;
 import cleb.security.dao.UserDAO;
 import cleb.security.tables.User;
 
-// TODO add javadoc
+/**
+ * Custom real for shiro authentication system. This realm supposed to work with
+ * SQL database.
+ */
 public class ClebRealm extends JdbcRealm {
 
     // Logger for this class

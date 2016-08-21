@@ -10,9 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 /**
- * Servlet implementation class AuthStarter
+ * This utility class initializes shiro at server start-up.
  */
-// TODO add javadoc
 public class AuthStarter extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

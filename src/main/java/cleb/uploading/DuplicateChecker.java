@@ -61,12 +61,6 @@ public class DuplicateChecker extends HttpServlet {
         logger.info("DuplicateChecker initialized");
     }
 
-    // TODO remove unused methods
-    @Override
-    protected void doGet(HttpServletRequest request,
-        HttpServletResponse response) throws ServletException, IOException {
-    }
-
     @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {

@@ -24,6 +24,7 @@ import cleb.security.tables.UserRole;
  */
 public class UserDAO {
 
+    // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(UserDAO.class.getName());
 

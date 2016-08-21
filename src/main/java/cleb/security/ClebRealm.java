@@ -14,6 +14,7 @@ import cleb.security.tables.User;
 // TODO add javadoc
 public class ClebRealm extends JdbcRealm {
 
+    // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(ClebRealm.class.getName());
 

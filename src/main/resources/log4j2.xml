@@ -17,8 +17,8 @@
 		</Console>
 
 		<!-- Appender for saving into file -->
-		<!-- For uploading, validating and saving classes -->
-		<RandomAccessFile name="Uploading-File-Appender" fileName="${log-path}/uploading.log">
+		<!-- For uploading package -->
+		<RandomAccessFile name="Uploading-RAF-Appender" fileName="${log-path}/uploading.log">
 			<PatternLayout>
 				<pattern>
 					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg %ex{short}%n%n
@@ -27,8 +27,8 @@
 		</RandomAccessFile>
 
 		<!-- Appender for saving into file -->
-		<!-- For uploading, validating and saving classes - only ERRORs -->
-		<RandomAccessFile name="Uploading-File-Errors-Appender" fileName="${log-path}/uploading_errors.log">
+		<!-- For uploading package - only ERRORs -->
+		<RandomAccessFile name="Uploading-RAF-Errors-Appender" fileName="${log-path}/uploading_errors.log">
 			<PatternLayout>
 				<pattern>
 					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
@@ -38,33 +38,19 @@
 	</Appenders>
 
 	<Loggers>
-		<!-- Logger for all events -->
+		<!-- Logger for all events in app -->
 		<Root level="ALL">
-			<AppenderRef ref="Console-Appender" />
+			<AppenderRef ref="Console-Appender" level="ALL" />
 		</Root>
 
-		<!-- Logger for FB2Saver class -->
-		<Logger name="cleb.uploading.saving.FB2Saver" level="ALL" additivity="FALSE">
-			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
-			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
+		<!-- Disable Hibernate logging -->
+		<Logger name="org.hibernate" level="OFF">
 		</Logger>
 
-		<!-- Logger for FB2Validator class -->
-		<Logger name="cleb.uploading.validating.FB2Validator" level="ALL" additivity="FALSE">
-			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
-			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
-		</Logger>
-
-		<!-- Logger for EPUBSaver class -->
-		<Logger name="cleb.uploading.saving.EPUBSaver" level="ALL" additivity="FALSE">
-			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
-			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
-		</Logger>
-
-		<!-- Logger for EPUBValidator class -->
-		<Logger name="cleb.uploading.saving.EPUBValidator" level="ALL" additivity="FALSE">
-			<AppenderRef ref="Uploading-File-Appender" level="ALL" />
-			<AppenderRef ref="Uploading-File-Errors-Appender" level="ERROR" />
+		<!-- Logger for uploading package -->
+		<Logger name="cleb.uploading" level="ALL" additivity="TRUE">
+			<AppenderRef ref="Uploading-RAF-Appender" level="ALL" />
+			<AppenderRef ref="Uploading-RAF-Errors-Appender" level="ERROR" />
 		</Logger>
 	</Loggers>
 </Configuration>

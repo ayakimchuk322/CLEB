@@ -1,10 +1,13 @@
 package cleb.uploading;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,10 +27,12 @@ import cleb.book.BookType;
 /**
  * This servlet handles uploading user books onto server.
  */
-// TODO remove e.printstacktraces
 public class Uploader extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Logger logger = LogManager
+        .getLogger(Uploader.class.getName());
 
     private boolean isMultipart;
     private String tempFolderPath;
@@ -43,7 +48,9 @@ public class Uploader extends HttpServlet {
         // Directory for temporary storing uploaded books - till it's checked by
         // DuplicateChecker servlet
         tempFolderPath = getServletContext()
-                .getInitParameter("file-temp-upload");
+            .getInitParameter("file-temp-upload");
+
+        logger.info("Uploader initialized");
     }
 
     /**
@@ -55,13 +62,13 @@ public class Uploader extends HttpServlet {
         try {
             FileUtils.cleanDirectory(new File(tempFolderPath));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Can not clean temporary directory", e);
         }
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         // Check that we have a file upload request
         isMultipart = ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
@@ -80,7 +87,7 @@ public class Uploader extends HttpServlet {
         request.setAttribute("type", fileType);
 
         RequestDispatcher dispatcher = getServletContext()
-                .getRequestDispatcher("/DuplicateChecker");
+            .getRequestDispatcher("/DuplicateChecker");
 
         dispatcher.forward(request, response);
     }
@@ -124,9 +131,17 @@ public class Uploader extends HttpServlet {
                     // throw exception
                     try {
                         BookType.valueOf(fileType.toUpperCase());
-                    } catch (IllegalArgumentException
-                            | NullPointerException e) {
+                    } catch (IllegalArgumentException e) {
                         uploaded = false;
+
+                        logger.error("File type \"{}\" is not supported",
+                            fileType, e);
+
+                        return uploaded;
+                    } catch (NullPointerException e) {
+                        uploaded = false;
+
+                        logger.error("No file type provided", e);
 
                         return uploaded;
                     }
@@ -134,8 +149,7 @@ public class Uploader extends HttpServlet {
                     // File type is supported, OK to write the file
                     // Add random prefix to file name based on current time
                     String prefix = String.valueOf(
-                            Instant.now().get(ChronoField.MILLI_OF_SECOND))
-                            + "-";
+                        Instant.now().get(ChronoField.MILLI_OF_SECOND)) + "-";
 
                     // TODO get what this piece of code is doing???
                     // if (fileName.lastIndexOf("\\") >= 0) {
@@ -156,10 +170,17 @@ public class Uploader extends HttpServlet {
                     uploaded = true;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (FileUploadException e) {
             uploaded = false;
+
+            logger.error("Can not upload file", e);
+        } catch (Exception e) {
+            uploaded = false;
+
+            logger.error("Can not write file \"{}\"", file, e);
         }
+
+        logger.info("File \"{}\" uploaded", file);
 
         return uploaded;
     }

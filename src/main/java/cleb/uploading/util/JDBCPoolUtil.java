@@ -1,5 +1,7 @@
 package cleb.uploading.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
@@ -8,7 +10,6 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServlet;
 
-// TODO remove e printstacktrace
 /**
  * This utility class instantiates connection pool and provides methods for
  * working with connections.
@@ -16,6 +17,10 @@ import javax.servlet.http.HttpServlet;
 public class JDBCPoolUtil extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(JDBCPoolUtil.class.getName());
 
     private String dbURL;
     private String dbuser;
@@ -73,7 +78,7 @@ public class JDBCPoolUtil extends HttpServlet {
         try {
             connection = dataSource.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Can not get connection from pool", e);
         }
 
         return connection;
@@ -93,7 +98,7 @@ public class JDBCPoolUtil extends HttpServlet {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Can not return connection to pool", e);
             }
         }
     }

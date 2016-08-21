@@ -5,6 +5,8 @@ import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -26,10 +28,12 @@ import cleb.uploading.validating.factory.ValidatorFactory;
 /**
  * This servlet checks if newly uploading book is not already in library.
  */
-// TODO remove e.printStackTrace's
 public class DuplicateChecker extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Logger logger = LogManager
+        .getLogger(DuplicateChecker.class.getName());
 
     private String tempFolderPath;
 
@@ -50,8 +54,11 @@ public class DuplicateChecker extends HttpServlet {
         // this servlet
         tempFolderPath = getServletContext()
             .getInitParameter("file-temp-upload");
+
+        logger.info("DuplicateChecker initialized");
     }
 
+    // TODO remove unused methods
     @Override
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
@@ -91,7 +98,7 @@ public class DuplicateChecker extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else {
-            // TODO add forwarding to page with error
+            logger.error("md5 sum for file \"{}\" is null", tempBookFile);
         }
     }
 
@@ -110,7 +117,7 @@ public class DuplicateChecker extends HttpServlet {
 
             md5sum = DigestUtils.md5Hex(IOUtils.toByteArray(bufferIn));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Can not calculate md5 sum for file \"{}\"", file, e);
         }
 
         return md5sum;
@@ -149,7 +156,7 @@ public class DuplicateChecker extends HttpServlet {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Can not check if book is already in library", e);
         }
 
         return present;

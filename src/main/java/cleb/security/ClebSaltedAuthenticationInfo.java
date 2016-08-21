@@ -7,8 +7,11 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.SimpleByteSource;
 
-public class ClebSaltedAuthenticationInfo
-    implements SaltedAuthenticationInfo {
+/**
+ * Custom {@link org.apache.shiro.authc.SaltedAuthenticationInfo
+ * SaltedAuthenticationInfo} implementation.
+ */
+public class ClebSaltedAuthenticationInfo implements SaltedAuthenticationInfo {
 
     private static final long serialVersionUID = 1L;
 

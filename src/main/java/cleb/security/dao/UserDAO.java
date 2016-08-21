@@ -20,7 +20,7 @@ import cleb.security.tables.User;
 import cleb.security.tables.UserRole;
 
 /**
- * This utility class used to provide api for working with users in database.
+ * This utility class provides methods for working with users in database.
  */
 public class UserDAO {
 
@@ -31,10 +31,14 @@ public class UserDAO {
     /**
      * This method returns user with specified email.
      *
-     * @param email
-     *        String representing user email
+     * @param email String representing user email
+     *
      * @return User object. Caution should be taken as object potentially can be
      *         null if no user with given email exists.
+     *
+     * @see cleb.security.tables.User
+     * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
+     * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
     @SuppressWarnings({ "deprecation", "rawtypes" })
     public static User getUserByEmail(String email) {
@@ -68,14 +72,18 @@ public class UserDAO {
     /**
      * Registers new user in database.
      *
-     * @param name
-     *        String with user name
-     * @param email
-     *        String with user email
-     * @param plainTextPassword
-     *        String with user password, not encrypted
+     * @param name String with user name
+     * @param email String with user email
+     * @param plainTextPassword String with user password, not encrypted
+     *
      * @return True if user was successfully added to database and false
      *         otherwise.
+     *
+     * @see #generatePassword(User, String)
+     * @see cleb.security.dao.UserDAO#getUserByEmail(String)
+     * @see cleb.security.tables.User
+     * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
+     * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
     @SuppressWarnings("rawtypes")
     public static boolean register(String name, String email,
@@ -149,10 +157,12 @@ public class UserDAO {
     /**
      * Hashes user password and adds salt for randomizing it.
      *
-     * @param user
-     *        User object which password to hash
-     * @param plainTextPassword
-     *        String with not encrypted user password
+     * @param user User object which password to hash
+     * @param plainTextPassword String with not encrypted user password
+     *
+     * @see cleb.security.tables.User
+     * @see cleb.security.tables.User#setPassword(String)
+     * @see cleb.security.tables.User#setSalt(String)
      */
     private static void generatePassword(User user, String plainTextPassword) {
         RandomNumberGenerator rng = new SecureRandomNumberGenerator();

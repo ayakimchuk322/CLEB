@@ -10,7 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 /**
- * This utility class initializes shiro at server start-up.
+ * This utility class initializes <a href="http://shiro.apache.org/">shiro</a>
+ * at server start-up.
  */
 public class AuthStarter extends HttpServlet {
 

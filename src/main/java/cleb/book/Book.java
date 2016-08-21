@@ -46,14 +46,17 @@ public class Book {
     @Column(name = "uploaded_by")
     private String uploadedBy;
 
+    /**
+     * No argument constructor.
+     */
     public Book() {
 
     }
 
     public Book(String fileName, String md5, long fileSize, String fileType,
-            String genre, String authorFirstName, String authorLastName,
-            String title, String seqName, String seqNumber, String published,
-            String uploadedBy) {
+        String genre, String authorFirstName, String authorLastName,
+        String title, String seqName, String seqNumber, String published,
+        String uploadedBy) {
         this.fileName = fileName;
         this.md5 = md5;
         this.fileSize = fileSize;

@@ -17,8 +17,7 @@ import java.util.List;
 import cleb.security.tables.UserRole;
 
 /**
- * This utility class used to provide api for working with user roles in
- * database.
+ * This utility class provides methods for working with user roles in database.
  */
 public class UserRoleDAO {
 
@@ -27,14 +26,18 @@ public class UserRoleDAO {
         .getLogger(UserRoleDAO.class.getName());
 
     /**
-     * This method returns List of all roles assigned to user with specified
-     * email.
+     * Returns {@link java.util.List List} of all roles assigned to user with
+     * specified email.
      *
-     * @param email
-     *        String representing user email
+     * @param email String representing user email.
+     *
      * @return List with type UserRole representing given user roles. Caution
-     *         should be taken as this list potentially can be null if no user
+     *         should be taken as this List potentially can be null if no user
      *         with given email exists.
+     *
+     * @see cleb.security.tables.UserRole
+     * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
+     * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
     @SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
     public static List<UserRole> getUserRolesByEmail(String email) {
@@ -68,8 +71,11 @@ public class UserRoleDAO {
     /**
      * Adds role to database.
      *
-     * @param role
-     *        UserRole object with setted email and role.
+     * @param role UserRole object with setted email and role.
+     *
+     * @see cleb.security.tables.UserRole
+     * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
+     * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
     @SuppressWarnings("rawtypes")
     public static void addRole(UserRole role) {

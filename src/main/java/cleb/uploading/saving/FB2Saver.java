@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Base64.Decoder;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -186,15 +187,39 @@ public class FB2Saver extends HttpServlet implements ISaver {
         // Necessary cast to process with book
         Document doc = (Document) book;
 
-        // Document root and namespace
+        // Document root and namespaces
         Element root = doc.getRootElement();
         Namespace ns = root.getNamespace();
+        Namespace l = root.getNamespace("l");
+
+        Element descEl = null;
+        Element titleInfoEl = null;
+        Element coverpageEl = null;
+        Element imageEl = null;
 
         // Get the base64 encoded cover image
-        Element binaryEl;
+        Element binaryEl = null;
         String binaryText;
+
         try {
-            binaryEl = root.getChild("binary", ns);
+            descEl = root.getChild("description", ns);
+            titleInfoEl = descEl.getChild("title-info", ns);
+            coverpageEl = titleInfoEl.getChild("coverpage", ns);
+            imageEl = coverpageEl.getChild("image", ns);
+
+            // Get the cover reference
+            String imageHref = imageEl.getAttributeValue("href", l);
+
+            List<Element> binaries = root.getChildren("binary", ns);
+
+            // Find the binary element that contains cover
+            for (Element e : binaries) {
+                if (imageHref.contains(e.getAttributeValue("id"))) {
+                    binaryEl = e;
+                    break;
+                }
+            }
+
             binaryText = binaryEl.getText();
             // Get rid of all spaces, otherwise Base64 decoder won't be able to
             // decode it

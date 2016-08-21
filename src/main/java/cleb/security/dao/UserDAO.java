@@ -140,6 +140,9 @@ public class UserDAO {
             closeConnection(connection);
         }
 
+        logger.info("Registered new user with name \"{}\", email \"{}\"", name,
+            email);
+
         return registered;
     }
 

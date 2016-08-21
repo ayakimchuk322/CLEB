@@ -1,5 +1,7 @@
 package cleb.security.servlets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -15,10 +17,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// TODO add loggin to file
 public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(LoginServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request,
@@ -26,6 +31,7 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html");
 
         if (request.getParameter("logout") != null) {
+            // Log out current user
             org.apache.shiro.subject.Subject currentUser = SecurityUtils
                 .getSubject();
             currentUser.logout();
@@ -51,18 +57,15 @@ public class LoginServlet extends HttpServlet {
         // Check for both email and password being not null
         if (email == null || password == null) {
             // Inform user about wrong parameters
-            request.setAttribute("message", "wrong parameters");
+            logger.warn("Empty user email and/or password");
         } else {
             // Try to login
             boolean logedIn = tryLogin(email, password, rememberMe);
 
             if (logedIn) {
                 // Inform user about successfull login
-                request.setAttribute("message",
-                    "Login successful - Welcome! Open <a href='/index.jsp'>Welcome page</a>");
             } else {
                 // Inform user about error
-                request.setAttribute("message", "Wrong email/password.");
             }
         }
 
@@ -85,7 +88,7 @@ public class LoginServlet extends HttpServlet {
      */
     private boolean tryLogin(String email, String password,
         Boolean rememberMe) {
-        // Get the currently executing user:
+        // Get current user
         Subject currentUser = SecurityUtils.getSubject();
 
         if (!currentUser.isAuthenticated()) {
@@ -96,29 +99,21 @@ public class LoginServlet extends HttpServlet {
             token.setRememberMe(rememberMe);
 
             try {
+                // Try to login
                 currentUser.login(token);
-
-                // Log to console
-                System.out
-                    .println("User [" + currentUser.getPrincipal().toString()
-                        + "] logged in successfully.");
 
                 // Save current username in the session
                 currentUser.getSession().setAttribute("username", email);
 
+                logger.info("User \"{}\" successfully loged in", email);
+
                 return true;
-            } catch (UnknownAccountException uae) {
-                // Log to console
-                System.err.println("There is no user with username of "
-                    + token.getPrincipal());
-            } catch (IncorrectCredentialsException ice) {
-                // Log to console
-                System.err.println("Password for account "
-                    + token.getPrincipal() + " was incorrect!");
-            } catch (LockedAccountException lae) {
-                // Log to console
-                System.err.println("The account for username "
-                    + token.getPrincipal() + " is locked.");
+            } catch (UnknownAccountException e) {
+                logger.error("User \"{}\" not found", email, e);
+            } catch (IncorrectCredentialsException e) {
+                logger.error("Incorrect password for user \"{}\"", email, e);
+            } catch (LockedAccountException e) {
+                logger.error("User \"{}\" account is locked", email, e);
             }
         } else {
             // Alredy logged in

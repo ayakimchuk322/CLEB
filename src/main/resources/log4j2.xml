@@ -35,6 +35,26 @@
 				</pattern>
 			</PatternLayout>
 		</RandomAccessFile>
+
+		<!-- Appender for saving into file -->
+		<!-- For security package -->
+		<RandomAccessFile name="Security-RAF-Appender" fileName="${log-path}/security.log">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg %ex{short}%n%n
+				</pattern>
+			</PatternLayout>
+		</RandomAccessFile>
+
+		<!-- Appender for saving into file -->
+		<!-- For security package - only ERRORs -->
+		<RandomAccessFile name="Security-RAF-Errors-Appender" fileName="${log-path}/security_errors.log">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
+				</pattern>
+			</PatternLayout>
+		</RandomAccessFile>
 	</Appenders>
 
 	<Loggers>
@@ -51,6 +71,12 @@
 		<Logger name="cleb.uploading" level="ALL" additivity="TRUE">
 			<AppenderRef ref="Uploading-RAF-Appender" level="ALL" />
 			<AppenderRef ref="Uploading-RAF-Errors-Appender" level="ERROR" />
+		</Logger>
+
+		<!-- Logger for security package -->
+		<Logger name="cleb.security" level="ALL" additivity="TRUE">
+			<AppenderRef ref="Security-RAF-Appender" level="ALL" />
+			<AppenderRef ref="Security-RAF-Errors-Appender" level="ERROR" />
 		</Logger>
 	</Loggers>
 </Configuration>

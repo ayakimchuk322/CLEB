@@ -48,8 +48,10 @@ public class RegisterServlet extends HttpServlet {
             logger.warn("Empty user name, email and/or password");
         } else {
             // Proceed with saving in db
-            // TODO add if check
-            register(name, email, password);
+            if (!register(name, email, password)) {
+                // TODO inform user about failed register
+                doGet(request, response);
+            }
         }
 
         // Show login.jsp page

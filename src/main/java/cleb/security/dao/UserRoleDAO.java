@@ -3,6 +3,8 @@ package cleb.security.dao;
 import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
@@ -19,6 +21,10 @@ import cleb.security.tables.UserRole;
  * database.
  */
 public class UserRoleDAO {
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(UserRoleDAO.class.getName());
 
     /**
      * This method returns List of all roles assigned to user with specified
@@ -51,7 +57,7 @@ public class UserRoleDAO {
                 .setParameter(0, email).list();
             transaction.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Can not get user roles from database", e);
         } finally {
             closeConnection(connection);
         }
@@ -87,7 +93,7 @@ public class UserRoleDAO {
                 transaction.rollback();
             }
 
-            e.printStackTrace();
+            logger.error("Can not add new role to database", e);
         } finally {
             closeConnection(connection);
         }

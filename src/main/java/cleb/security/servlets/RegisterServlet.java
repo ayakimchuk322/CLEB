@@ -40,10 +40,9 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Check for name, email and password being not null and not empty
-        if (name == null || email == null || password == null
-            || name.length() == 0 || email.length() == 0
-            || password.length() == 0) {
+        // Check for name, email and password being not empty and not null
+        if (name.length() == 0 || email.length() == 0 || password.length() == 0
+            || name == null || email == null || password == null) {
             // Inform user about wrong parameters
 
             logger.warn("Empty user name, email and/or password");

@@ -54,9 +54,9 @@ public class LoginServlet extends HttpServlet {
         Boolean rememberMe = Boolean
             .valueOf(request.getParameter("rememberMe"));
 
-        // Check for both email and password being not null and not empty
-        if (email == null || password == null || email.length() == 0
-            || password.length() == 0) {
+        // Check for both email and password being not empty and not null
+        if (email.length() == 0 || password.length() == 0 || email == null
+            || password == null) {
             // Inform user about wrong parameters
 
             logger.warn("Empty user email and/or password");

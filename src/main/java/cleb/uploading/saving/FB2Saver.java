@@ -192,15 +192,16 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
         // Get the base64 encoded cover image
         Element binaryEl;
+        String binaryText;
         try {
             binaryEl = root.getChild("binary", ns);
+            binaryText = binaryEl.getText();
         } catch (NullPointerException e) {
             // This book has no cover
             logger.warn("Book \"{}\" has no cover", name);
 
             return;
         }
-        String binaryText = binaryEl.getText();
 
         // Get the file type (jpeg/png)
         String coverType = binaryEl.getAttributeValue("content-type");

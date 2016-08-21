@@ -1,5 +1,7 @@
 package cleb.security;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SaltedAuthenticationInfo;
@@ -12,6 +14,9 @@ import cleb.security.tables.User;
 // TODO add javadoc
 public class ClebRealm extends JdbcRealm {
 
+    private static final Logger logger = LogManager
+        .getLogger(ClebRealm.class.getName());
+
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(
         AuthenticationToken token) {
@@ -20,7 +25,8 @@ public class ClebRealm extends JdbcRealm {
         final String username = userPassToken.getUsername();
 
         if (username == null) {
-            System.out.println("Username is null.");
+            logger.warn("Username is null");
+
             return null;
         }
 
@@ -28,7 +34,8 @@ public class ClebRealm extends JdbcRealm {
         final User user = UserDAO.getUserByEmail(username);
 
         if (user == null) {
-            System.out.println("No account found for user [" + username + "]");
+            logger.warn("No account found for user \"{}\"", username);
+
             return null;
         }
 

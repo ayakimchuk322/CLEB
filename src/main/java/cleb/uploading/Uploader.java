@@ -34,12 +34,10 @@ public class Uploader extends HttpServlet {
     private static final Logger logger = LogManager
         .getLogger(Uploader.class.getName());
 
-    // TODO replace fields with local variables
-    private boolean isMultipart;
-    private String tempFolderPath;
     // Max book size to be uploaded (10MB)
-    private int maxFileSize = 10 * 1024 * 1024;
-    private File file;
+    private static final int MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+    private String tempFolderPath;
 
     private String fileName;
     private String fileType;
@@ -71,7 +69,7 @@ public class Uploader extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         // Check that we have a file upload request
-        isMultipart = ServletFileUpload.isMultipartContent(request);
+        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
             return;
             // TODO show error page to user
@@ -106,12 +104,14 @@ public class Uploader extends HttpServlet {
     private boolean getFile(HttpServletRequest request) {
         boolean uploaded = false;
 
+        File file = null;
+
         // Create a new file upload handler
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
 
         // Maximum file size to be uploaded.
-        upload.setSizeMax(maxFileSize);
+        upload.setSizeMax(MAX_FILE_SIZE);
 
         try {
             // Parse the request to get file items.

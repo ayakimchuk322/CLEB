@@ -40,8 +40,6 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
     private String fileName;
 
-    private Object book;
-
     /**
      * Initializes temporary and storing directories.
      */
@@ -67,7 +65,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         String tempBookPath = tempFolderPath + fileName;
         String bookPath = folderPath + fileName;
 
-        book = request.getAttribute("book");
+        Object book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
             saveCover(book, fileName);

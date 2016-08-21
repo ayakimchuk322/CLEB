@@ -3,6 +3,8 @@ package cleb.security.dao;
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -21,6 +23,9 @@ import cleb.security.tables.UserRole;
  * This utility class used to provide api for working with users in database.
  */
 public class UserDAO {
+
+    private static final Logger logger = LogManager
+        .getLogger(UserDAO.class.getName());
 
     /**
      * This method returns user with specified email.
@@ -51,7 +56,7 @@ public class UserDAO {
                 .setParameter(0, email).uniqueResult();
             transaction.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Can not get user from database", e);
         } finally {
             closeConnection(connection);
         }
@@ -72,15 +77,14 @@ public class UserDAO {
      *         otherwise.
      */
     @SuppressWarnings("rawtypes")
-    public static boolean registrate(String name, String email,
+    public static boolean register(String name, String email,
         String plainTextPassword) {
         boolean registered = false;
 
         // Check if no user with same email already exists in db
         User checked = getUserByEmail(email);
         if (checked != null) {
-            // TODO add some meaningful message
-            System.err.println("NOPE");
+            logger.warn("User with email \"{}\" already registered", email);
 
             return registered;
         }
@@ -126,7 +130,9 @@ public class UserDAO {
                 transaction.rollback();
             }
 
-            e.printStackTrace();
+            logger.error(
+                "Can not register new user with name \"{}\", email \"{}\"",
+                name, email, e);
 
             registered = false;
         } finally {

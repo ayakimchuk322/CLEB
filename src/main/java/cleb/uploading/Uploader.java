@@ -34,6 +34,8 @@ public class Uploader extends HttpServlet {
     private static final Logger logger = LogManager
         .getLogger(Uploader.class.getName());
 
+
+    // TODO replace fields with local variables
     private boolean isMultipart;
     private String tempFolderPath;
     // Max book size to be uploaded (10MB)

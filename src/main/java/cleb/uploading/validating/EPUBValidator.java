@@ -92,8 +92,8 @@ public class EPUBValidator extends HttpServlet implements IValidator {
                 } catch (NullPointerException e) {
                     validated = false;
 
-                    logger.warn("Book \"{}\" is not a valid epub book",
-                        fileName);
+                    logger.error("Book \"{}\" is not a valid epub book",
+                        fileName, e);
                 }
             } else {
                 validated = false;

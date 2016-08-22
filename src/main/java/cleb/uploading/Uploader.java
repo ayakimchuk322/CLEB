@@ -52,12 +52,10 @@ public class Uploader extends HttpServlet {
         logger.info("Uploader initialized");
     }
 
-    /**
-     * Cleans temporary directory in case there are left some uploaded but
-     * unprocessed books.
-     */
     @Override
     public void destroy() {
+        // Cleans temporary directory in case there are left some uploaded but
+        // unprocessed books.
         try {
             FileUtils.cleanDirectory(new File(tempFolderPath));
         } catch (IOException e) {

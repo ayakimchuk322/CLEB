@@ -32,9 +32,6 @@ public class FB2Validator extends HttpServlet implements IValidator {
 
     private Document book;
 
-    /**
-     * Initializes temporary directory.
-     */
     @Override
     public void init() throws ServletException {
         // Directory for temporary storing uploaded books - till it's checked by

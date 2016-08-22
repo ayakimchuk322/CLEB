@@ -32,9 +32,6 @@ public class EPUBValidator extends HttpServlet implements IValidator {
 
     private ZipFile book;
 
-    /**
-     * Initializes temporary directory.
-     */
     @Override
     public void init() throws ServletException {
         // Directory for temporary storing uploaded books - till it's checked by

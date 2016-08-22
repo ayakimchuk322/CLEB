@@ -38,9 +38,6 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
     private String fileName;
 
-    /**
-     * Initializes temporary and storing directories.
-     */
     @Override
     public void init() throws ServletException {
         // Directory for temporary storing uploaded books

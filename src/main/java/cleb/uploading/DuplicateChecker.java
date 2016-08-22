@@ -48,9 +48,6 @@ public class DuplicateChecker extends HttpServlet {
 	    + "AND file_size = ?";
     //@formatter:on
 
-    /**
-     * Initializes temporary directory.
-     */
     @Override
     public void init() {
         // Directory for temporary storing uploaded books - till it's checked by

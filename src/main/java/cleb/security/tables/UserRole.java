@@ -24,6 +24,9 @@ public class UserRole {
     @Column(name = "email")
     private String email;
 
+    /**
+     * No argument constructor.
+     */
     public UserRole() {
 
     }

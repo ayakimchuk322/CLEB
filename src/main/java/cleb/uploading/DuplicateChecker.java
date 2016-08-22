@@ -102,11 +102,11 @@ public class DuplicateChecker extends HttpServlet {
     }
 
     /**
-     * This method calculates temporarily uploaded book MD5 sum.
+     * This method calculates temporarily uploaded book md5 sum.
      *
-     * @param file
-     *        Previously uploaded book in temp folder
-     * @return String representing this book MD5 sum value
+     * @param file Previously uploaded book in temporary directory.
+     *
+     * @return {@code String} representing this book md5 sum value.
      */
     private String getMd5sum(File file) {
         String md5sum = null;
@@ -127,14 +127,15 @@ public class DuplicateChecker extends HttpServlet {
      * This method connects to database and checks if there is already a book
      * with given md5 sum and file size.
      *
-     * @param md5sum
-     *        String representing new book md5 sum to check among already
-     *        uploaded books
-     * @param fileSize
-     *        long representing new book file size to check among already
-     *        uploaded books
-     * @return true - if database already contains book with given md5 sum and
-     *         file size, otherwise - false
+     * @param md5sum {@code String} representing new book md5 sum to check among
+     *        already uploaded books.
+     * @param fileSize {@code long} representing new book file size to check
+     *        among already uploaded books.
+     *
+     * @return {@code true}, if database already contains book with given md5
+     *         sum and file size, otherwise - {@code false}.
+     *
+     * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
     private boolean checkBookPresence(String md5sum, long fileSize) {
         boolean present = false;

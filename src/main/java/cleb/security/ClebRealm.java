@@ -12,8 +12,8 @@ import cleb.security.dao.UserDAO;
 import cleb.security.tables.User;
 
 /**
- * Custom real for <a href="http://shiro.apache.org/">shiro</a> authentication
- * system. This realm supposed to work with SQL database.
+ * Custom real for <a href="http://shiro.apache.org/">shiro</a> security system.
+ * This realm supposed to work with SQL database.
  */
 public class ClebRealm extends JdbcRealm {
 

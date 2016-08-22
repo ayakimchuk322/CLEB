@@ -28,6 +28,9 @@ public class User {
     @Column(name = "salt")
     private String salt;
 
+    /**
+     * No argument constructor.
+     */
     public User() {
 
     }

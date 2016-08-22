@@ -64,19 +64,12 @@ public class EPUBValidator extends HttpServlet implements IValidator {
         }
     }
 
-    /**
-     * This method validates given epub book.
-     *
-     * @param file
-     *        epub book to validate
-     * @return true, if given file is valid epub book and false - otherwise
-     */
-    // Valid epub book should be valid zip archive with certain directory
-    // structure inside
     @Override
     public boolean validateBook(File file) {
         boolean validated = false;
 
+        // Valid epub book should be valid zip archive with certain directory
+        // structure inside
         try {
             book = new ZipFile(file);
 

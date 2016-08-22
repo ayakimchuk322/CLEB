@@ -95,11 +95,13 @@ public class Uploader extends HttpServlet {
      * This method gets the file, checks if its type is supported by the library
      * and writes supported file into temporary directory.
      *
-     * @param request
-     *        HttpServletRequest passed down from doPost method to extract the
-     *        file
-     * @return true, if file type is supported and the file was successfully
-     *         written and false - otherwise.
+     * @param request {@code HttpServletRequest} passed down from {@code doPost}
+     *        method to extract the file.
+     *
+     * @return {@code true}, if file type is supported and the file was
+     *         successfully written, otherwise - {@code false}.
+     *
+     * @see cleb.book.BookType
      */
     private boolean getFile(HttpServletRequest request) {
         boolean uploaded = false;

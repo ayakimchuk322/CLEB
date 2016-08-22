@@ -232,10 +232,9 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     }
 
     /**
-     * This method deletes temporarily extracted files from epub book.
+     * Deletes temporarily extracted files from epub book.
      *
-     * @param path
-     *        Directory to delete
+     * @param path Directory to delete.
      */
     private void cleanTmpDir(String path) {
         FileUtils.deleteQuietly(new File(path));

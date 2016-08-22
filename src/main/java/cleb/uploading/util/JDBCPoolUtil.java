@@ -39,6 +39,7 @@ public class JDBCPoolUtil extends HttpServlet {
         // Initialize database user password
         dbpass = getServletContext().getInitParameter("dbpass");
 
+        // Set properties for pool
         PoolProperties poolProps = new PoolProperties();
         poolProps.setUrl(dbURL);
         poolProps.setDriverClassName("org.postgresql.Driver");
@@ -65,13 +66,14 @@ public class JDBCPoolUtil extends HttpServlet {
                 + "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;"
                 + "org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer");
 
+        // Initialize pool
         dataSource = new DataSource(poolProps);
     }
 
     /**
-     * Attempts to return idle connection from connection pool.
+     * Attempts to return free connection from connection pool.
      *
-     * @return Free connection from pool
+     * @return Free {@code Connection} from pool.
      */
     public static Connection getConnection() {
         Connection connection = null;
@@ -86,12 +88,11 @@ public class JDBCPoolUtil extends HttpServlet {
 
     /**
      * Attempts to close connection. Classes that use connections from this
-     * connection pool should call getConnection method inside
+     * connection pool should call {@code getConnection} method inside
      * try-with-resources for efficient closing instead of manually calling this
      * method.
      *
-     * @param connection
-     *        Connection object to close
+     * @param connection {@code Connection} object to close.
      */
     public static void closeConnection(Connection connection) {
         if (connection != null) {

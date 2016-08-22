@@ -29,12 +29,13 @@ public class UserDAO {
         .getLogger(UserDAO.class.getName());
 
     /**
-     * This method returns user with specified email.
+     * Returns user with specified email.
      *
-     * @param email String representing user email
+     * @param email {@code String} representing user email.
      *
-     * @return User object. Caution should be taken as object potentially can be
-     *         null if no user with given email exists.
+     * @return {@code User} object. Caution should be taken as object
+     *         potentially can be {@code null} if no user with given email
+     *         exists.
      *
      * @see cleb.security.tables.User
      * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
@@ -72,12 +73,13 @@ public class UserDAO {
     /**
      * Registers new user in database.
      *
-     * @param name String with user name
-     * @param email String with user email
-     * @param plainTextPassword String with user password, not encrypted
+     * @param name {@code String} with user name.
+     * @param email {@code String} with user email.
+     * @param plainTextPassword {@code String} with user password, not
+     *        encrypted.
      *
-     * @return True if user was successfully added to database and false
-     *         otherwise.
+     * @return {@code true}, if user was successfully added to database
+     *         otherwise - {@code false}.
      *
      * @see #generatePassword(User, String)
      * @see cleb.security.dao.UserDAO#getUserByEmail(String)
@@ -157,8 +159,8 @@ public class UserDAO {
     /**
      * Hashes user password and adds salt for randomizing it.
      *
-     * @param user User object which password to hash
-     * @param plainTextPassword String with not encrypted user password
+     * @param user {@code User} object which password to hash.
+     * @param plainTextPassword {@code String} with not encrypted user password.
      *
      * @see cleb.security.tables.User
      * @see cleb.security.tables.User#setPassword(String)

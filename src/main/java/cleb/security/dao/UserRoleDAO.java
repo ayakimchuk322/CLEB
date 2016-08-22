@@ -29,11 +29,11 @@ public class UserRoleDAO {
      * Returns {@link java.util.List List} of all roles assigned to user with
      * specified email.
      *
-     * @param email String representing user email.
+     * @param email {@code String} representing user email.
      *
-     * @return List with type UserRole representing given user roles. Caution
-     *         should be taken as this List potentially can be null if no user
-     *         with given email exists.
+     * @return {@code List} with type {@code UserRole} representing given user
+     *         roles. Caution should be taken as this {@code List} potentially
+     *         can be {@code null} if no user with given email exists.
      *
      * @see cleb.security.tables.UserRole
      * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
@@ -71,7 +71,7 @@ public class UserRoleDAO {
     /**
      * Adds role to database.
      *
-     * @param role UserRole object with setted email and role.
+     * @param role {@code UserRole} object with setted email and role.
      *
      * @see cleb.security.tables.UserRole
      * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)

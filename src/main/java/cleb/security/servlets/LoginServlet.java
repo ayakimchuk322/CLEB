@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This servlet logins user to site.
+ */
 public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -80,13 +83,13 @@ public class LoginServlet extends HttpServlet {
     /**
      * Tries to login user with provided email and password.
      *
-     * @param email
-     *        String with user entered email
-     * @param password
-     *        String with user entered password
-     * @param rememberMe
-     *        Boolean with true if remember me was checked and false otherwise.
-     * @return True if user was successfully loged in and false otherwise.
+     * @param email {@code String} with user entered email.
+     * @param password {@code String} with user entered password.
+     * @param rememberMe {@code Boolean} with true if remember me was checked
+     *        and false otherwise.
+     *
+     * @return {@code true}, if user was successfully loged in, otherwise -
+     *         {@code false}.
      */
     private boolean tryLogin(String email, String password,
         Boolean rememberMe) {

@@ -64,21 +64,16 @@ public class FB2Validator extends HttpServlet implements IValidator {
         }
     }
 
-    /**
-     * This method validates given fb2 book.
-     *
-     * @param file
-     *        fb2 book to validate
-     * @return true, if given file is valid fb2 book and false - otherwise
-     */
-    // Currently this method simply builds DOM tree from given file (fb2
-    // internally uses XML) and catches exceptions, if no exception is thrown
-    // during building - file should be valid
-    // TODO add validation against actual xsd schema
-    // For now, not all books pass validation against xsd, maybe it is caused by
-    // using different schemas while creating those books
     @Override
     public boolean validateBook(File file) {
+
+        // Currently this method simply builds DOM tree from given file (fb2
+        // internally uses XML) and catches exceptions, if no exception is
+        // thrown during building - file should be valid
+        // TODO add validation against actual xsd schema
+        // For now, not all books pass validation against xsd, maybe it is
+        // caused by using different schemas while creating those books
+
         boolean validated = false;
 
         SAXBuilder builder = new SAXBuilder();

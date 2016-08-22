@@ -1,6 +1,7 @@
 package cleb.uploading;
 
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
+import static cleb.uploading.validating.util.ValidatorUtil.getValidatorReference;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -22,8 +23,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import cleb.uploading.validating.factory.ValidatorFactory;
 
 /**
  * This servlet checks if newly uploading book is not already in library.
@@ -86,8 +85,7 @@ public class DuplicateChecker extends HttpServlet {
 
                 // Get the string reference for concrete validator
                 String type = (String) request.getAttribute("type");
-                ValidatorFactory factory = new ValidatorFactory(type);
-                String validator = factory.getValidator();
+                String validator = getValidatorReference(type);
 
                 RequestDispatcher dispatcher = request
                     .getRequestDispatcher(validator);

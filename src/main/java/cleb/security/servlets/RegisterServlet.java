@@ -27,9 +27,9 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
-        // Show register.jsp page
+        // Show register.html page
         RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/register.jsp");
+            .getRequestDispatcher("/register.html");
         dispatcher.include(request, response);
     }
 
@@ -59,7 +59,7 @@ public class RegisterServlet extends HttpServlet {
 
         // Show login.jsp page
         RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/login.jsp");
+            .getRequestDispatcher("/login.html");
         dispatcher.include(request, response);
     }
 

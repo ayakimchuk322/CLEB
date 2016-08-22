@@ -40,9 +40,9 @@ public class LoginServlet extends HttpServlet {
             currentUser.logout();
         }
 
-        // Show login.jsp page
+        // Show login.html page
         RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/login.jsp");
+            .getRequestDispatcher("/login.html");
         dispatcher.include(request, response);
     }
 
@@ -76,7 +76,7 @@ public class LoginServlet extends HttpServlet {
 
         // Show index.jsp page
         RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/index.jsp");
+            .getRequestDispatcher("/index.html");
         dispatcher.include(request, response);
     }
 

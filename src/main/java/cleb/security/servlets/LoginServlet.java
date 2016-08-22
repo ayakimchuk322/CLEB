@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This servlet logins user to site.
+ * This servlet manages users log in ang log out to/from site.
  */
 public class LoginServlet extends HttpServlet {
 
@@ -33,11 +33,14 @@ public class LoginServlet extends HttpServlet {
         HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
 
+        // If called with parameter 'logout' - logs out current user
         if (request.getParameter("logout") != null) {
             // Log out current user
-            org.apache.shiro.subject.Subject currentUser = SecurityUtils
-                .getSubject();
+            Subject currentUser = SecurityUtils.getSubject();
+            String userName = currentUser.getPrincipal().toString();
             currentUser.logout();
+
+            logger.info("User \"{}\" loged out", userName);
         }
 
         // Show login.html page

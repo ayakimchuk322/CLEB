@@ -14,6 +14,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    private static final String ERROR_DESC = "Can not login to library, please try again";
 
     private ServletContext servletContext;
     private ServletContextTemplateResolver templateResolver;
@@ -97,8 +100,12 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("index");
             } else {
                 // Inform user about error
-                // TODO add error servlet
-                response.sendRedirect("error");
+                request.setAttribute("errordesc", ERROR_DESC);
+
+                RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/error");
+
+                dispatcher.forward(request, response);
             }
         }
     }

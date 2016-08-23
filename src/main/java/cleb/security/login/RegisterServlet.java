@@ -10,6 +10,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class RegisterServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    private static final String ERROR_DESC = "Can not register, please try again";
 
     private ServletContext servletContext;
     private ServletContextTemplateResolver templateResolver;
@@ -77,8 +80,13 @@ public class RegisterServlet extends HttpServlet {
                 // Redirect to login page
                 response.sendRedirect("login");
             } else {
-                // TODO inform user about failed register
-                response.sendRedirect("error");
+                // Inform user about error
+                request.setAttribute("errordesc", ERROR_DESC);
+
+                RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/error");
+
+                dispatcher.forward(request, response);
             }
         }
     }

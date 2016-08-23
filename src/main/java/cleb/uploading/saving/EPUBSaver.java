@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,8 @@ import net.lingala.zip4j.exception.ZipException;
 public class EPUBSaver extends HttpServlet implements ISaver {
 
     private static final long serialVersionUID = 1L;
+
+    private static final String ERROR_DESC = "Can not save book in library, please try again";
 
     // Logger for this class
     private static final Logger logger = LogManager
@@ -70,9 +73,16 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
             logger.info("Book \"{}\" successfully saved", fileName);
         } else {
-            // TODO show user error page
-        }
+            // Inform user about error
+            request.setAttribute("errordesc", ERROR_DESC);
+            // FIXME change to uploading page
+            request.setAttribute("previouspage", "/index");
 
+            RequestDispatcher dispatcher = getServletContext()
+                .getRequestDispatcher("/error");
+
+            dispatcher.forward(request, response);
+        }
     }
 
     @Override

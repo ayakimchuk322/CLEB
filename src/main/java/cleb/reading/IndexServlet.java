@@ -1,4 +1,4 @@
-package cleb.reading.servlets;
+package cleb.reading;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;

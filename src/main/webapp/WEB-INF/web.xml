@@ -132,7 +132,7 @@
 		<servlet-name>IndexServlet</servlet-name>
 		<display-name>IndexServlet</display-name>
 		<description></description>
-		<servlet-class>cleb.reading.servlets.IndexServlet</servlet-class>
+		<servlet-class>cleb.reading.IndexServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

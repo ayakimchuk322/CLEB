@@ -8,10 +8,13 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,9 +47,23 @@ public class LoginServlet extends HttpServlet {
         }
 
         // Show login.html page
-        RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/login.html");
-        dispatcher.include(request, response);
+        ServletContext servletContext = getServletContext();
+
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(
+            servletContext);
+
+        templateResolver.setTemplateMode("HTML5");
+        // Prefix and suffix for template
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+
+        WebContext webContext = new WebContext(request, response,
+            servletContext, request.getLocale());
+
+        templateEngine.process("login", webContext, response.getWriter());
     }
 
     @Override
@@ -71,16 +88,14 @@ public class LoginServlet extends HttpServlet {
             boolean logedIn = tryLogin(email, password, rememberMe);
 
             if (logedIn) {
-                // Inform user about successfull login
+                // Redirect to index page
+                response.sendRedirect("index");
             } else {
                 // Inform user about error
+                // TODO add error servlet
+                response.sendRedirect("error");
             }
         }
-
-        // Show index.jsp page
-        RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/index.html");
-        dispatcher.include(request, response);
     }
 
     /**
@@ -96,6 +111,8 @@ public class LoginServlet extends HttpServlet {
      */
     private boolean tryLogin(String email, String password,
         Boolean rememberMe) {
+
+        boolean logedIn = false;
         // Get current user
         Subject currentUser = SecurityUtils.getSubject();
 
@@ -115,20 +132,28 @@ public class LoginServlet extends HttpServlet {
 
                 logger.info("User \"{}\" successfully loged in", email);
 
-                return true;
+                logedIn = true;
             } catch (UnknownAccountException e) {
+                logedIn = false;
+
                 logger.error("User \"{}\" not found", email, e);
             } catch (IncorrectCredentialsException e) {
+                logedIn = false;
+
                 logger.error("Incorrect password for user \"{}\"", email, e);
             } catch (LockedAccountException e) {
+                logedIn = false;
+
                 logger.error("User \"{}\" account is locked", email, e);
             }
         } else {
             // Alredy logged in
-            return true;
+            logedIn = false;
+
+            logger.warn("User \"{}\" already loged in", email);
         }
 
-        return false;
+        return logedIn;
     }
 
 }

@@ -4,10 +4,13 @@ import static cleb.security.dao.UserDAO.register;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +31,28 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
         // Show register.html page
-        RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/register.html");
-        dispatcher.include(request, response);
+        ServletContext servletContext = getServletContext();
+
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(
+            servletContext);
+
+        templateResolver.setTemplateMode("HTML5");
+        // Prefix and suffix for template
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+
+        WebContext webContext = new WebContext(request, response,
+            servletContext, request.getLocale());
+
+        templateEngine.process("register", webContext, response.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
 
         // Get parameters
         String name = request.getParameter("name");
@@ -51,16 +67,14 @@ public class RegisterServlet extends HttpServlet {
             logger.warn("Empty user name, email and/or password");
         } else {
             // Proceed with saving in db
-            if (!register(name, email, password)) {
+            if (register(name, email, password)) {
+                // Redirect to login page
+                response.sendRedirect("login");
+            } else {
                 // TODO inform user about failed register
-                doGet(request, response);
+                response.sendRedirect("error");
             }
         }
-
-        // Show login.jsp page
-        RequestDispatcher dispatcher = request
-            .getRequestDispatcher("/login.html");
-        dispatcher.include(request, response);
     }
 
 }

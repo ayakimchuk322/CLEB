@@ -42,8 +42,7 @@ public class ErrorServlet extends HttpServlet {
         String errorDesc = (String) request.getAttribute("errordesc");
 
         // Obtain page from where came error request
-        String previousPage = (String) request
-            .getAttribute("javax.servlet.forward.request_uri");
+        String previousPage = (String) request.getAttribute("previouspage");
 
         // Get rid of app name
         previousPage = previousPage.replaceFirst("/cleb", "");

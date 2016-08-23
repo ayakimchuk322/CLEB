@@ -101,6 +101,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 // Inform user about error
                 request.setAttribute("errordesc", ERROR_DESC);
+                request.setAttribute("previouspage", "/login");
 
                 RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher("/error");

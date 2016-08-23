@@ -82,6 +82,7 @@ public class RegisterServlet extends HttpServlet {
             } else {
                 // Inform user about error
                 request.setAttribute("errordesc", ERROR_DESC);
+                request.setAttribute("previouspage", "/register");
 
                 RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher("/error");

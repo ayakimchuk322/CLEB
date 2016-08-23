@@ -35,9 +35,9 @@
     <div class="jumbotron">
       <h1>Something went wrong...</h1>
       <h3>But don't despair!</h3>
-      <p class="lead">error description</p>
+      <p class="lead" th:text="${errordesc}">error description</p>
       <p>
-        <a class="btn btn-lg btn-success" href="#" role="button">Return to previous page</a>
+        <a class="btn btn-lg btn-success" href="#" th:href="@{${previouspage}}" role="button">Return to previous page</a>
       </p>
     </div>
 

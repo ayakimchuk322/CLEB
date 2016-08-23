@@ -17,6 +17,8 @@ public final class ValidatorUtil {
      * the string so no need to include it in {@code getRequestDispatcher}
      * method.
      *
+     * @param type {@code String} representing book type.
+     *
      * @return {@code String} reference for the particular validator.
      */
     public static String getValidatorReference(String type) {

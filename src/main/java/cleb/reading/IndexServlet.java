@@ -16,27 +16,30 @@ public class IndexServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private ServletContext servletContext;
+    private ServletContextTemplateResolver templateResolver;
+    private TemplateEngine templateEngine;
+
+    @Override
+    public void init() throws ServletException {
+        // Initialize Thymeleaf for this servlet
+        servletContext = getServletContext();
+        templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode("HTML5");
+        // Prefix and suffix for template
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+        templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+    }
+
     @Override
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
         // Show index.html page
-        ServletContext servletContext = getServletContext();
-
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(
-            servletContext);
-
-        templateResolver.setTemplateMode("HTML5");
-        // Prefix and suffix for template
-        templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setSuffix(".html");
-
-        TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver);
-
         WebContext webContext = new WebContext(request, response,
             servletContext, request.getLocale());
-
         templateEngine.process("index", webContext, response.getWriter());
     }
 

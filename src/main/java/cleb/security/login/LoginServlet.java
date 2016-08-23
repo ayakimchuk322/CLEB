@@ -27,9 +27,26 @@ public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private ServletContext servletContext;
+    private ServletContextTemplateResolver templateResolver;
+    private TemplateEngine templateEngine;
+
     // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(LoginServlet.class.getName());
+
+    @Override
+    public void init() throws ServletException {
+        // Initialize Thymeleaf for this servlet
+        servletContext = getServletContext();
+        templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode("HTML5");
+        // Prefix and suffix for template
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+        templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+    }
 
     @Override
     protected void doGet(HttpServletRequest request,
@@ -47,22 +64,8 @@ public class LoginServlet extends HttpServlet {
         }
 
         // Show login.html page
-        ServletContext servletContext = getServletContext();
-
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(
-            servletContext);
-
-        templateResolver.setTemplateMode("HTML5");
-        // Prefix and suffix for template
-        templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setSuffix(".html");
-
-        TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver);
-
         WebContext webContext = new WebContext(request, response,
             servletContext, request.getLocale());
-
         templateEngine.process("login", webContext, response.getWriter());
     }
 
@@ -78,6 +81,8 @@ public class LoginServlet extends HttpServlet {
             .valueOf(request.getParameter("rememberMe"));
 
         // Check for both email and password being not empty and not null
+        // This is almost reduntant with using "required" attribute on each
+        // input tag
         if (email.length() == 0 || password.length() == 0 || email == null
             || password == null) {
             // Inform user about wrong parameters

@@ -23,30 +23,34 @@ public class RegisterServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private ServletContext servletContext;
+    private ServletContextTemplateResolver templateResolver;
+    private TemplateEngine templateEngine;
+
     // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(RegisterServlet.class.getName());
 
     @Override
-    protected void doGet(HttpServletRequest request,
-        HttpServletResponse response) throws ServletException, IOException {
-        // Show register.html page
-        ServletContext servletContext = getServletContext();
-
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(
-            servletContext);
-
+    public void init() throws ServletException {
+        // Initialize Thymeleaf for this servlet
+        servletContext = getServletContext();
+        templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode("HTML5");
         // Prefix and suffix for template
         templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
-
-        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest request,
+        HttpServletResponse response) throws ServletException, IOException {
+
+        // Show register.html page
         WebContext webContext = new WebContext(request, response,
             servletContext, request.getLocale());
-
         templateEngine.process("register", webContext, response.getWriter());
     }
 
@@ -60,6 +64,8 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         // Check for name, email and password being not empty and not null
+        // This is almost reduntant with using "required" attribute on each
+        // input tag
         if (name.length() == 0 || email.length() == 0 || password.length() == 0
             || name == null || email == null || password == null) {
             // Inform user about wrong parameters

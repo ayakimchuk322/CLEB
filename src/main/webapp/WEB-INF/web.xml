@@ -128,6 +128,12 @@
 		<load-on-startup>0</load-on-startup>
 		<servlet-class>cleb.uploading.util.JDBCPoolUtil</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>IndexServlet</servlet-name>
+		<display-name>IndexServlet</display-name>
+		<description></description>
+		<servlet-class>cleb.reading.servlets.IndexServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -169,10 +175,14 @@
 		<servlet-name>JDBCPoolUtil</servlet-name>
 		<url-pattern>/jdbcpoolutil</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>IndexServlet</servlet-name>
+		<url-pattern></url-pattern>
+	</servlet-mapping>
 
 	<!-- Welcome page -->
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file></welcome-file>
 	</welcome-file-list>
 
 </web-app>

@@ -1,4 +1,4 @@
-package cleb.security.servlets;
+package cleb.security.login;
 
 import static cleb.security.dao.UserDAO.register;
 

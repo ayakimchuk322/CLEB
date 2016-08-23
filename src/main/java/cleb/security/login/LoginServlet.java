@@ -1,4 +1,4 @@
-package cleb.security.servlets;
+package cleb.security.login;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

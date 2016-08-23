@@ -31,6 +31,8 @@ public class DuplicateChecker extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String ERROR_DESC = "This book is already in library";
+
     // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(DuplicateChecker.class.getName());
@@ -75,8 +77,17 @@ public class DuplicateChecker extends HttpServlet {
             if (checkBookPresence(md5sum, fileSize)) {
                 // There is already this book in library, delete this book in
                 // temporary directory and inform user
-                // TODO add forwarding to page and inform user
                 FileUtils.deleteQuietly(tempBookFile);
+
+                // Inform user about error
+                request.setAttribute("errordesc", ERROR_DESC);
+                // FIXME change to uploading page
+                request.setAttribute("previouspage", "/index");
+
+                RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/error");
+
+                dispatcher.forward(request, response);
             } else {
                 // This book is new, proceed with validation
                 // Necessary attributes for further processing

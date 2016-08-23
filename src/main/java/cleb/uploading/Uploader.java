@@ -31,6 +31,8 @@ public class Uploader extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String ERROR_DESC = "Can not upload book, please try again";
+
     private static final Logger logger = LogManager
         .getLogger(Uploader.class.getName());
 
@@ -66,16 +68,20 @@ public class Uploader extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+
         // Check that we have a file upload request
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        if (!isMultipart) {
-            return;
-            // TODO show error page to user
-        }
 
-        if (!getFile(request)) {
-            return;
-            // TODO show error page to user
+        if (!isMultipart || !getFile(request)) {
+            // Inform user about error
+            request.setAttribute("errordesc", ERROR_DESC);
+            // FIXME change to uploading page
+            request.setAttribute("previouspage", "/index");
+
+            RequestDispatcher dispatcher = getServletContext()
+                .getRequestDispatcher("/error");
+
+            dispatcher.forward(request, response);
         }
 
         // Forward request to next servlet - DuplicateChecker, including
@@ -90,8 +96,8 @@ public class Uploader extends HttpServlet {
     }
 
     /**
-     * This method gets the file, checks if its type is supported by the library
-     * and writes supported file into temporary directory.
+     * Gets the file, checks if its type is supported by the library and writes
+     * supported file into temporary directory.
      *
      * @param request {@code HttpServletRequest} passed down from {@code doPost}
      *        method to extract the file.

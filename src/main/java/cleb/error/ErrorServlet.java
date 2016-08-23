@@ -12,7 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// TODO add javadoc
+/**
+ * This class handles some exceptional situations and shows user page with brief
+ * error descripion.
+ *
+ * Classes that want to show user such information should forward request and
+ * response with two additional attributes - brief error description and name of
+ * a page or servlet to point back.
+ */
 public class ErrorServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -43,9 +50,6 @@ public class ErrorServlet extends HttpServlet {
 
         // Obtain page from where came error request
         String previousPage = (String) request.getAttribute("previouspage");
-
-        // Get rid of app name
-        previousPage = previousPage.replaceFirst("/cleb", "");
 
         // Show error.html page with error description and link to previous page
         WebContext webContext = new WebContext(request, response,

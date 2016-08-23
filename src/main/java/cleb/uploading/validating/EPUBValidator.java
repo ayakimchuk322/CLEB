@@ -22,6 +22,8 @@ public class EPUBValidator extends HttpServlet implements IValidator {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String ERROR_DESC = "The file is not a valid epub book";
+
     // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(EPUBValidator.class.getName());
@@ -57,7 +59,15 @@ public class EPUBValidator extends HttpServlet implements IValidator {
                 .getRequestDispatcher("/EPUBSaver");
             dispatcher.forward(request, response);
         } else {
-            // TODO inform user about malformed book
+            // Inform user about error
+            request.setAttribute("errordesc", ERROR_DESC);
+            // FIXME change to uploading page
+            request.setAttribute("previouspage", "/index");
+
+            RequestDispatcher dispatcher = getServletContext()
+                .getRequestDispatcher("/error");
+
+            dispatcher.forward(request, response);
         }
     }
 

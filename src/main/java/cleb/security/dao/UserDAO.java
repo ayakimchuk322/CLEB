@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.apache.shiro.subject.Subject;
 import org.hibernate.Session;
 import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
@@ -68,6 +69,23 @@ public class UserDAO {
         }
 
         return user;
+    }
+
+    /**
+     * Returns {@code String} representing user name for loged in user.
+     *
+     * @param currentUser {@code Subject} object representing loged in user.
+     *
+     * @return {@code String} with user name.
+     *
+     * @see #getUserByEmail(String)
+     */
+    public static String getUserNameBySubject(Subject currentUser) {
+        String email = currentUser.getPrincipal().toString();
+
+        User user = getUserByEmail(email);
+
+        return user.getUserName();
     }
 
     /**

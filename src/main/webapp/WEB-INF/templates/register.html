@@ -34,9 +34,15 @@
           <li role="presentation"><a href="upload">Upload</a></li>
         </ul>
 
-        <ul class="nav nav-pills pull-right">
+        <ul class="nav nav-pills pull-right" th:if="${#strings.isEmpty(username)}">
           <li role="presentation"><a href="login">Login</a></li>
           <li class="active" role="presentation"><a href="register">Register</a></li>
+        </ul>
+
+        <ul class="nav nav-pills pull-right" th:if="${not #strings.isEmpty(username)}">
+          <!-- Add link to personal user page -->
+          <li role="presentation"><a href="" th:text="${username}">username</a></li>
+          <li role="presentation"><a href="login?logout=true">Logout</a></li>
         </ul>
       </nav>
     </div>

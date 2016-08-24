@@ -1,5 +1,9 @@
 package cleb.reading;
 
+import static cleb.security.dao.UserDAO.getUserNameBySubject;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -68,6 +72,9 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
+        WebContext webContext = new WebContext(request, response,
+            servletContext, request.getLocale());
+
         // Get random quote from list
         int quotesSize = quotesEl.size();
         Element quote = quotesEl.get(random.nextInt(quotesSize));
@@ -75,13 +82,20 @@ public class IndexServlet extends HttpServlet {
         String quoteText = quote.getChildText("text");
         String quoteAuthor = quote.getChildText("author");
 
-        // Show index.html page
-        WebContext webContext = new WebContext(request, response,
-            servletContext, request.getLocale());
+        // Get current user
+        Subject currentUser = SecurityUtils.getSubject();
 
+        if (currentUser.isAuthenticated()) {
+            String userName = getUserNameBySubject(currentUser);
+            // Set username variable
+            webContext.setVariable("username", userName);
+        }
+
+        // Set variables for template
         webContext.setVariable("quote", quoteText);
         webContext.setVariable("author", quoteAuthor);
 
+        // Show index.html page
         templateEngine.process("index", webContext, response.getWriter());
     }
 

@@ -77,3 +77,8 @@ body {
     border-bottom: 0;
   }
 }
+
+/* For table with buttons on index.html page */
+.table {
+	text-align: center;
+}

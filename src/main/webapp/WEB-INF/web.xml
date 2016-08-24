@@ -140,6 +140,12 @@
 		<description></description>
 		<servlet-class>cleb.error.ErrorServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>UploadServlet</servlet-name>
+		<display-name>UploadServlet</display-name>
+		<description></description>
+		<servlet-class>cleb.reading.UploadServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -189,6 +195,10 @@
 	<servlet-mapping>
 		<servlet-name>ErrorServlet</servlet-name>
 		<url-pattern>/error</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/upload</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

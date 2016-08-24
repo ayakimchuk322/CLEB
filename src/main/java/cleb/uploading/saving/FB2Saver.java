@@ -73,8 +73,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
         } else {
             // Inform user about error
             request.setAttribute("errordesc", ERROR_DESC);
-            // FIXME change to uploading page
-            request.setAttribute("previouspage", "/index");
+            request.setAttribute("previouspage", "/upload");
 
             RequestDispatcher dispatcher = getServletContext()
                 .getRequestDispatcher("/error");

@@ -61,8 +61,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
         } else {
             // Inform user about error
             request.setAttribute("errordesc", ERROR_DESC);
-            // FIXME change to uploading page
-            request.setAttribute("previouspage", "/index");
+            request.setAttribute("previouspage", "/upload");
 
             RequestDispatcher dispatcher = getServletContext()
                 .getRequestDispatcher("/error");

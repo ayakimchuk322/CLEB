@@ -16,6 +16,8 @@
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="../../css/jumbotron-narrow.css" th:href="@{/css/jumbotron-narrow.css}">
 
+<link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
+
 </head>
 
 <body>
@@ -34,11 +36,11 @@
 
     <div class="jumbotron">
       <h2 th:text="${quote}">quote</h2>
-      <h3 th:text="'-' + ${author}">author</h3>
+      <h4 th:text="'-' + ${author}">author</h4>
       <p class="lead">A book is a map in one's journey and a good book is like a light in darkness. Join Cool
         library for e-books and start your journey today!</p>
 
-      <table class="table">
+      <table class="tablebut">
         <tr>
           <td>
             <p>

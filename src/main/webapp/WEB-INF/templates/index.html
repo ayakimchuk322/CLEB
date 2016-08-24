@@ -3,12 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!-- The above meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
 <meta name="author" content="Anatoly Yakimchuk">
-<link rel="icon" href="../../favicon.ico">
+
+<link rel="icon" href="favicon.ico" th:href="@{/favicon.ico} type="image/x-icon">
+<link rel="shortcut icon" href="favicon.ico" th:href="@{/favicon.ico} type="image/x-icon">
 
 <title>Welcome to CLEB - Cool library for e-books!</title>
+
+<!-- Google font for library title -->
+<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+
+<!-- Google font for quote -->
+<link href="https://fonts.googleapis.com/css?family=Courgette|Dancing+Script:700|Great+Vibes" rel="stylesheet">
 
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="../../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
@@ -31,26 +39,28 @@
           <li role="presentation"><a href="register">Register</a></li>
         </ul>
       </nav>
-      <h3 class="text-muted">Cool library for e-books</h3>
+      <h3 class="text-muted clebtitle">Cool library for e-books</h3>
     </div>
 
     <div class="jumbotron">
-      <h2 th:text="${quote}">quote</h2>
+      <h2 class="quotetext" th:text="${quote}">quote</h2>
       <h4 th:text="'-' + ${author}">author</h4>
-      <p class="lead">A book is a map in one's journey and a good book is like a light in darkness. Join Cool
-        library for e-books and start your journey today!</p>
+      <p class="lead">
+        A book is a map in one's journey and a good book is like a light in darkness. Join <span class="clebtitle">Cool
+          library for e-books</span> and start your journey today!
+      </p>
 
-      <table class="tablebut">
+      <table class="tablebuts">
         <tr>
           <td>
             <p>
-              <a class="btn btn-lg btn-success" href="#" role="button">Join library!</a>
+              <a class="btn btn-lg btn-success tablebut" href="register" role="button">Join library!</a>
             </p>
           </td>
 
           <td>
             <p>
-              <a class="btn btn-lg btn-success" href="#" role="button">Go to library</a>
+              <a class="btn btn-lg btn-success tablebut" href="library" role="button">Go to library</a>
             </p>
           </td>
         </tr>

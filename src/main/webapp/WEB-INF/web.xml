@@ -146,6 +146,12 @@
 		<description></description>
 		<servlet-class>cleb.reading.UploadServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>LibraryServlet</servlet-name>
+		<display-name>LibraryServlet</display-name>
+		<description></description>
+		<servlet-class>cleb.reading.LibraryServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -199,6 +205,10 @@
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
 		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LibraryServlet</servlet-name>
+		<url-pattern>/library</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

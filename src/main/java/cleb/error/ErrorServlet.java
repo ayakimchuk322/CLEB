@@ -1,5 +1,9 @@
 package cleb.error;
 
+import static cleb.security.dao.UserDAO.getUserNameBySubject;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -45,19 +49,29 @@ public class ErrorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
+        WebContext webContext = new WebContext(request, response,
+            servletContext, request.getLocale());
+
+        // Get current user
+        Subject currentUser = SecurityUtils.getSubject();
+
+        if (currentUser.isAuthenticated()) {
+            String userName = getUserNameBySubject(currentUser);
+            // Set username variable
+            webContext.setVariable("username", userName);
+        }
+
         // Retrieve error description
         String errorDesc = (String) request.getAttribute("errordesc");
 
         // Obtain page from where came error request
         String previousPage = (String) request.getAttribute("previouspage");
 
-        // Show error.html page with error description and link to previous page
-        WebContext webContext = new WebContext(request, response,
-            servletContext, request.getLocale());
-
+        // Set variables for template
         webContext.setVariable("errordesc", errorDesc);
         webContext.setVariable("previouspage", previousPage);
 
+        // Show error.html page with error description and link to previous page
         templateEngine.process("error", webContext, response.getWriter());
     }
 

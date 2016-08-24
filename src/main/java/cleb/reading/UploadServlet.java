@@ -1,5 +1,9 @@
 package cleb.reading;
 
+import static cleb.security.dao.UserDAO.getUserNameBySubject;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -40,10 +44,19 @@ public class UploadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        // Show upload.html page
         WebContext webContext = new WebContext(request, response,
             servletContext, request.getLocale());
 
+        // Get current user
+        Subject currentUser = SecurityUtils.getSubject();
+
+        if (currentUser.isAuthenticated()) {
+            String userName = getUserNameBySubject(currentUser);
+            // Set username variable
+            webContext.setVariable("username", userName);
+        }
+
+        // Show upload.html page
         templateEngine.process("upload", webContext, response.getWriter());
     }
 

@@ -75,13 +75,6 @@ public class IndexServlet extends HttpServlet {
         WebContext webContext = new WebContext(request, response,
             servletContext, request.getLocale());
 
-        // Get random quote from list
-        int quotesSize = quotesEl.size();
-        Element quote = quotesEl.get(random.nextInt(quotesSize));
-
-        String quoteText = quote.getChildText("text");
-        String quoteAuthor = quote.getChildText("author");
-
         // Get current user
         Subject currentUser = SecurityUtils.getSubject();
 
@@ -90,6 +83,13 @@ public class IndexServlet extends HttpServlet {
             // Set username variable
             webContext.setVariable("username", userName);
         }
+
+        // Get random quote from list
+        int quotesSize = quotesEl.size();
+        Element quote = quotesEl.get(random.nextInt(quotesSize));
+
+        String quoteText = quote.getChildText("text");
+        String quoteAuthor = quote.getChildText("author");
 
         // Set variables for template
         webContext.setVariable("quote", quoteText);

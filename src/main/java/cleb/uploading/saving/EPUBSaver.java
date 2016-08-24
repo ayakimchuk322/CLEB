@@ -57,6 +57,13 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     }
 
     @Override
+    protected void doGet(HttpServletRequest request,
+        HttpServletResponse response) throws ServletException, IOException {
+        // Redirect back to index page
+        response.sendRedirect("upload");
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
@@ -72,6 +79,9 @@ public class EPUBSaver extends HttpServlet implements ISaver {
             storeInDir(tempBookPath, bookPath);
 
             logger.info("Book \"{}\" successfully saved", fileName);
+
+            // Redirect back to index page
+            doGet(request, response);
         } else {
             // Inform user about error
             request.setAttribute("errordesc", ERROR_DESC);

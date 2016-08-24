@@ -1,6 +1,8 @@
 /* Font for library title */
 .clebtitle {
 	font-family: 'Titillium Web', sans-serif;
+	font-style: italic;
+	font-weight: bold;
 }
 
 /* Font for quote */

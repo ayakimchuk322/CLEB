@@ -75,24 +75,23 @@ public class Uploader extends HttpServlet {
         if (!isMultipart || !getFile(request)) {
             // Inform user about error
             request.setAttribute("errordesc", ERROR_DESC);
-            // FIXME change to uploading page
-            request.setAttribute("previouspage", "/index");
+            request.setAttribute("previouspage", "/upload");
 
             RequestDispatcher dispatcher = getServletContext()
                 .getRequestDispatcher("/error");
 
             dispatcher.forward(request, response);
+        } else {
+            // Forward request to next servlet - DuplicateChecker, including
+            // reference for uploaded book
+            request.setAttribute("file", fileName);
+            request.setAttribute("type", fileType);
+
+            RequestDispatcher dispatcher = getServletContext()
+                .getRequestDispatcher("/DuplicateChecker");
+
+            dispatcher.forward(request, response);
         }
-
-        // Forward request to next servlet - DuplicateChecker, including
-        // reference for uploaded book
-        request.setAttribute("file", fileName);
-        request.setAttribute("type", fileType);
-
-        RequestDispatcher dispatcher = getServletContext()
-            .getRequestDispatcher("/DuplicateChecker");
-
-        dispatcher.forward(request, response);
     }
 
     /**

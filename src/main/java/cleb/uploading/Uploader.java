@@ -75,8 +75,7 @@ public class Uploader extends HttpServlet {
         if (!isMultipart || !getFile(request)) {
             // Inform user about error
             request.setAttribute("errordesc", ERROR_DESC);
-            // FIXME change to uploading page
-            request.setAttribute("previouspage", "/index");
+            request.setAttribute("previouspage", "/upload");
 
             RequestDispatcher dispatcher = getServletContext()
                 .getRequestDispatcher("/error");

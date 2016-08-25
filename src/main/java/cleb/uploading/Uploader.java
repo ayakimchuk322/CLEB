@@ -107,7 +107,6 @@ public class Uploader extends HttpServlet {
      * @see cleb.book.BookType
      */
     private boolean getFile(HttpServletRequest request) {
-        boolean uploaded = false;
 
         File file = null;
 
@@ -138,18 +137,14 @@ public class Uploader extends HttpServlet {
                     try {
                         BookType.valueOf(fileType.toUpperCase());
                     } catch (IllegalArgumentException e) {
-                        uploaded = false;
-
                         logger.error("File type \"{}\" is not supported",
                             fileType, e);
 
-                        return uploaded;
+                        return false;
                     } catch (NullPointerException e) {
-                        uploaded = false;
-
                         logger.error("No file type provided", e);
 
-                        return uploaded;
+                        return false;
                     }
 
                     // File type is supported, OK to write the file
@@ -163,23 +158,21 @@ public class Uploader extends HttpServlet {
 
                     // Update fileName with added prefix
                     fileName = prefix + fileName;
-
-                    uploaded = true;
                 }
             }
         } catch (FileUploadException e) {
-            uploaded = false;
-
             logger.error("Can not upload file", e);
-        } catch (Exception e) {
-            uploaded = false;
 
+            return false;
+        } catch (Exception e) {
             logger.error("Can not write file \"{}\"", file, e);
+
+            return false;
         }
 
         logger.info("File \"{}\" uploaded", file);
 
-        return uploaded;
+        return true;
     }
 
 }

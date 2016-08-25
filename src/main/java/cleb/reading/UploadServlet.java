@@ -54,10 +54,13 @@ public class UploadServlet extends HttpServlet {
             String userName = getUserNameBySubject(currentUser);
             // Set username variable
             webContext.setVariable("username", userName);
-        }
 
-        // Show upload.html page
-        templateEngine.process("upload", webContext, response.getWriter());
+            // Show upload.html page
+            templateEngine.process("upload", webContext, response.getWriter());
+        } else {
+            // Only loged in users can upload
+            response.sendRedirect("login");
+        }
     }
 
 }

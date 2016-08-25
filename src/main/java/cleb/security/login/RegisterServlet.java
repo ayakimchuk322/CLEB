@@ -4,6 +4,8 @@ import static cleb.security.dao.UserDAO.register;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -51,10 +53,21 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        // Show register.html page
         WebContext webContext = new WebContext(request, response,
             servletContext, request.getLocale());
-        templateEngine.process("register", webContext, response.getWriter());
+
+        // Get current user
+        Subject currentUser = SecurityUtils.getSubject();
+
+        if (currentUser.isAuthenticated()) {
+            // Users not permitted to register while already logged-in
+            // Show index.html page
+            response.sendRedirect("index");
+        } else {
+            // Show register.html page
+            templateEngine.process("register", webContext,
+                response.getWriter());
+        }
     }
 
     @Override

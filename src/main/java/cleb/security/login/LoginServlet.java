@@ -1,5 +1,7 @@
 package cleb.security.login;
 
+import static cleb.security.dao.UserDAO.getUserNameBySubject;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -66,10 +68,20 @@ public class LoginServlet extends HttpServlet {
             logger.info("User \"{}\" loged out", userName);
         }
 
-        // Show login.html page
         WebContext webContext = new WebContext(request, response,
             servletContext, request.getLocale());
-        templateEngine.process("login", webContext, response.getWriter());
+
+        // Get current user
+        Subject currentUser = SecurityUtils.getSubject();
+
+        if (currentUser.isAuthenticated()) {
+            // No need to login again
+            // Show index.html page
+            response.sendRedirect("index");
+        } else {
+            // Show login.html page
+            templateEngine.process("login", webContext, response.getWriter());
+        }
     }
 
     @Override

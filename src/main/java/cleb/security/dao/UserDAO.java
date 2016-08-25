@@ -72,9 +72,9 @@ public class UserDAO {
     }
 
     /**
-     * Returns {@code String} representing user name for loged in user.
+     * Returns {@code String} representing user name for logged-in user.
      *
-     * @param currentUser {@code Subject} object representing loged in user.
+     * @param currentUser {@code Subject} object representing logged-in user.
      *
      * @return {@code String} with user name.
      *

@@ -1,7 +1,5 @@
 package cleb.security.login;
 
-import static cleb.security.dao.UserDAO.getUserNameBySubject;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -65,7 +63,7 @@ public class LoginServlet extends HttpServlet {
             String userName = currentUser.getPrincipal().toString();
             currentUser.logout();
 
-            logger.info("User \"{}\" loged out", userName);
+            logger.info("User \"{}\" logged out", userName);
         }
 
         WebContext webContext = new WebContext(request, response,
@@ -105,9 +103,9 @@ public class LoginServlet extends HttpServlet {
             logger.warn("Empty user email and/or password");
         } else {
             // Try to login
-            boolean logedIn = tryLogin(email, password, rememberMe);
+            boolean loggedIn = tryLogin(email, password, rememberMe);
 
-            if (logedIn) {
+            if (loggedIn) {
                 // Redirect to index page
                 response.sendRedirect("index");
             } else {
@@ -131,13 +129,13 @@ public class LoginServlet extends HttpServlet {
      * @param rememberMe {@code Boolean} with true if remember me was checked
      *        and false otherwise.
      *
-     * @return {@code true}, if user was successfully loged in, otherwise -
+     * @return {@code true}, if user was successfully logged-in, otherwise -
      *         {@code false}.
      */
     private boolean tryLogin(String email, String password,
         Boolean rememberMe) {
 
-        boolean logedIn = false;
+        boolean loggedIn = false;
         // Get current user
         Subject currentUser = SecurityUtils.getSubject();
 
@@ -155,30 +153,30 @@ public class LoginServlet extends HttpServlet {
                 // Save current username in the session
                 currentUser.getSession().setAttribute("username", email);
 
-                logger.info("User \"{}\" successfully loged in", email);
+                logger.info("User \"{}\" successfully logged-in", email);
 
-                logedIn = true;
+                loggedIn = true;
             } catch (UnknownAccountException e) {
-                logedIn = false;
+                loggedIn = false;
 
                 logger.error("User \"{}\" not found", email, e);
             } catch (IncorrectCredentialsException e) {
-                logedIn = false;
+                loggedIn = false;
 
                 logger.error("Incorrect password for user \"{}\"", email, e);
             } catch (LockedAccountException e) {
-                logedIn = false;
+                loggedIn = false;
 
                 logger.error("User \"{}\" account is locked", email, e);
             }
         } else {
             // Alredy logged in
-            logedIn = false;
+            loggedIn = false;
 
-            logger.warn("User \"{}\" already loged in", email);
+            logger.warn("User \"{}\" already logged-in", email);
         }
 
-        return logedIn;
+        return loggedIn;
     }
 
 }

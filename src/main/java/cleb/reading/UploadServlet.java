@@ -58,7 +58,7 @@ public class UploadServlet extends HttpServlet {
             // Show upload.html page
             templateEngine.process("upload", webContext, response.getWriter());
         } else {
-            // Only loged in users can upload
+            // Only logged-in users can upload
             response.sendRedirect("login");
         }
     }

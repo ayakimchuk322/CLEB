@@ -32,3 +32,10 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+/* Make the masthead heading the same height as the navigation (library.html) */
+.librarytitle {
+  margin-top: 0;
+  margin-bottom: 40px;
+  line-height: 40px;
+}

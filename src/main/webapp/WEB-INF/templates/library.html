@@ -73,7 +73,7 @@
               <tr th:each="book : ${books}">
                 <td th:text="${book.id}">#</td>
                 <td th:text="${book.title}">title</td>
-                <td th:text="${book.authorFirstName + book.authorLastName}">author</td>
+                <td th:text="${book.authorFirstName + ' ' + book.authorLastName}">author</td>
                 <td th:text="${book.seqName}">series</td>
                 <td th:text="${book.genre}">genre</td>
                 <td th:text="${book.published}">published</td>

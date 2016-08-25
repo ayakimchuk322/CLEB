@@ -50,8 +50,10 @@ public interface ISaver {
      *
      * @param book Object representing actual book.
      * @param name Book file name.
+     *
+     * @return {@code String} path to cover.
      */
-    public void saveCover(Object book, String name);
+    public String saveCover(Object book, String name);
 
     /**
      * Saves information about uploaded book in a database.
@@ -83,9 +85,10 @@ public interface ISaver {
         boolean stored = false;
 
         // Create new Book object
+        // Pathes for book and cover will be added later
         Book book = new Book(fileName, md5, fileSize, fileType, genre,
             authorFirstName, authorLastName, title, seqName, seqNumber,
-            published, uploadedBy);
+            published, uploadedBy, "", "");
 
         // Create session and transaction
         SessionFactory factory = new Configuration().configure()

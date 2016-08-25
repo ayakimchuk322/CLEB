@@ -70,13 +70,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>#</td>
-                <td>title</td>
-                <td>author</td>
-                <td>series</td>
-                <td>genre</td>
-                <td>published</td>
+              <tr th:each="book : ${books}">
+                <td th:text="${book.id}">#</td>
+                <td th:text="${book.title}">title</td>
+                <td th:text="${book.authorFirstName + book.authorLastName}">author</td>
+                <td th:text="${book.seqName}">series</td>
+                <td th:text="${book.genre}">genre</td>
+                <td th:text="${book.published}">published</td>
               </tr>
             </tbody>
           </table>

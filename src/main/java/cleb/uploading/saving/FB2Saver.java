@@ -1,6 +1,8 @@
 package cleb.uploading.saving;
 
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.logging.log4j.LogManager;
 
 import org.jdom2.Document;
@@ -124,8 +126,10 @@ public class FB2Saver extends HttpServlet implements ISaver {
         String seqName = "";
         String seqNumber = "";
         String published = "";
-        // FIXME add logic to identify uploader
-        String uploadedBy = "ADMIN";
+
+        // Uploaded by a user (email)
+        Subject currentUser = SecurityUtils.getSubject();
+        String uploadedBy = currentUser.getPrincipal().toString();
 
         // Necessary cast to process with book
         Document doc = (Document) book;

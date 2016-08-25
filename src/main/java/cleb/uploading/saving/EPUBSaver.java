@@ -3,6 +3,8 @@ package cleb.uploading.saving;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -126,8 +128,10 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         String seqName = "";
         String seqNumber = "";
         String published = "";
-        // FIXME add logic to identify uploader
-        String uploadedBy = "ADMIN";
+
+        // Uploaded by a user (email)
+        Subject currentUser = SecurityUtils.getSubject();
+        String uploadedBy = currentUser.getPrincipal().toString();
 
         // Necessary cast to process with book
         ZipFile zip = (ZipFile) book;

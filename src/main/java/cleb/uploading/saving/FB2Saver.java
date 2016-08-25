@@ -1,5 +1,7 @@
 package cleb.uploading.saving;
 
+import static cleb.book.dao.BookDAO.addPaths;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -89,8 +91,9 @@ public class FB2Saver extends HttpServlet implements ISaver {
         Object book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
+            String coverPath = saveCover(book, fileName);
             storeInDir(tempBookPath, bookPath);
-            saveCover(book, fileName);
+            addPaths(fileName, bookPath, coverPath);
 
             logger.info("Book \"{}\" successfully saved", fileName);
 
@@ -215,7 +218,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
     }
 
     @Override
-    public void saveCover(Object book, String name) {
+    public String saveCover(Object book, String name) {
         // Necessary cast to process with book
         Document doc = (Document) book;
 
@@ -260,7 +263,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
             // This book has no cover
             logger.warn("Book \"{}\" has no cover", fileName);
 
-            return;
+            return "";
         }
 
         // Get the file type (jpeg/png)
@@ -288,7 +291,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
         } catch (Exception e) {
             logger.error("Can not decode cover for book \"{}\"", fileName, e);
 
-            return;
+            return "";
         }
 
         // Write out decoded image into appropriate file
@@ -300,6 +303,8 @@ public class FB2Saver extends HttpServlet implements ISaver {
         } catch (IOException e) {
             logger.error("Can not save cover for book\"{}\"", fileName, e);
         }
+
+        return coversPath + name + extension;
     }
 
 }

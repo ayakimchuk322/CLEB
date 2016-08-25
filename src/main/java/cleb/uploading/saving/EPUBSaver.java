@@ -1,5 +1,7 @@
 package cleb.uploading.saving;
 
+import static cleb.book.dao.BookDAO.addPaths;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,8 +93,9 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         Object book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
-            saveCover(book, fileName);
+            String coverPath = saveCover(book, fileName);
             storeInDir(tempBookPath, bookPath);
+            addPaths(fileName, bookPath, coverPath);
 
             logger.info("Book \"{}\" successfully saved", fileName);
 
@@ -216,7 +219,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     }
 
     @Override
-    public void saveCover(Object book, String name) {
+    public String saveCover(Object book, String name) {
         // Necessary cast to process with book
         ZipFile zip = (ZipFile) book;
 
@@ -226,42 +229,44 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         // simply try extract it with a few most used names
         try {
             zip.extractFile("cover.jpeg", coversPath, null, name + ".jpeg");
-            return;
+            return coversPath + name + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/cover.jpeg", coversPath, null, name + ".jpeg");
-            return;
+            return coversPath + name + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/images/cover.jpeg", coversPath, null,
                 name + ".jpeg");
-            return;
+            return coversPath + name + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("cover.png", coversPath, null, name + ".png");
-            return;
+            return coversPath + name + ".png";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/cover.png", coversPath, null, name + ".png");
-            return;
+            return coversPath + name + ".png";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/images/cover.png", coversPath, null,
                 name + ".png");
-            return;
+            return coversPath + name + ".png";
         } catch (ZipException e) {
             logger.warn("Book \"{}\" has no cover", fileName);
         }
+
+        return "";
     }
 
     /**

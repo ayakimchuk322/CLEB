@@ -10,7 +10,7 @@
 		<property name="hibernate.connection.username">clebadmin</property>
 		<property name="hibernate.connection.password">admincleb</property>
 
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 		<property name="format_sql">true</property>
 
 		<!--To get rid of: Disabling contextual LOB creation as createClob() method threw

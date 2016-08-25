@@ -5,8 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServlet;
 
@@ -30,14 +33,24 @@ public class JDBCPoolUtil extends HttpServlet {
 
     @Override
     public void init() {
+        // Load properties
+        Properties properties = new Properties();
+
+        try (InputStream propIn = getServletContext()
+            .getResourceAsStream("/WEB-INF/classes/props.properties")) {
+            properties.load(propIn);
+        } catch (IOException e) {
+            logger.error("Can not load properties", e);
+        }
+
         // Initialize database URL for driver
-        dbURL = getServletContext().getInitParameter("database");
+        dbURL = properties.getProperty("database");
 
         // Initialize database user
-        dbuser = getServletContext().getInitParameter("dbuser");
+        dbuser = properties.getProperty("dbuser");
 
         // Initialize database user password
-        dbpass = getServletContext().getInitParameter("dbpass");
+        dbpass = properties.getProperty("dbpass");
 
         // Set properties for pool
         PoolProperties poolProps = new PoolProperties();

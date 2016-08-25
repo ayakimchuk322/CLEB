@@ -11,10 +11,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -46,10 +48,19 @@ public class Uploader extends HttpServlet {
 
     @Override
     public void init() {
+        // Load properties
+        Properties properties = new Properties();
+
+        try (InputStream propIn = getServletContext()
+            .getResourceAsStream("/WEB-INF/classes/props.properties")) {
+            properties.load(propIn);
+        } catch (IOException e) {
+            logger.error("Can not load properties", e);
+        }
+
         // Directory for temporary storing uploaded books - till it's checked by
         // DuplicateChecker servlet
-        tempFolderPath = getServletContext()
-            .getInitParameter("file-temp-upload");
+        tempFolderPath = properties.getProperty("file-temp-upload");
 
         logger.info("Uploader initialized");
     }

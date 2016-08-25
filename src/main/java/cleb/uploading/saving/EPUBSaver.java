@@ -11,8 +11,10 @@ import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoField;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -45,13 +47,22 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
     @Override
     public void init() throws ServletException {
+        // Load properties
+        Properties properties = new Properties();
+
+        try (InputStream propIn = getServletContext()
+            .getResourceAsStream("/WEB-INF/classes/props.properties")) {
+            properties.load(propIn);
+        } catch (IOException e) {
+            logger.error("Can not load properties", e);
+        }
+
         // Directory for temporary storing uploaded books
-        tempFolderPath = getServletContext()
-            .getInitParameter("file-temp-upload");
+        tempFolderPath = properties.getProperty("file-temp-upload");
         // Directory to store uploaded books
-        folderPath = getServletContext().getInitParameter("file-store");
+        folderPath = properties.getProperty("book-store");
         // Directory to store books covers
-        coversPath = getServletContext().getInitParameter("book-covers");
+        coversPath = properties.getProperty("book-covers");
 
         logger.info("EPUBSaver initialized");
     }

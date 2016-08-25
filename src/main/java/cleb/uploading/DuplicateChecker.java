@@ -13,10 +13,12 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -51,10 +53,19 @@ public class DuplicateChecker extends HttpServlet {
 
     @Override
     public void init() {
+        // Load properties
+        Properties properties = new Properties();
+
+        try (InputStream propIn = getServletContext()
+            .getResourceAsStream("/WEB-INF/classes/props.properties")) {
+            properties.load(propIn);
+        } catch (IOException e) {
+            logger.error("Can not load properties", e);
+        }
+
         // Directory for temporary storing uploaded books - till it's checked by
         // this servlet
-        tempFolderPath = getServletContext()
-            .getInitParameter("file-temp-upload");
+        tempFolderPath = properties.getProperty("file-temp-upload");
 
         logger.info("DuplicateChecker initialized");
     }

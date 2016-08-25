@@ -49,4 +49,36 @@ public class BookDAO {
 
         return books;
     }
+
+    @SuppressWarnings({ "deprecation", "rawtypes" })
+    public static void addPaths(String fileName, String filePath,
+        String coverPath) {
+
+        // Create session and transaction
+        SessionFactory factory = new Configuration().configure()
+            .buildSessionFactory();
+
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        Connection connection = getConnection();
+        builder.connection(connection);
+
+        Transaction transaction = null;
+
+        try (Session session = builder.openSession()) {
+            transaction = session.beginTransaction();
+            Book book = (Book) session.createQuery("from Book where fileName=?")
+                .setParameter(0, fileName).uniqueResult();
+            book.setFilePath(filePath);
+            book.setCoverPath(coverPath);
+            session.update(book);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            closeConnection(connection);
+        }
+    }
 }

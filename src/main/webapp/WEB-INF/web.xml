@@ -5,48 +5,6 @@
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
 
-	<!-- Hard-coded place to temporarily store uploaded books -->
-	<context-param>
-		<param-name>file-temp-upload</param-name>
-		<param-value>/mnt/sda7/servers/data/Books/temp/</param-value>
-		<description>Location to temporarily store uploaded books</description>
-	</context-param>
-
-	<!-- Hard-coded place to store uploaded books -->
-	<context-param>
-		<param-name>file-store</param-name>
-		<param-value>/mnt/sda7/servers/data/Books/</param-value>
-		<description>Location to store uploaded books</description>
-	</context-param>
-
-	<!-- Hard-coded place to store books covers -->
-	<context-param>
-		<param-name>book-covers</param-name>
-		<param-value>/mnt/sda7/servers/data/Books/covers/</param-value>
-		<description>Location to store uploaded books</description>
-	</context-param>
-
-	<!-- PostgreSQL db -->
-	<context-param>
-		<param-name>database</param-name>
-		<param-value>jdbc:postgresql://localhost:5432/cleb</param-value>
-		<description>URL for connection to db</description>
-	</context-param>
-
-	<!-- PostgreSQL user -->
-	<context-param>
-		<param-name>dbuser</param-name>
-		<param-value>clebadmin</param-value>
-		<description>database user</description>
-	</context-param>
-
-	<!-- PostgreSQL user password -->
-	<context-param>
-		<param-name>dbpass</param-name>
-		<param-value>admincleb</param-value>
-		<description>database user password</description>
-	</context-param>
-
 	<!-- Shiro mapping -->
 	<listener>
 		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>

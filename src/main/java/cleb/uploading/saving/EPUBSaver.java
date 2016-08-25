@@ -33,8 +33,6 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String ERROR_DESC = "Can not save book in library, please try again";
-
     // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(EPUBSaver.class.getName());
@@ -44,6 +42,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     private String coversPath;
 
     private String fileName;
+
+    private String errorDesc;
 
     @Override
     public void init() throws ServletException {
@@ -63,6 +63,9 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         folderPath = properties.getProperty("book-store");
         // Directory to store books covers
         coversPath = properties.getProperty("book-covers");
+
+        // Error description when book can not be uploaded
+        errorDesc = properties.getProperty("saver-error");
 
         logger.info("EPUBSaver initialized");
     }
@@ -95,7 +98,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
             doGet(request, response);
         } else {
             // Inform user about error
-            request.setAttribute("errordesc", ERROR_DESC);
+            request.setAttribute("errordesc", errorDesc);
             request.setAttribute("previouspage", "/upload");
 
             RequestDispatcher dispatcher = getServletContext()

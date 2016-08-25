@@ -24,8 +24,6 @@ public class EPUBValidator extends HttpServlet implements IValidator {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String ERROR_DESC = "The file is not a valid epub book";
-
     // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(EPUBValidator.class.getName());
@@ -35,6 +33,8 @@ public class EPUBValidator extends HttpServlet implements IValidator {
     private String fileName;
 
     private ZipFile book;
+
+    private String errorDesc;
 
     @Override
     public void init() throws ServletException {
@@ -51,6 +51,9 @@ public class EPUBValidator extends HttpServlet implements IValidator {
         // Directory for temporary storing uploaded books - till it's checked by
         // this servlet
         tempFolderPath = properties.getProperty("file-temp-upload");
+
+        // Error description when file is not a valid epub book
+        errorDesc = properties.getProperty("epub-validator-error");
 
         logger.info("EPUBValidator initialized");
     }
@@ -71,7 +74,7 @@ public class EPUBValidator extends HttpServlet implements IValidator {
             dispatcher.forward(request, response);
         } else {
             // Inform user about error
-            request.setAttribute("errordesc", ERROR_DESC);
+            request.setAttribute("errordesc", errorDesc);
             request.setAttribute("previouspage", "/upload");
 
             RequestDispatcher dispatcher = getServletContext()

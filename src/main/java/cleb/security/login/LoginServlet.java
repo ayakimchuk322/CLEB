@@ -13,6 +13,8 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -28,18 +30,31 @@ public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String ERROR_DESC = "Can not login to library, please try again";
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(LoginServlet.class.getName());
+
+    private String errorDesc;
 
     private ServletContext servletContext;
     private ServletContextTemplateResolver templateResolver;
     private TemplateEngine templateEngine;
 
-    // Logger for this class
-    private static final Logger logger = LogManager
-        .getLogger(LoginServlet.class.getName());
-
     @Override
     public void init() throws ServletException {
+        // Load properties
+        Properties properties = new Properties();
+
+        try (InputStream propIn = getServletContext()
+            .getResourceAsStream("/WEB-INF/classes/props.properties")) {
+            properties.load(propIn);
+        } catch (IOException e) {
+            logger.error("Can not load properties", e);
+        }
+
+        // Error description when user can not be logged-in
+        errorDesc = properties.getProperty("login-servlet-error");
+
         // Initialize Thymeleaf for this servlet
         servletContext = getServletContext();
         templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -110,7 +125,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("index");
             } else {
                 // Inform user about error
-                request.setAttribute("errordesc", ERROR_DESC);
+                request.setAttribute("errordesc", errorDesc);
                 request.setAttribute("previouspage", "/login");
 
                 RequestDispatcher dispatcher = getServletContext()

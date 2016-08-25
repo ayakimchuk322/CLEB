@@ -33,8 +33,6 @@ public class DuplicateChecker extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String ERROR_DESC = "This book is already in library";
-
     // Logger for this class
     private static final Logger logger = LogManager
         .getLogger(DuplicateChecker.class.getName());
@@ -42,6 +40,8 @@ public class DuplicateChecker extends HttpServlet {
     private String tempFolderPath;
 
     private String fileName;
+
+    private String errorDesc;
 
     // Prepared query (statement)
     //@formatter:off
@@ -67,6 +67,10 @@ public class DuplicateChecker extends HttpServlet {
         // this servlet
         tempFolderPath = properties.getProperty("file-temp-upload");
 
+        // Error description when book can not be uploaded because it is already
+        // in library
+        errorDesc = properties.getProperty("duplicate-checker-error");
+
         logger.info("DuplicateChecker initialized");
     }
 
@@ -91,7 +95,7 @@ public class DuplicateChecker extends HttpServlet {
                 FileUtils.deleteQuietly(tempBookFile);
 
                 // Inform user about error
-                request.setAttribute("errordesc", ERROR_DESC);
+                request.setAttribute("errordesc", errorDesc);
                 request.setAttribute("previouspage", "/upload");
 
                 RequestDispatcher dispatcher = getServletContext()

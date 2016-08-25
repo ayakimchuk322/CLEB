@@ -33,18 +33,17 @@ public class Uploader extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String ERROR_DESC = "Can not upload book, please try again";
-
     private static final Logger logger = LogManager
         .getLogger(Uploader.class.getName());
 
-    // Max book size to be uploaded (10MB)
-    private static final int MAX_FILE_SIZE = 10 * 1024 * 1024;
+    private int maxFileSize;
 
     private String tempFolderPath;
 
     private String fileName;
     private String fileType;
+
+    private String errorDesc;
 
     @Override
     public void init() {
@@ -58,9 +57,15 @@ public class Uploader extends HttpServlet {
             logger.error("Can not load properties", e);
         }
 
+        // Maximum file size that can be uploaded
+        maxFileSize = Integer.valueOf(properties.getProperty("maxfilesize"));
+
         // Directory for temporary storing uploaded books - till it's checked by
         // DuplicateChecker servlet
         tempFolderPath = properties.getProperty("file-temp-upload");
+
+        // Error description when book can not be uploaded
+        errorDesc = properties.getProperty("uploader-error");
 
         logger.info("Uploader initialized");
     }
@@ -85,7 +90,7 @@ public class Uploader extends HttpServlet {
 
         if (!isMultipart || !getFile(request)) {
             // Inform user about error
-            request.setAttribute("errordesc", ERROR_DESC);
+            request.setAttribute("errordesc", errorDesc);
             request.setAttribute("previouspage", "/upload");
 
             RequestDispatcher dispatcher = getServletContext()
@@ -126,7 +131,7 @@ public class Uploader extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
 
         // Maximum file size to be uploaded.
-        upload.setSizeMax(MAX_FILE_SIZE);
+        upload.setSizeMax(maxFileSize);
 
         try {
             // Parse the request to get file items.

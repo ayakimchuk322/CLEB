@@ -39,7 +39,7 @@ public class UserRoleDAO {
      * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
      * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
-    @SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
+    @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
     public static List<UserRole> getUserRolesByEmail(String email) {
         List<UserRole> roles = null;
 

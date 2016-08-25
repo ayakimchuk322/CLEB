@@ -194,7 +194,6 @@ public class EPUBSaver extends HttpServlet implements ISaver {
             try {
                 creatorEl = metadataEl.getChild("creator", dc);
                 authorFirstName = creatorEl.getText();
-                authorLastName = creatorEl.getText();
             } catch (NullPointerException e) {
             }
 

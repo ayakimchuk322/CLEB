@@ -59,7 +59,7 @@ public class UserDAO {
 
         try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
-            user = (User) session.createQuery("from User where email=?")
+            user = (User) session.createQuery("FROM User WHERE email=?")
                 .setParameter(0, email).uniqueResult();
             transaction.commit();
         } catch (Exception e) {

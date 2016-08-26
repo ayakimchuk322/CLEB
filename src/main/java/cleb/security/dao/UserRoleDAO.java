@@ -56,7 +56,7 @@ public class UserRoleDAO {
 
         try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
-            roles = session.createQuery("from Userrole where email=?")
+            roles = session.createQuery("FROM UserRole WHERE email=?")
                 .setParameter(0, email).list();
             transaction.commit();
         } catch (Exception e) {

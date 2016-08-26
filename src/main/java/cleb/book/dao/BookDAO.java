@@ -19,7 +19,6 @@ import cleb.book.Book;
 /**
  * This utility class provides methods for working with books in database.
  */
-// TODO change all sql/hql statements to uppercase
 public class BookDAO {
 
     // Logger for this class
@@ -113,7 +112,7 @@ public class BookDAO {
 
         try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
-            Book book = (Book) session.createQuery("from Book where fileName=?")
+            Book book = (Book) session.createQuery("FROM Book WHERE fileName=?")
                 .setParameter(0, fileName).uniqueResult();
             book.setFilePath(filePath);
             book.setCoverPath(coverPath);
@@ -153,7 +152,7 @@ public class BookDAO {
 
         try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
-            books = session.createQuery("from Book").list();
+            books = session.createQuery("FROM Book").list();
             transaction.commit();
         } catch (Exception e) {
             logger.error(
@@ -184,7 +183,7 @@ public class BookDAO {
 
         try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
-            books = session.createQuery("from Book order by id desc")
+            books = session.createQuery("FROM Book ORDER BY id DESC")
                 .setMaxResults(3).list();
             transaction.commit();
         } catch (Exception e) {

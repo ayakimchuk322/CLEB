@@ -26,3 +26,9 @@
 	-webkit-transform: scale(5);
 	-o-transform: scale(5);
 }
+
+/* OFF for icon when no cover */
+.clzoomoff img{
+	margin: 0px;
+	height: 50px;
+}

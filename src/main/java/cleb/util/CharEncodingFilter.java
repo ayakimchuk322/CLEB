@@ -8,13 +8,19 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-// TODO add javadoc
+/**
+ * This {@code Filter} class sets UTF-8 as character encoding for all responses.
+ *
+ * @author instagib
+ *
+ */
 public class CharEncodingFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
         FilterChain chain) throws IOException, ServletException {
 
+        // For correct support for cyrillic characters in books
         request.setCharacterEncoding("UTF-8");
         chain.doFilter(request, response);
     }

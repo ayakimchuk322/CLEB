@@ -1,5 +1,6 @@
 package cleb.reading;
 
+import static cleb.book.dao.BookDAO.getLatestBooks;
 import static cleb.security.dao.UserDAO.getUserNameBySubject;
 
 import org.apache.shiro.SecurityUtils;
@@ -22,6 +23,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import cleb.book.Book;
 
 /**
  * This class serves index.html page to users.
@@ -94,6 +97,14 @@ public class IndexServlet extends HttpServlet {
         // Set variables for template
         webContext.setVariable("quote", quoteText);
         webContext.setVariable("author", quoteAuthor);
+
+        // Load latest books from database
+        Book[] latestBooks = getLatestBooks();
+        // Set books variable
+        webContext.setVariable("books", latestBooks);
+
+        // For correct display of cyrillic charachters
+        response.setCharacterEncoding("UTF-8");
 
         // Show index.html page
         templateEngine.process("index", webContext, response.getWriter());

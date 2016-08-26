@@ -19,6 +19,7 @@ import cleb.book.Book;
 /**
  * This utility class provides methods for working with books in database.
  */
+// TODO change all sql/hql statements to uppercase
 public class BookDAO {
 
     // Logger for this class
@@ -163,6 +164,41 @@ public class BookDAO {
         }
 
         return books;
+    }
+
+    // TODO move same code to private method
+    @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
+    public static Book[] getLatestBooks() {
+        List books = null;
+
+        // Create session and transaction
+        SessionFactory factory = new Configuration().configure()
+            .buildSessionFactory();
+
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        Connection connection = getConnection();
+        builder.connection(connection);
+
+        Transaction transaction = null;
+
+        try (Session session = builder.openSession()) {
+            transaction = session.beginTransaction();
+            books = session.createQuery("from Book order by id desc")
+                .setMaxResults(3).list();
+            transaction.commit();
+        } catch (Exception e) {
+            logger.error(
+                "Can not retrieve information about latest books from database",
+                e);
+        } finally {
+            closeConnection(connection);
+        }
+
+        Book[] booksArray = new Book[3];
+        books.toArray(booksArray);
+
+        return booksArray;
     }
 
 }

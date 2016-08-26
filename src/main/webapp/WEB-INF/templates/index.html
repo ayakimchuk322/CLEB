@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="../../css/jumbotron-narrow.css" th:href="@{/css/jumbotron-narrow.css}">
 
 <link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
+<link rel="stylesheet" href="../../css/cleb-index.css" th:href="@{/css/cleb-index.css}">
 
 </head>
 
@@ -53,6 +54,7 @@
     </div>
 
     <div class="jumbotron">
+
       <h2 class="quotetext" th:text="${quote}">quote</h2>
       <h4 th:text="'-' + ${author}">author</h4>
       <p class="lead">
@@ -78,16 +80,71 @@
 
     </div>
 
+    <!-- Three columns with 3 latest uploaded books -->
+    <h2>Latest uploads:</h2>
+
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="cleblatest">
+          <object class="cleblatest" data="cover.png" th:data="@{/covers/} + ${books[0].coverPath}">
+            <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
+          </object>
+        </div>
+        <h2 th:text="${books[0].title}">title</h2>
+        <h3>
+          <span th:text="${books[0].authorFirstName + ' ' + books[0].authorLastName}"></span>
+        </h3>
+        <p>annotation</p>
+        <p>
+          <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
+        </p>
+      </div>
+      <!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+        <div class="cleblatest">
+          <object class="cleblatest" data="cover.png" th:data="@{/covers/} + ${books[1].coverPath}">
+            <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
+          </object>
+        </div>
+        <h2 th:text="${books[1].title}">title</h2>
+        <h3>
+          <span th:text="${books[1].authorFirstName + ' ' + books[1].authorLastName}"></span>
+        </h3>
+        <p>annotation</p>
+        <p>
+          <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
+        </p>
+      </div>
+      <!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+        <div class="cleblatest">
+          <object class="cleblatest" data="cover.png" th:data="@{/covers/} + ${books[2].coverPath}">
+            <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
+          </object>
+        </div>
+        <h2 th:text="${books[2].title}">title</h2>
+        <h3>
+          <span th:text="${books[2].authorFirstName + ' ' + books[2].authorLastName}"></span>
+        </h3>
+        <p>annotation</p>
+        <p>
+          <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
+        </p>
+      </div>
+      <!-- /.col-lg-4 -->
+    </div>
+    <!-- /.row -->
+
     <div class="row marketing">
       <div class="col-lg-6">
         <h4>Explore</h4>
-        <p>Search for a books uploaded by a community and find something new for you. (In progress)</p>
+        <p>Search for a books uploaded by a community and find something new for you.</p>
 
         <h4>Upload</h4>
         <p>Upload yours favorite books and watch as the library grows.</p>
 
         <h4>Read</h4>
-        <p>Read wherever you are books you want.</p>
+        <p>Read wherever you are books you want. (In progress)</p>
       </div>
 
       <div class="col-lg-6">

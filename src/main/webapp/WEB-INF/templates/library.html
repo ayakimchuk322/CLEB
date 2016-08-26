@@ -63,7 +63,6 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Title</th>
                 <th>Author(s)</th>
                 <th>Series</th>
@@ -74,7 +73,6 @@
             </thead>
             <tbody>
               <tr th:each="book : ${books}">
-                <td th:text="${book.id}">#</td>
                 <td th:text="${book.title}">title</td>
                 <td th:text="${book.authorFirstName + ' ' + book.authorLastName}">author</td>
                 <td th:text="${book.seqName}">series</td>

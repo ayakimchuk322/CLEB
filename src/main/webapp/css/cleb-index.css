@@ -16,6 +16,10 @@
 	width: 200px;
 }
 
+.ciheader {
+	margin-bottom: 25px;
+}
+
 /* For img covers of latest uploaded books */
 .cicover {
 	height: 256px;

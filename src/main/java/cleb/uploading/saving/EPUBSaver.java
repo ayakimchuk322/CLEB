@@ -1,6 +1,7 @@
 package cleb.uploading.saving;
 
 import static cleb.book.dao.BookDAO.addPaths;
+import static cleb.book.dao.BookDAO.storeInDB;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;

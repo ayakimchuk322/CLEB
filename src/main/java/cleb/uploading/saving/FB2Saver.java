@@ -91,6 +91,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
         Object book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
+            // Try to save cover, book, and information aboub book in database
             String coverPath = saveCover(book, fileName);
             storeInDir(tempBookPath, bookPath);
             addPaths(fileName, bookPath, coverPath);
@@ -304,7 +305,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
             logger.error("Can not save cover for book\"{}\"", fileName, e);
         }
 
-        return coversPath + name + extension;
+        return name + extension;
     }
 
 }

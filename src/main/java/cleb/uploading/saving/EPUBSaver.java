@@ -93,6 +93,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         Object book = request.getAttribute("book");
 
         if (getBasicInfo(request, book)) {
+            // Try to save cover, book, and information aboub book in database
             String coverPath = saveCover(book, fileName);
             storeInDir(tempBookPath, bookPath);
             addPaths(fileName, bookPath, coverPath);
@@ -229,39 +230,39 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         // simply try extract it with a few most used names
         try {
             zip.extractFile("cover.jpeg", coversPath, null, name + ".jpeg");
-            return coversPath + name + ".jpeg";
+            return name + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/cover.jpeg", coversPath, null, name + ".jpeg");
-            return coversPath + name + ".jpeg";
+            return name + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/images/cover.jpeg", coversPath, null,
                 name + ".jpeg");
-            return coversPath + name + ".jpeg";
+            return name + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("cover.png", coversPath, null, name + ".png");
-            return coversPath + name + ".png";
+            return name + ".png";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/cover.png", coversPath, null, name + ".png");
-            return coversPath + name + ".png";
+            return name + ".png";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/images/cover.png", coversPath, null,
                 name + ".png");
-            return coversPath + name + ".png";
+            return name + ".png";
         } catch (ZipException e) {
             logger.warn("Book \"{}\" has no cover", fileName);
         }

@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="../../css/jumbotron.css" th:href="@{/css/jumbotron.css}">
 
 <link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
+<link rel="stylesheet" href="../../css/zoomimg.css" th:href="@{/css/zoomimg.css}">
 
 </head>
 
@@ -79,7 +80,11 @@
                 <td th:text="${book.genre}">genre</td>
                 <td th:text="${book.published}">published</td>
                 <!--/* Access to directory outside webapp context tweaked in Tomcat's server.xml */-->
-                <td><img src="image" th:src="@{/covers/} + ${book.coverPath}" height="50"></td>
+                <td>
+                  <div class="zoomimg">
+                    <img src="image" th:src="@{/covers/} + ${book.coverPath}">
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -95,6 +100,8 @@
 
   </div>
   <!-- /container -->
+
+  <script src="../../js/zoom.js" th:src="@{/js/zoom.js}"></script>
 
 </body>
 </html>

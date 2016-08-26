@@ -1,0 +1,13 @@
+.zoomimg img {
+	margin: 0px;
+	height: 50px;
+	-moz-transition: -moz-transform 0.5s ease-in;
+	-webkit-transition: -webkit-transform 0.5s ease-in;
+	-o-transition: -o-transform 0.5s ease-in;
+}
+
+.zoomimg img:hover {
+	-moz-transform: scale(5);
+	-webkit-transform: scale(5);
+	-o-transform: scale(5);
+}

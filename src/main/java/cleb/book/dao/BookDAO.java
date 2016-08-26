@@ -3,6 +3,8 @@ package cleb.book.dao;
 import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
@@ -17,8 +19,11 @@ import cleb.book.Book;
 /**
  * This utility class provides methods for working with books in database.
  */
-// TODO add javadoc
 public class BookDAO {
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(BookDAO.class.getName());
 
     /**
      * Saves information about uploaded book in a database.
@@ -78,6 +83,10 @@ public class BookDAO {
             }
 
             stored = false;
+
+            logger.error(
+                "Can not store information about book \"{}\" in database",
+                fileName, e);
         } finally {
             closeConnection(connection);
         }
@@ -85,35 +94,7 @@ public class BookDAO {
         return stored;
     }
 
-    @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
-    public static List<Book> getAllBooks() {
-        List books = null;
-
-        // Create session and transaction
-        SessionFactory factory = new Configuration().configure()
-            .buildSessionFactory();
-
-        SessionBuilder builder = factory.withOptions();
-        // Supply connection from connection pool
-        Connection connection = getConnection();
-        builder.connection(connection);
-
-        Transaction transaction = null;
-
-        try (Session session = builder.openSession()) {
-            transaction = session.beginTransaction();
-            books = session.createQuery("from Book").list();
-            transaction.commit();
-        } catch (Exception e) {
-            // TODO replace by logger
-            e.printStackTrace();
-        } finally {
-            closeConnection(connection);
-        }
-
-        return books;
-    }
-
+    // TODO add javadoc
     @SuppressWarnings({ "deprecation", "rawtypes" })
     public static void addPaths(String fileName, String filePath,
         String coverPath) {
@@ -141,8 +122,47 @@ public class BookDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
+
+            logger.error("Can not add paths for book \"{}\" in database",
+                fileName, e);
         } finally {
             closeConnection(connection);
         }
     }
+
+    /**
+     * Returns {@code List} with all {@code Book} objects stored in database.
+     *
+     * @return {@code List} with books.
+     */
+    @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
+    public static List<Book> getAllBooks() {
+        List books = null;
+
+        // Create session and transaction
+        SessionFactory factory = new Configuration().configure()
+            .buildSessionFactory();
+
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        Connection connection = getConnection();
+        builder.connection(connection);
+
+        Transaction transaction = null;
+
+        try (Session session = builder.openSession()) {
+            transaction = session.beginTransaction();
+            books = session.createQuery("from Book").list();
+            transaction.commit();
+        } catch (Exception e) {
+            logger.error(
+                "Can not retrieve information about all books from database",
+                e);
+        } finally {
+            closeConnection(connection);
+        }
+
+        return books;
+    }
+
 }

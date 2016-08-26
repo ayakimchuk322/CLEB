@@ -37,6 +37,17 @@
 		</RandomAccessFile>
 
 		<!-- Appender for saving into file -->
+		<!-- For BookDAO class -->
+		<!-- It will output only errors -->
+		<RandomAccessFile name="BookDAO-RAF-Appender" fileName="${log-path}/bookdao.log">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
+				</pattern>
+			</PatternLayout>
+		</RandomAccessFile>
+
+		<!-- Appender for saving into file -->
 		<!-- For security package -->
 		<RandomAccessFile name="Security-RAF-Appender" fileName="${log-path}/security.log">
 			<PatternLayout>
@@ -71,6 +82,11 @@
 		<Logger name="cleb.uploading" level="ALL" additivity="TRUE">
 			<AppenderRef ref="Uploading-RAF-Appender" level="ALL" />
 			<AppenderRef ref="Uploading-RAF-Errors-Appender" level="ERROR" />
+		</Logger>
+
+		<!-- Logger for BookDAO class -->
+		<Logger name="cleb.book.dao.BookDAO" level="ALL" additivity="TRUE">
+			<AppenderRef ref="BookDAO-RAF-Appender" level="ERROR" />
 		</Logger>
 
 		<!-- Logger for security package -->

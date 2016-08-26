@@ -76,7 +76,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
     @Override
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
-        // Redirect back to index page
+        // Redirect back to upload page
         response.sendRedirect("upload");
     }
 
@@ -99,7 +99,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
             logger.info("Book \"{}\" successfully saved", fileName);
 
-            // Redirect back to index page
+            // Redirect back to upload page
             doGet(request, response);
         } else {
             // Inform user about error

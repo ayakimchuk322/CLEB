@@ -67,6 +67,7 @@
                 <th>Series</th>
                 <th>Genre</th>
                 <th>Published</th>
+                <th>Cover</th>
               </tr>
             </thead>
             <tbody>
@@ -77,6 +78,8 @@
                 <td th:text="${book.seqName}">series</td>
                 <td th:text="${book.genre}">genre</td>
                 <td th:text="${book.published}">published</td>
+                <!--/* Access to directory outside webapp context tweaked in Tomcat's server.xml */-->
+                <td><img src="image" th:src="@{/covers/} + ${book.coverPath}" height="50"></td>
               </tr>
             </tbody>
           </table>

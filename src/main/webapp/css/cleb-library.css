@@ -1,0 +1,28 @@
+/* Make title the same height as the navigation */
+.cllibrarytitle {
+	margin-top: 0;
+	margin-bottom: 40px;
+	line-height: 40px;
+}
+
+/* Header above table */
+.cllibrarywelcome {
+	text-align: center;
+}
+
+/* Zoom covers on mouse hover */
+/* OFF */
+.clzoom img {
+	margin: 0px;
+	height: 50px;
+	-moz-transition: -moz-transform 0.5s ease-in;
+	-webkit-transition: -webkit-transform 0.5s ease-in;
+	-o-transition: -o-transform 0.5s ease-in;
+}
+
+/* ON */
+.clzoom img:hover {
+	-moz-transform: scale(5);
+	-webkit-transform: scale(5);
+	-o-transform: scale(5);
+}

@@ -21,8 +21,9 @@
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="../../css/jumbotron.css" th:href="@{/css/jumbotron.css}">
 
+<!-- Custom CLEB css -->
 <link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
-<link rel="stylesheet" href="../../css/zoomimg.css" th:href="@{/css/zoomimg.css}">
+<link rel="stylesheet" href="../../css/cleb-library.css" th:href="@{/css/cleb-library.css}">
 
 </head>
 
@@ -30,7 +31,7 @@
 
   <div class="container">
     <div class="header clearfix">
-      <a href="index"><h3 class="text-muted pull-left clebtitle librarytitle">Cool library for e-books</h3></a>
+      <a href="index"><h3 class="text-muted pull-left clebtitle cllibrarytitle">Cool library for e-books</h3></a>
       <nav>
         <ul class="nav nav-pills pull-left">
           <li role="presentation"><a href="library">Library</a></li>
@@ -52,8 +53,8 @@
 
     <div class="jumbotron">
       <div class="container">
-        <h2 class="librarywelcome">Community library</h2>
-        <p class="librarywelcome">
+        <h2 class="cllibrarywelcome">Community library</h2>
+        <p class="cllibrarywelcome">
           Browse for books uploaded by <span class="clebtitle">CLEB</span> community or <a href="upload">upload</a>
           yours!
         </p>
@@ -81,7 +82,7 @@
                 <td th:text="${book.published}">published</td>
                 <!--/* Access to directory outside webapp context tweaked in Tomcat's server.xml */-->
                 <td>
-                  <div class="zoomimg">
+                  <div class="clzoom">
                     <img src="image" th:src="@{/covers/} + ${book.coverPath}">
                   </div>
                 </td>

@@ -24,6 +24,7 @@
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="../../css/jumbotron-narrow.css" th:href="@{/css/jumbotron-narrow.css}">
 
+<!-- Custom CLEB css -->
 <link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
 <link rel="stylesheet" href="../../css/cleb-index.css" th:href="@{/css/cleb-index.css}">
 
@@ -55,24 +56,24 @@
 
     <div class="jumbotron">
 
-      <h2 class="quotetext" th:text="${quote}">quote</h2>
+      <h2 class="ciquotetext" th:text="${quote}">quote</h2>
       <h4 th:text="'-' + ${author}">author</h4>
       <p class="lead">
         A book is a map in one's journey and a good book is like a light in darkness. Join <span class="clebtitle">'Cool
           library for e-books'</span> and start your journey today!
       </p>
 
-      <table class="tablebuts">
+      <table class="cibutons">
         <tr>
           <td>
             <p>
-              <a class="btn btn-lg btn-success tablebut" href="register" role="button">Join library!</a>
+              <a class="btn btn-lg btn-success citablebtn" href="register" role="button">Join library!</a>
             </p>
           </td>
 
           <td>
             <p>
-              <a class="btn btn-lg btn-success tablebut" href="library" role="button">Go to library</a>
+              <a class="btn btn-lg btn-success citablebtn" href="library" role="button">Go to library</a>
             </p>
           </td>
         </tr>
@@ -81,18 +82,18 @@
     </div>
 
     <!-- Three columns with 3 latest uploaded books -->
-    <h2>Latest uploads:</h2>
+    <h2>Check out latest uploads:</h2>
 
     <div class="row">
       <div class="col-lg-4">
-        <div class="cleblatest">
-          <object class="cleblatest" data="cover.png" th:data="@{/covers/} + ${books[0].coverPath}">
+        <div class="cicover">
+          <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[0].coverPath}">
             <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
           </object>
         </div>
-        <h2 th:text="${books[0].title}">title</h2>
-        <h3>
-          <span th:text="${books[0].authorFirstName + ' ' + books[0].authorLastName}"></span>
+        <h2 class="cititle" th:text="${books[0].title}">title</h2>
+        <h3 class="ciauthor">
+          <span th:text="${books[0].authorFirstName + ' ' + books[0].authorLastName}">author</span>
         </h3>
         <p>annotation</p>
         <p>
@@ -101,14 +102,14 @@
       </div>
       <!-- /.col-lg-4 -->
       <div class="col-lg-4">
-        <div class="cleblatest">
-          <object class="cleblatest" data="cover.png" th:data="@{/covers/} + ${books[1].coverPath}">
+        <div class="cicover">
+          <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[1].coverPath}">
             <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
           </object>
         </div>
-        <h2 th:text="${books[1].title}">title</h2>
-        <h3>
-          <span th:text="${books[1].authorFirstName + ' ' + books[1].authorLastName}"></span>
+        <h2 class="cititle" th:text="${books[1].title}">title</h2>
+        <h3 class="ciauthor">
+          <span th:text="${books[1].authorFirstName + ' ' + books[1].authorLastName}">author</span>
         </h3>
         <p>annotation</p>
         <p>
@@ -117,14 +118,14 @@
       </div>
       <!-- /.col-lg-4 -->
       <div class="col-lg-4">
-        <div class="cleblatest">
-          <object class="cleblatest" data="cover.png" th:data="@{/covers/} + ${books[2].coverPath}">
+        <div class="cicover">
+          <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[2].coverPath}">
             <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
           </object>
         </div>
-        <h2 th:text="${books[2].title}">title</h2>
-        <h3>
-          <span th:text="${books[2].authorFirstName + ' ' + books[2].authorLastName}"></span>
+        <h2 class="cititle" th:text="${books[2].title}">title</h2>
+        <h3 class="ciauthor">
+          <span th:text="${books[2].authorFirstName + ' ' + books[2].authorLastName}">author</span>
         </h3>
         <p>annotation</p>
         <p>

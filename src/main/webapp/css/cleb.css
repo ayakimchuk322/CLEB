@@ -1,45 +1,6 @@
-/* Font for library title */
+/* Font for site title */
 .clebtitle {
 	font-family: 'Titillium Web', sans-serif;
 	font-style: italic;
 	font-weight: bold;
-}
-
-/* Font for quote */
-.quotetext {
-	font-family: 'Courgette', cursive;
-}
-
-/* For table with buttons on index.html page */
-.tablebuts {
-	text-align: center;
-	width: 100%;
-	margin: 0 auto;
-}
-
-/* For each button in tabel on index.html page */
-.tablebut {
-	text-align: center;
-	width: 200px;
-}
-
-/* Centers upload form and limits length of displayed file name */
-.uploadover {
-	text-align: left;
-	width: 100%;
-	margin: 0 auto;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-/* Make the masthead heading the same height as the navigation (library.html) */
-.librarytitle {
-  margin-top: 0;
-  margin-bottom: 40px;
-  line-height: 40px;
-}
-
-.librarywelcome {
-	text-align: center;
 }

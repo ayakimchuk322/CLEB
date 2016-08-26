@@ -1,4 +1,36 @@
-.cleblatest {
+/* Font for quote */
+.ciquotetext {
+	font-family: 'Courgette', cursive;
+}
+
+/* For table with buttons on index.html page */
+.cibutons {
+	text-align: center;
+	width: 100%;
+	margin: 0 auto;
+}
+
+/* For each button in tabel on index.html page */
+.citablebtn {
+	text-align: center;
+	width: 200px;
+}
+
+/* For img covers of latest uploaded books */
+.cicover {
 	height: 256px;
 	text-align: center;
+}
+
+/* For title of latest uploaded books */
+.cititle {
+	text-align: center;
+	font-size: 26px;
+}
+
+/* For author of latest uploaded books */
+.ciauthor {
+	font-size: 20px;
+	font-style: italic;
+	font-size: 20px;
 }

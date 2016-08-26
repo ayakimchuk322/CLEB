@@ -1,0 +1,9 @@
+/* Centers upload form and limits length of displayed file name */
+.cuuploadover {
+	text-align: left;
+	width: 100%;
+	margin: 0 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

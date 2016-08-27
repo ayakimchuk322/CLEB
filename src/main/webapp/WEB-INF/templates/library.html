@@ -85,10 +85,10 @@
                 <td th:text="${book.published}">published</td>
                 <!--/* Access to directory outside webapp context tweaked in Tomcat's server.xml */-->
                 <td>
-                  <div class="clzoom" th:if="${not #strings.isEmpty(book.coverPath)}">
-                    <img src="cover.png" th:src="@{/covers/} + ${book.coverPath}">
+                  <div class="clzoom" th:if="${not #strings.isEmpty(book.coverName)}">
+                    <img src="cover.png" th:src="@{/covers/} + ${book.coverName}">
                   </div>
-                  <div class="clzoomoff" th:if="${#strings.isEmpty(book.coverPath)}">
+                  <div class="clzoomoff" th:if="${#strings.isEmpty(book.coverName)}">
                     <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
                   </div>
                 </td>

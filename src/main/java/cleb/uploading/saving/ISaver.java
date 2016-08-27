@@ -41,7 +41,7 @@ public interface ISaver {
      * @param book Object representing actual book.
      * @param name Book file name.
      *
-     * @return {@code String} path to cover.
+     * @return {@code String} cover file name.
      */
     public String saveCover(Object book, String name);
 

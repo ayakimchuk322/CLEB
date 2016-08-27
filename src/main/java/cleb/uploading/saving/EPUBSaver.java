@@ -1,6 +1,6 @@
 package cleb.uploading.saving;
 
-import static cleb.book.dao.BookDAO.addPaths;
+import static cleb.book.dao.BookDAO.addCoverName;
 import static cleb.book.dao.BookDAO.storeInDB;
 
 import org.apache.commons.io.FileUtils;
@@ -95,9 +95,13 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
         if (getBasicInfo(request, book)) {
             // Try to save cover, book, and information aboub book in database
-            String coverPath = saveCover(book, fileName);
+            String coverName = saveCover(book, fileName);
             storeInDir(tempBookPath, bookPath);
-            addPaths(fileName, bookPath, coverPath);
+            // If coverName is empty (there is no cover for this book) no point
+            // to update it in database - it's empty by default
+            if (!coverName.isEmpty()) {
+                addCoverName(fileName, coverName);
+            }
 
             logger.info("Book \"{}\" successfully saved", fileName);
 

@@ -46,10 +46,8 @@ public class Book {
     @Column(name = "uploaded_by")
     private String uploadedBy;
 
-    @Column(name = "file_path")
-    private String filePath;
-    @Column(name = "cover_path")
-    private String coverPath;
+    @Column(name = "cover_name")
+    private String coverName;
 
     /**
      * No argument constructor.
@@ -61,7 +59,8 @@ public class Book {
     public Book(String fileName, String md5, long fileSize, String fileType,
         String genre, String authorFirstName, String authorLastName,
         String title, String seqName, String seqNumber, String published,
-        String uploadedBy, String filePath, String coverPath) {
+        String uploadedBy, String coverName) {
+
         this.fileName = fileName;
         this.md5 = md5;
         this.fileSize = fileSize;
@@ -74,8 +73,7 @@ public class Book {
         this.seqNumber = seqNumber;
         this.published = published;
         this.uploadedBy = uploadedBy;
-        this.filePath = filePath;
-        this.coverPath = coverPath;
+        this.coverName = coverName;
     }
 
     public int getId() {
@@ -182,20 +180,12 @@ public class Book {
         this.uploadedBy = uploadedBy;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getCoverName() {
+        return coverName;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public String getCoverPath() {
-        return coverPath;
-    }
-
-    public void setCoverPath(String coverPath) {
-        this.coverPath = coverPath;
+    public void setCover(String coverName) {
+        this.coverName = coverName;
     }
 
 }

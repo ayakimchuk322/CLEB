@@ -55,10 +55,10 @@ public class BookDAO {
         boolean stored = false;
 
         // Create new Book object
-        // Paths for book and cover will be added later
+        // Name of the cover will be added later, if this book has one
         Book book = new Book(fileName, md5, fileSize, fileType, genre,
             authorFirstName, authorLastName, title, seqName, seqNumber,
-            published, uploadedBy, "", "");
+            published, uploadedBy, "");
 
         // Create session and transaction
         SessionFactory factory = new Configuration().configure()
@@ -94,10 +94,17 @@ public class BookDAO {
         return stored;
     }
 
-    // TODO add javadoc
+    /**
+     * Updates record in database for <code>fileName</code> book with
+     * <code>coverName</code> file name of it's cover. Callers of this method
+     * should call it only when the cover is present - default value for cover
+     * name in database is empty {@code String}, so no point to set it again.
+     *
+     * @param fileName {@code String} file name of the book.
+     * @param coverName {@code String} file name of the cover.
+     */
     @SuppressWarnings({ "deprecation", "rawtypes" })
-    public static void addPaths(String fileName, String filePath,
-        String coverPath) {
+    public static void addCoverName(String fileName, String coverName) {
 
         // Create session and transaction
         SessionFactory factory = new Configuration().configure()
@@ -114,8 +121,7 @@ public class BookDAO {
             transaction = session.beginTransaction();
             Book book = (Book) session.createQuery("FROM Book WHERE fileName=?")
                 .setParameter(0, fileName).uniqueResult();
-            book.setFilePath(filePath);
-            book.setCoverPath(coverPath);
+            book.setCover(coverName);
             session.update(book);
             transaction.commit();
         } catch (Exception e) {
@@ -123,7 +129,7 @@ public class BookDAO {
                 transaction.rollback();
             }
 
-            logger.error("Can not add paths for book \"{}\" in database",
+            logger.error("Can not update book \"{}\" with cover in database",
                 fileName, e);
         } finally {
             closeConnection(connection);

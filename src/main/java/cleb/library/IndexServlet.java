@@ -88,7 +88,9 @@ public class IndexServlet extends HttpServlet {
             quotesEl = rootEl.getChildren();
 
         } catch (JDOMException e) {
+            logger.error("Can not parse quotes", e);
         } catch (IOException e) {
+            logger.error("Can not load quotes", e);
         }
 
         // Initialize random generator

@@ -44,6 +44,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
     private String tempFolderPath;
     private String folderPath;
+    private String annotationsPath;
     private String coversPath;
 
     private String fileName;
@@ -66,6 +67,8 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         tempFolderPath = properties.getProperty("file-temp-upload");
         // Directory to store uploaded books
         folderPath = properties.getProperty("book-store");
+        // Directory to store books annotations
+        annotationsPath = properties.getProperty("book-annotations");
         // Directory to store books covers
         coversPath = properties.getProperty("book-covers");
 
@@ -222,6 +225,10 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         return storeInDB(fileName, md5, fileSize, fileType, genre,
             authorFirstName, authorLastName, title, seqName, seqNumber,
             published, uploadedBy);
+    }
+
+    @Override
+    public void saveAnnotation(Object annotationHolder, String name) {
     }
 
     @Override

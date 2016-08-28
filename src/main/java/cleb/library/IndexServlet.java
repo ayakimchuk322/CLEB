@@ -1,4 +1,4 @@
-package cleb.reading;
+package cleb.library;
 
 import static cleb.book.dao.BookDAO.getLatestBooks;
 import static cleb.security.dao.UserDAO.getUserNameBySubject;

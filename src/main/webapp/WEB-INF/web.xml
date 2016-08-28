@@ -102,7 +102,7 @@
 		<servlet-name>IndexServlet</servlet-name>
 		<display-name>IndexServlet</display-name>
 		<description></description>
-		<servlet-class>cleb.reading.IndexServlet</servlet-class>
+		<servlet-class>cleb.library.IndexServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>ErrorServlet</servlet-name>
@@ -114,13 +114,13 @@
 		<servlet-name>UploadServlet</servlet-name>
 		<display-name>UploadServlet</display-name>
 		<description></description>
-		<servlet-class>cleb.reading.UploadServlet</servlet-class>
+		<servlet-class>cleb.library.UploadServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>LibraryServlet</servlet-name>
 		<display-name>LibraryServlet</display-name>
 		<description></description>
-		<servlet-class>cleb.reading.LibraryServlet</servlet-class>
+		<servlet-class>cleb.library.LibraryServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

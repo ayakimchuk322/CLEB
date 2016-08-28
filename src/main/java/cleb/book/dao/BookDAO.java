@@ -95,10 +95,10 @@ public class BookDAO {
     }
 
     /**
-     * Updates record in database for <code>fileName</code> book with
-     * <code>coverName</code> file name of it's cover. Callers of this method
-     * should call it only when the cover is present - default value for cover
-     * name in database is empty {@code String}, so no point to set it again.
+     * Updates record in database for {@code fileName} book with
+     * {@code coverName} file name of it's cover. Callers of this method should
+     * call it only when the cover is present - default value for cover name in
+     * database is empty {@code String}, so no point to set it again.
      *
      * @param fileName {@code String} file name of the book.
      * @param coverName {@code String} file name of the cover.

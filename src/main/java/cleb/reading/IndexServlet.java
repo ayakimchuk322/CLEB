@@ -3,6 +3,9 @@ package cleb.reading;
 import static cleb.book.dao.BookDAO.getLatestBooks;
 import static cleb.security.dao.UserDAO.getUserNameBySubject;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.jdom2.Document;
@@ -13,9 +16,11 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
 import javax.servlet.ServletContext;
@@ -33,6 +38,12 @@ public class IndexServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(IndexServlet.class.getName());
+
+    private String annotationsPath;
+
     private ServletContext servletContext;
     private ServletContextTemplateResolver templateResolver;
     private TemplateEngine templateEngine;
@@ -43,6 +54,19 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        // Load properties
+        Properties properties = new Properties();
+
+        try (InputStream propIn = getServletContext()
+            .getResourceAsStream("/WEB-INF/classes/props.properties")) {
+            properties.load(propIn);
+        } catch (IOException e) {
+            logger.error("Can not load properties", e);
+        }
+
+        // Directory to store books annotations
+        annotationsPath = properties.getProperty("book-annotations");
+
         // Initialize Thymeleaf for this servlet
         servletContext = getServletContext();
         templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -103,11 +127,40 @@ public class IndexServlet extends HttpServlet {
         // Set books variable
         webContext.setVariable("books", latestBooks);
 
+        // Set annotations for latest books
+        webContext.setVariable("annotation1",
+            loadAnnotation(latestBooks[0].getFileName()));
+        webContext.setVariable("annotation2",
+            loadAnnotation(latestBooks[1].getFileName()));
+        webContext.setVariable("annotation3",
+            loadAnnotation(latestBooks[2].getFileName()));
+
         // For correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");
 
         // Show index.html page
         templateEngine.process("index", webContext, response.getWriter());
+    }
+
+    /**
+     * Loads annotation into {@code String} from file for {@code bookName} book.
+     *
+     * @param bookName {@code String} book file name.
+     * @return {@code String} with loaded annotation.
+     */
+    private String loadAnnotation(String bookName) {
+        String annotation = "";
+
+        File annoFile = new File(annotationsPath + bookName + ".txt");
+
+        try {
+            annotation = FileUtils.readFileToString(annoFile, "UTF-8");
+        } catch (IOException e) {
+            logger.error("Can not load annotation for book \"{}\"", bookName,
+                e);
+        }
+
+        return annotation;
     }
 
 }

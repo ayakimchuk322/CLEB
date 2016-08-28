@@ -28,6 +28,15 @@
 <link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
 <link rel="stylesheet" href="../../css/cleb-index.css" th:href="@{/css/cleb-index.css}">
 
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Bootstrap core JS -->
+<script type="text/javascript" src="../../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- Bootstrap JS for tabs -->
+<script type="text/javascript" src="../../js/tab.js" th:src="@{/js/tab.js}"></script>
+
+
 </head>
 
 <body>
@@ -85,58 +94,72 @@
 
     </div>
 
-    <!-- Three columns with 3 latest uploaded books -->
+    <!-- Tabs with 3 latest uploaded books -->
     <h2 class="ciheader">Check out latest uploads:</h2>
 
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="cicover">
-          <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[0].coverName}">
-            <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
-          </object>
+    <div>
+
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs nav-justified" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">
+            <div class="cicover">
+              <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[0].coverName}">
+                <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
+              </object>
+            </div>
+        </a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
+            <div class="cicover">
+              <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[1].coverName}">
+                <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
+              </object>
+            </div>
+        </a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">
+            <div class="cicover">
+              <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[2].coverName}">
+                <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
+              </object>
+            </div>
+        </a></li>
+      </ul>
+      <!-- /Nav tabs -->
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+          <h2 class="cititle" th:text="${books[0].title}">title</h2>
+          <h3 class="ciauthor">
+            <span th:text="${books[0].authorFirstName + ' ' + books[0].authorLastName}">author</span>
+          </h3>
+          <p>annotation</p>
+          <p>
+            <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
+          </p>
         </div>
-        <h2 class="cititle" th:text="${books[0].title}">title</h2>
-        <h3 class="ciauthor">
-          <span th:text="${books[0].authorFirstName + ' ' + books[0].authorLastName}">author</span>
-        </h3>
-        <p>annotation</p>
-        <p>
-          <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
-        </p>
-      </div>
-      <!-- /.col-lg-4 -->
-      <div class="col-lg-4">
-        <div class="cicover">
-          <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[1].coverName}">
-            <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
-          </object>
+        <div role="tabpanel" class="tab-pane" id="profile">
+          <h2 class="cititle" th:text="${books[1].title}">title</h2>
+          <h3 class="ciauthor">
+            <span th:text="${books[1].authorFirstName + ' ' + books[1].authorLastName}">author</span>
+          </h3>
+          <p>annotation</p>
+          <p>
+            <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
+          </p>
         </div>
-        <h2 class="cititle" th:text="${books[1].title}">title</h2>
-        <h3 class="ciauthor">
-          <span th:text="${books[1].authorFirstName + ' ' + books[1].authorLastName}">author</span>
-        </h3>
-        <p>annotation</p>
-        <p>
-          <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
-        </p>
-      </div>
-      <!-- /.col-lg-4 -->
-      <div class="col-lg-4">
-        <div class="cicover">
-          <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[2].coverName}">
-            <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
-          </object>
+        <div role="tabpanel" class="tab-pane" id="messages">
+          <h2 class="cititle" th:text="${books[2].title}">title</h2>
+          <h3 class="ciauthor">
+            <span th:text="${books[2].authorFirstName + ' ' + books[2].authorLastName}">author</span>
+          </h3>
+          <p>annotation</p>
+          <p>
+            <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
+          </p>
         </div>
-        <h2 class="cititle" th:text="${books[2].title}">title</h2>
-        <h3 class="ciauthor">
-          <span th:text="${books[2].authorFirstName + ' ' + books[2].authorLastName}">author</span>
-        </h3>
-        <p>annotation</p>
-        <p>
-          <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
-        </p>
       </div>
-      <!-- /.col-lg-4 -->
+      <!-- /Tab panes -->
+
     </div>
     <!-- /latest uploaded books -->
 

@@ -23,13 +23,16 @@ public interface ISaver {
      * uploaded book according to its type. book parameter should be cast to its
      * actual type depending on book type and exctraction logic.
      *
-     * @param request HttpServletRequest from doPost method to retrieve
-     *        information about file.
-     * @param book Object representing actual book.
+     * @param request {@code HttpServletRequest} from {@code doPost} method to
+     *        retrieve information about file.
+     * @param book {@code Object} representing actual book.
      *
      * @return boolean value returned by storeInDB method.
      */
     public boolean getBasicInfo(HttpServletRequest request, Object book);
+
+    // TODO add javadoc
+    public void saveAnnotation(Object annotationHolder, String name);
 
     /**
      * Implementation of this method should get cover from uploaded book and
@@ -38,8 +41,8 @@ public interface ISaver {
      * (jpeg/png). Implementation should return {@code String} with cover file
      * name or empty {@code String} if there is no cover for this book.
      *
-     * @param book Object representing actual book.
-     * @param name Book file name.
+     * @param book {@code Object} representing actual book.
+     * @param name {@code String} book file name.
      *
      * @return {@code String} cover file name.
      */
@@ -48,8 +51,8 @@ public interface ISaver {
     /**
      * Moves book from temporary to storing directory.
      *
-     * @param srcFile Path to file in temporary directory.
-     * @param destFile Path to file in storing directory.
+     * @param srcFile {@code String} path to file in temporary directory.
+     * @param destFile {@code String} path to file in storing directory.
      */
     public default void storeInDir(String srcFile, String destFile) {
         try {

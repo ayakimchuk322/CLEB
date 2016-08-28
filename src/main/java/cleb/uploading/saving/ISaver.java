@@ -31,7 +31,15 @@ public interface ISaver {
      */
     public boolean getBasicInfo(HttpServletRequest request, Object book);
 
-    // TODO add javadoc
+    /**
+     * Implementation of this method should get annotation from uploaded book
+     * and save it in special directory for annotations. Annotation should be
+     * saved under specific name - it constists of the book file name and 'txt'
+     * extension.
+     *
+     * @param annotationHolder {@code Object} that can be parsed for annotation.
+     * @param name {@code String} book file name.
+     */
     public void saveAnnotation(Object annotationHolder, String name);
 
     /**

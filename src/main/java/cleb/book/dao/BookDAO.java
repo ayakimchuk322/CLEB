@@ -200,8 +200,13 @@ public class BookDAO {
             closeConnection(connection);
         }
 
-        Book[] booksArray = new Book[3];
-        books.toArray(booksArray);
+        Book[] booksArray = null;
+
+        // If less than 3 books were uploaded, return null
+        if (books.size() == 3) {
+            booksArray = new Book[3];
+            books.toArray(booksArray);
+        }
 
         return booksArray;
     }

@@ -95,9 +95,10 @@
     </div>
 
     <!-- Tabs with 3 latest uploaded books -->
-    <h2 class="ciheader">Check out our latest uploads:</h2>
+    <!-- Shows only when at least 3 books were uploaded -->
+    <div th:if="${books != null}">
 
-    <div>
+      <h2 class="ciheader">Check out our latest uploads:</h2>
 
       <!-- Nav tabs -->
       <ul class="nav nav-tabs nav-justified" role="tablist">

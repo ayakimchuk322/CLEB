@@ -95,31 +95,34 @@
     </div>
 
     <!-- Tabs with 3 latest uploaded books -->
-    <h2 class="ciheader">Check out latest uploads:</h2>
+    <h2 class="ciheader">Check out our latest uploads:</h2>
 
     <div>
 
       <!-- Nav tabs -->
       <ul class="nav nav-tabs nav-justified" role="tablist">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">
-            <div class="cicover">
-              <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[0].coverName}">
-                <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
-              </object>
+            <div class="cicover" th:if="${not #strings.isEmpty(books[0].coverName)}">
+              <img class="cicover" src="cover.png" th:src="@{/covers/} + ${books[0].coverName}">
+            </div>
+            <div class="cicover" th:if="${#strings.isEmpty(books[0].coverName)}">
+              <img class="cicover" src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
             </div>
         </a></li>
         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
-            <div class="cicover">
-              <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[1].coverName}">
-                <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
-              </object>
+            <div class="cicover" th:if="${not #strings.isEmpty(books[1].coverName)}">
+              <img class="cicover" src="cover.png" th:src="@{/covers/} + ${books[1].coverName}">
+            </div>
+            <div class="cicover" th:if="${#strings.isEmpty(books[1].coverName)}">
+              <img class="cicover" src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
             </div>
         </a></li>
         <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">
-            <div class="cicover">
-              <object class="cicover" data="cover.png" th:data="@{/covers/} + ${books[2].coverName}">
-                <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
-              </object>
+            <div class="cicover" th:if="${not #strings.isEmpty(books[2].coverName)}">
+              <img class="cicover" src="cover.png" th:src="@{/covers/} + ${books[2].coverName}">
+            </div>
+            <div class="cicover" th:if="${#strings.isEmpty(books[2].coverName)}">
+              <img class="cicover" src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
             </div>
         </a></li>
       </ul>
@@ -132,7 +135,7 @@
           <h3 class="ciauthor">
             <span th:text="${books[0].authorFirstName + ' ' + books[0].authorLastName}">author</span>
           </h3>
-          <p>annotation</p>
+          <embed src="">
           <p>
             <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
           </p>
@@ -142,7 +145,7 @@
           <h3 class="ciauthor">
             <span th:text="${books[1].authorFirstName + ' ' + books[1].authorLastName}">author</span>
           </h3>
-          <p>annotation</p>
+          <embed src="">
           <p>
             <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
           </p>
@@ -152,7 +155,7 @@
           <h3 class="ciauthor">
             <span th:text="${books[2].authorFirstName + ' ' + books[2].authorLastName}">author</span>
           </h3>
-          <p>annotation</p>
+          <embed src="">
           <p>
             <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
           </p>

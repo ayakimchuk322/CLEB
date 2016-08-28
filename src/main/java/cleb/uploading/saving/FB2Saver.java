@@ -3,11 +3,11 @@ package cleb.uploading.saving;
 import static cleb.book.dao.BookDAO.addCoverName;
 import static cleb.book.dao.BookDAO.storeInDB;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.apache.logging.log4j.LogManager;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -45,9 +45,10 @@ public class FB2Saver extends HttpServlet implements ISaver {
     private String annotationsPath;
     private String coversPath;
 
-    private String fileName;
-
     private String errorDesc;
+
+    // FIXME rework fields for concurrency
+    private String fileName;
 
     @Override
     public void init() throws ServletException {
@@ -221,6 +222,9 @@ public class FB2Saver extends HttpServlet implements ISaver {
         } catch (NullPointerException e) {
         }
 
+        // Save annotation
+        saveAnnotation(doc, fileName);
+
         return storeInDB(fileName, md5, fileSize, fileType, genre,
             authorFirstName, authorLastName, title, seqName, seqNumber,
             published, uploadedBy);
@@ -228,6 +232,35 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
     @Override
     public void saveAnnotation(Object annotationHolder, String name) {
+        // Necessary cast to process with annotation extraction
+        Document doc = (Document) annotationHolder;
+
+        try {
+            // Document root and namespace
+            Element root = doc.getRootElement();
+            Namespace ns = root.getNamespace();
+
+            Element descEl = root.getChild("description", ns);
+            Element titleInfoEl = descEl.getChild("title-info", ns);
+
+            // Get annotation element
+            Element annoEl = titleInfoEl.getChild("annotation", ns);
+
+            // Get annotation text
+            String annotation = annoEl.getValue().replaceAll("\\s+", " ")
+                .trim();
+
+            // File to store extracted annotation
+            File annoFile = new File(annotationsPath + name + ".txt");
+
+            // Write out
+            FileUtils.writeStringToFile(annoFile, annotation, "UTF-8");
+        } catch (IOException e) {
+            logger.error("Can not save annotation fot book \"{}\"", fileName,
+                e);
+        } catch (NullPointerException e) {
+            logger.warn("Book \"{}\" has no annotation", fileName);
+        }
     }
 
     @Override

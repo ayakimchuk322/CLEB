@@ -209,6 +209,9 @@ public class EPUBSaver extends HttpServlet implements ISaver {
             } catch (NullPointerException e) {
             }
 
+            // Save annotation
+            saveAnnotation(contentopfDoc, fileName);
+
         } catch (ZipException e) {
             logger.error("Can not extract information from book \"{}\"",
                 fileName, e);
@@ -229,6 +232,36 @@ public class EPUBSaver extends HttpServlet implements ISaver {
 
     @Override
     public void saveAnnotation(Object annotationHolder, String name) {
+        // Necessary cast to process with annotation extraction
+        Document doc = (Document) annotationHolder;
+
+        try {
+            // Document root and namespace
+            Element contentopfRoot = doc.getRootElement();
+            Namespace contentopfNs = contentopfRoot.getNamespace();
+            Namespace dc = contentopfRoot.getNamespace("dc");
+
+            Element metadataEl = contentopfRoot.getChild("metadata",
+                contentopfNs);
+
+            // Get annotation element
+            Element annoEl = metadataEl.getChild("description", dc);
+
+            // Get annotation text
+            String annotation = annoEl.getValue().replaceAll("\\s+", " ")
+                .trim();
+
+            // File to store extracted annotation
+            File annoFile = new File(annotationsPath + name + ".txt");
+
+            // Write out
+            FileUtils.writeStringToFile(annoFile, annotation, "UTF-8");
+        } catch (IOException e) {
+            logger.error("Can not save annotation fot book \"{}\"", fileName,
+                e);
+        } catch (NullPointerException e) {
+            logger.warn("Book \"{}\" has no annotation", fileName);
+        }
     }
 
     @Override

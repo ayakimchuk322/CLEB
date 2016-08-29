@@ -74,6 +74,7 @@
                 <th>Genre</th>
                 <th>Published</th>
                 <th>Cover</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -90,6 +91,13 @@
                   </div>
                   <div class="clzoomoff" th:if="${#strings.isEmpty(book.coverName)}">
                     <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
+                  </div>
+                </td>
+                <td>
+                  <div class="download">
+                    <a th:href="@{/books/} +${book.fileName}"><img src="../../icons/download.png"
+                      th:src="@{/icons/download.png}">
+                    </a>
                   </div>
                 </td>
               </tr>

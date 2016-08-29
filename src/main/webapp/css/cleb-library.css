@@ -28,7 +28,14 @@
 }
 
 /* OFF for icon when no cover */
-.clzoomoff img{
+.clzoomoff img {
 	margin: 0px;
 	height: 50px;
+}
+
+/* Download icon */
+.download img {
+	margin: 0px;
+	height: 32px;
+	text-align: center;
 }

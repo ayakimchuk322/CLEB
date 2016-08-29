@@ -122,6 +122,13 @@
 		<description></description>
 		<servlet-class>cleb.library.LibraryServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>GenresLoader</servlet-name>
+		<display-name>GenresLoader</display-name>
+		<description></description>
+		<load-on-startup>1</load-on-startup>
+		<servlet-class>cleb.book.util.GenresLoader</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -179,6 +186,10 @@
 	<servlet-mapping>
 		<servlet-name>LibraryServlet</servlet-name>
 		<url-pattern>/library</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GenresLoader</servlet-name>
+		<url-pattern>/GenresLoader</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

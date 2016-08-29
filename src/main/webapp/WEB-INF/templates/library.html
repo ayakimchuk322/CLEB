@@ -94,10 +94,9 @@
                   </div>
                 </td>
                 <td>
-                  <div class="download">
-                    <a th:href="@{/books/} +${book.fileName}"><img src="../../icons/download.png"
-                      th:src="@{/icons/download.png}">
-                    </a>
+                  <div class="cldownloaddiv">
+                    <a th:href="@{/books/} +${book.fileName}"><img class="cldownloadimg"
+                      src="../../icons/download.png" th:src="@{/icons/download.png}" title="Download"></a>
                   </div>
                 </td>
               </tr>

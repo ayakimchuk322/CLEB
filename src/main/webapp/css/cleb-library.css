@@ -34,8 +34,14 @@
 }
 
 /* Download icon */
-.download img {
-	margin: 0px;
+.cldownloaddiv {
+	padding-top: 0px;
 	height: 32px;
-	text-align: center;
+}
+
+.cldownloadimg {
+	margin-left: auto;
+	margin-right: auto;
+	width: 32px;
+	height: 32px;
 }

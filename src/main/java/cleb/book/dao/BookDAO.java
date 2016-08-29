@@ -1,5 +1,6 @@
 package cleb.book.dao;
 
+import static cleb.book.util.GenresLoader.getGenreNormal;
 import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
 import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 
@@ -43,6 +44,7 @@ public class BookDAO {
      *
      * @return true if transaction was successful and false - otherwise.
      *
+     * @see cleb.book.util.GenresLoader#getGenreNormal(String)
      * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
      * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
@@ -54,9 +56,12 @@ public class BookDAO {
 
         boolean stored = false;
 
+        // Get normal genre name
+        String genreNormal = getGenreNormal(genre);
+
         // Create new Book object
         // Name of the cover will be added later, if this book has one
-        Book book = new Book(fileName, md5, fileSize, fileType, genre,
+        Book book = new Book(fileName, md5, fileSize, fileType, genreNormal,
             authorFirstName, authorLastName, title, seqName, seqNumber,
             published, uploadedBy, "");
 

@@ -176,7 +176,6 @@ public class BookDAO {
         return books;
     }
 
-    // TODO move same code to private method
     @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
     public static Book[] getLatestBooks() {
         List books = null;

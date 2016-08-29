@@ -129,6 +129,12 @@
 		<load-on-startup>1</load-on-startup>
 		<servlet-class>cleb.book.util.GenresLoader</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Error404</servlet-name>
+		<display-name>Error404</display-name>
+		<description></description>
+		<servlet-class>cleb.error.Error404</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -191,10 +197,20 @@
 		<servlet-name>GenresLoader</servlet-name>
 		<url-pattern>/GenresLoader</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Error404</servlet-name>
+		<url-pattern>/Error404</url-pattern>
+	</servlet-mapping>
 
 	<!-- Welcome page -->
 	<welcome-file-list>
 		<welcome-file></welcome-file>
 	</welcome-file-list>
+
+	<!-- Error handling -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/Error404</location>
+	</error-page>
 
 </web-app>

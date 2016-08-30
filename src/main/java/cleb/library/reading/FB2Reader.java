@@ -75,7 +75,6 @@ public class FB2Reader extends HttpServlet implements IReader {
 
         // Get book text
         String bookText = read(bookFile);
-        bookText = normalizeTags(bookText);
 
         // Set book text variable
         webContext.setVariable("booktext", bookText);
@@ -132,7 +131,7 @@ public class FB2Reader extends HttpServlet implements IReader {
             logger.error("Can not output book text", e);
         }
 
-        return bookText;
+        return normalizeTags(bookText);
     }
 
     /**

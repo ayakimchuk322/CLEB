@@ -131,36 +131,67 @@
 
       <!-- Tab panes -->
       <div class="tab-content">
+
+        <!-- 1 -->
         <div role="tabpanel" class="tab-pane active" id="home">
           <h2 class="cititle" th:text="${books[0].title}">title</h2>
           <h3 class="ciauthor">
             <span th:text="${books[0].authorFirstName + ' ' + books[0].authorLastName}">author</span>
           </h3>
           <p th:text="${annotation1}">annotation</p>
-          <p>
-            <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
-          </p>
+
+          <!-- Read 'button' -->
+          <div>
+            <form method="post" action="read" class="inline">
+              <input type="hidden" name="book" th:value="${books[0].fileName}">
+              <input class="btn btn-default" type="submit" value="Read &raquo;"
+                th:title="Read + ' ' + ${books[0].title}">
+            </form>
+          </div>
+
         </div>
+        <!-- /1 -->
+
+        <!-- 2 -->
         <div role="tabpanel" class="tab-pane" id="profile">
           <h2 class="cititle" th:text="${books[1].title}">title</h2>
           <h3 class="ciauthor">
             <span th:text="${books[1].authorFirstName + ' ' + books[1].authorLastName}">author</span>
           </h3>
           <p th:text="${annotation2}">annotation</p>
-          <p>
-            <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
-          </p>
+
+          <!-- Read 'button' -->
+          <div>
+            <form method="post" action="read" class="inline">
+              <input type="hidden" name="book" th:value="${books[1].fileName}">
+              <input class="btn btn-default" type="submit" value="Read &raquo;"
+                th:title="Read + ' ' + ${books[1].title}">
+            </form>
+          </div>
+
         </div>
+        <!-- /2 -->
+
+        <!-- 3 -->
         <div role="tabpanel" class="tab-pane" id="messages">
           <h2 class="cititle" th:text="${books[2].title}">title</h2>
           <h3 class="ciauthor">
             <span th:text="${books[2].authorFirstName + ' ' + books[2].authorLastName}">author</span>
           </h3>
           <p th:text="${annotation3}">annotation</p>
-          <p>
-            <a class="btn btn-default" href="#" role="button">Read &raquo;</a>
-          </p>
+
+          <!-- Read 'button' -->
+          <div>
+            <form method="post" action="read" class="inline">
+              <input type="hidden" name="book" th:value="${books[2].fileName}">
+              <input class="btn btn-default" type="submit" value="Read &raquo;"
+                th:title="Read + ' ' + ${books[2].title}">
+            </form>
+          </div>
+
         </div>
+        <!-- /3 -->
+
       </div>
       <!-- /Tab panes -->
 

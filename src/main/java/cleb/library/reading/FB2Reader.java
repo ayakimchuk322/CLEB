@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This class reads fb2 books.
+ */
 public class FB2Reader extends HttpServlet implements IReader {
 
     private static final long serialVersionUID = 1L;

@@ -130,12 +130,17 @@ public class IndexServlet extends HttpServlet {
         webContext.setVariable("books", latestBooks);
 
         // Set annotations for latest books
-        webContext.setVariable("annotation1",
-            loadAnnotation(latestBooks[0].getFileName()));
-        webContext.setVariable("annotation2",
-            loadAnnotation(latestBooks[1].getFileName()));
-        webContext.setVariable("annotation3",
-            loadAnnotation(latestBooks[2].getFileName()));
+        try {
+            webContext.setVariable("annotation1",
+                loadAnnotation(latestBooks[0].getFileName()));
+            webContext.setVariable("annotation2",
+                loadAnnotation(latestBooks[1].getFileName()));
+            webContext.setVariable("annotation3",
+                loadAnnotation(latestBooks[2].getFileName()));
+        } catch (NullPointerException e) {
+            // There are no books yet uploaded
+            // Silently ignore
+        }
 
         // For correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");

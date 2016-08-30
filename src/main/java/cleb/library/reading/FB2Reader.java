@@ -125,8 +125,6 @@ public class FB2Reader extends HttpServlet implements IReader {
 
         XMLOutputter xmlOutputter = new XMLOutputter();
 
-        xmlOutputter.setFormat(Format.getPrettyFormat());
-
         // Output text to String
         try (StringWriter stringOut = new StringWriter()) {
             xmlOutputter.output(body, stringOut);

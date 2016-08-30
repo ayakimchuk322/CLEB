@@ -2,6 +2,7 @@ package cleb.library.reading;
 
 import static cleb.security.dao.UserDAO.getUserNameBySubject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.jdom2.Document;
@@ -70,6 +71,7 @@ public class FB2Reader extends HttpServlet implements IReader {
 
         // Get book text
         String bookText = read(bookFile);
+        bookText = normalizeTags(bookText);
 
         // Set book text variable
         webContext.setVariable("booktext", bookText);
@@ -127,6 +129,26 @@ public class FB2Reader extends HttpServlet implements IReader {
         }
 
         return bookText;
+    }
+
+    private String normalizeTags(String text) {
+        text = StringUtils.replace(text, "<body>", "", 1);
+        text = StringUtils.replace(text, "</body>", "", 1);
+
+        text = StringUtils.replace(text, "<empty-line />", "<br>");
+
+        text = StringUtils.replace(text, "<title>", "<br><div>");
+        text = StringUtils.replace(text, "</title>", "</div><br>");
+
+        text = StringUtils.replace(text, "<epigraph>", "<br><div>");
+        text = StringUtils.replace(text, "</epigraph>", "</div><br>");
+
+        text = StringUtils.replace(text, "<text-author>", "<div>");
+        text = StringUtils.replace(text, "</text-author>", "</div>");
+
+        text = StringUtils.replacePattern(text, "<a.+?<\\/a>", "");
+
+        return text;
     }
 
 }

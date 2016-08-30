@@ -66,11 +66,15 @@ public class FB2Reader extends HttpServlet implements IReader {
         }
 
         File bookFile = (File) request.getAttribute("bookfile");
+        String coverName = (String) request.getAttribute("covername");
 
+        // Get book text
         String bookText = read(bookFile);
 
         // Set book text variable
         webContext.setVariable("booktext", bookText);
+        // Set cover variable
+        webContext.setVariable("covername", coverName);
 
         // For correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");

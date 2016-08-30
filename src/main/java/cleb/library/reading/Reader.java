@@ -49,12 +49,15 @@ public class Reader extends HttpServlet {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        String fileName = request.getParameter("book");
+        String fileName = request.getParameter("filename");
         String fileType = FilenameUtils.getExtension(fileName);
 
         File bookFile = new File(folderPath + fileName);
 
+        String coverName = request.getParameter("covername");
+
         request.setAttribute("bookfile", bookFile);
+        request.setAttribute("covername", coverName);
 
         // Get the string reference for concrete reader
         String reader = getReaderReference(fileType);

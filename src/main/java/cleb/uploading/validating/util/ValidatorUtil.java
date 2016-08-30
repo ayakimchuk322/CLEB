@@ -2,9 +2,9 @@ package cleb.uploading.validating.util;
 
 /**
  * This utility class manages supporting multiple types of e-books, it's
- * {@code getValidator} method takes {@code String} parameter representing
- * particular e-book type and returns {@code String} with reference for
- * corresponding validator.
+ * {@code getValidatorReference} method takes {@code String} parameter
+ * representing particular e-book type and returns {@code String} with reference
+ * for corresponding validator.
  *
  * Each validator class name should consist of two parts - name of the e-book
  * type, all in uppercase, and word "Validator".

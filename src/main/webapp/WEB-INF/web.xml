@@ -122,6 +122,12 @@
 		<description></description>
 		<servlet-class>cleb.error.Error404</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Reader</servlet-name>
+		<display-name>Reader</display-name>
+		<description></description>
+		<servlet-class>cleb.library.reading.Reader</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -187,6 +193,10 @@
 	<servlet-mapping>
 		<servlet-name>Error404</servlet-name>
 		<url-pattern>/Error404</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Reader</servlet-name>
+		<url-pattern>/reader</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

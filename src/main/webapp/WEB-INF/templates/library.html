@@ -103,7 +103,8 @@
                   <!-- Read 'button' -->
                   <div class="clicondiv">
                     <form method="post" action="read" class="inline">
-                      <input type="hidden" name="book" th:value="${book.fileName}">
+                      <input type="hidden" name="filename" th:value="${book.fileName}">
+                      <input type="hidden" name="covername" th:value="${book.coverName}">
                       <input class="cliconimg" type="image" src="../../icons/read.png" th:src="@{/icons/read.png}"
                         th:title="Read + ' ' + ${book.title}">
                     </form>
@@ -114,7 +115,7 @@
                   <!-- Download 'button' -->
                   <div class="clicondiv">
                     <a th:href="@{/books/} +${book.fileName}"><img class="cliconimg" src="../../icons/download.png"
-                      th:src="@{/icons/download.png}" title="Download"></a>
+                      th:src="@{/icons/download.png}" th:title="Download  + ' ' + ${book.title}"></a>
                   </div>
                 </td>
 

@@ -143,7 +143,8 @@
           <!-- Read 'button' -->
           <div>
             <form method="post" action="read" class="inline">
-              <input type="hidden" name="book" th:value="${books[0].fileName}">
+              <input type="hidden" name="filename" th:value="${books[0].fileName}">
+              <input type="hidden" name="covername" th:value="${books[0].coverName}">
               <input class="btn btn-default" type="submit" value="Read &raquo;"
                 th:title="Read + ' ' + ${books[0].title}">
             </form>
@@ -163,7 +164,8 @@
           <!-- Read 'button' -->
           <div>
             <form method="post" action="read" class="inline">
-              <input type="hidden" name="book" th:value="${books[1].fileName}">
+              <input type="hidden" name="filename" th:value="${books[1].fileName}">
+              <input type="hidden" name="covername" th:value="${books[1].coverName}">
               <input class="btn btn-default" type="submit" value="Read &raquo;"
                 th:title="Read + ' ' + ${books[1].title}">
             </form>
@@ -183,7 +185,8 @@
           <!-- Read 'button' -->
           <div>
             <form method="post" action="read" class="inline">
-              <input type="hidden" name="book" th:value="${books[2].fileName}">
+              <input type="hidden" name="filename" th:value="${books[2].fileName}">
+              <input type="hidden" name="covername" th:value="${books[2].coverName}">
               <input class="btn btn-default" type="submit" value="Read &raquo;"
                 th:title="Read + ' ' + ${books[2].title}">
             </form>

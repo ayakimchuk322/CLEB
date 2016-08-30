@@ -134,6 +134,12 @@
 		<description></description>
 		<servlet-class>cleb.library.reading.FB2Reader</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>EPUBReader</servlet-name>
+		<display-name>EPUBReader</display-name>
+		<description></description>
+		<servlet-class>cleb.library.reading.EPUBReader</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -207,6 +213,10 @@
 	<servlet-mapping>
 		<servlet-name>FB2Reader</servlet-name>
 		<url-pattern>/FB2Reader</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EPUBReader</servlet-name>
+		<url-pattern>/EPUBReader</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

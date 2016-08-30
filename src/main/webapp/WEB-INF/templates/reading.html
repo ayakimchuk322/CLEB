@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="Anatoly Yakimchuk">
+
+<link rel="icon" href="../../favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon">
+<link rel="shortcut icon" href="../../favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon">
+
+<title>Browse library - Cool library for e-books!</title>
+
+<!-- Google font for library title -->
+<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="../../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+
+<!-- Custom styles for this template -->
+<link rel="stylesheet" href="../../css/jumbotron.css" th:href="@{/css/jumbotron.css}">
+
+<!-- Custom CLEB css -->
+<link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
+
+</head>
+
+<body>
+
+  <!-- page container -->
+  <div class="container">
+
+    <!-- nav bar -->
+    <div class="header clearfix">
+      <a href="index"><h3 class="text-muted pull-left clebtitle cllibrarytitle">Cool library for e-books</h3></a>
+      <nav>
+        <ul class="nav nav-pills pull-left">
+          <li role="presentation"><a href="library">Library</a></li>
+          <li role="presentation"><a href="upload">Upload</a></li>
+        </ul>
+
+        <ul class="nav nav-pills pull-right" th:if="${#strings.isEmpty(username)}">
+          <li role="presentation"><a href="login">Login</a></li>
+          <li role="presentation"><a href="register">Register</a></li>
+        </ul>
+
+        <ul class="nav nav-pills pull-right" th:if="${not #strings.isEmpty(username)}">
+          <!-- Add link to personal user page -->
+          <li role="presentation"><a href="" th:text="${username}">username</a></li>
+          <li role="presentation"><a href="login?logout=true">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+    <!-- /nav bar -->
+
+    <div class="jumbotron">
+      <div class="container">
+        <div>
+          <p th:utext="${booktext}"></p>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2016 Anatoly Yakimchuk.</p>
+    </footer>
+
+  </div>
+  <!-- /page container -->
+
+  <script src="../../js/zoom.js" th:src="@{/js/zoom.js}"></script>
+
+</body>
+</html>

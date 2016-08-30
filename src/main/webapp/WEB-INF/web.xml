@@ -128,6 +128,12 @@
 		<description></description>
 		<servlet-class>cleb.library.reading.Reader</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>FB2Reader</servlet-name>
+		<display-name>FB2Reader</display-name>
+		<description></description>
+		<servlet-class>cleb.library.reading.FB2Reader</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Uploader</servlet-name>
@@ -197,6 +203,10 @@
 	<servlet-mapping>
 		<servlet-name>Reader</servlet-name>
 		<url-pattern>/read</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FB2Reader</servlet-name>
+		<url-pattern>/FB2Reader</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

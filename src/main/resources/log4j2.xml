@@ -7,6 +7,7 @@
 
 	<Appenders>
 		<!-- Appender for logging into console -->
+		<!-- For whole application -->
 		<Console name="Console-Appender" target="SYSTEM_OUT">
 			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
 			<PatternLayout>
@@ -47,9 +48,8 @@
 		</RandomAccessFile>
 
 		<!-- Appender for saving into file -->
-		<!-- For BookDAO class -->
-		<!-- It will output only errors -->
-		<RandomAccessFile name="BookDAO-RAF-Appender" fileName="${log-path}/bookdao.log">
+		<!-- For library package - only ERRORs -->
+		<RandomAccessFile name="Library-RAF-Errors-Appender" fileName="${log-path}/library_errors.log">
 			<PatternLayout>
 				<pattern>
 					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
@@ -76,6 +76,18 @@
 				</pattern>
 			</PatternLayout>
 		</RandomAccessFile>
+
+		<!-- Appender for saving into file -->
+		<!-- For BookDAO class -->
+		<!-- It will output only errors -->
+		<RandomAccessFile name="BookDAO-RAF-Appender" fileName="${log-path}/bookdao.log">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
+				</pattern>
+			</PatternLayout>
+		</RandomAccessFile>
+
 	</Appenders>
 
 	<Loggers>
@@ -97,11 +109,7 @@
 		<!-- Logger for library package -->
 		<Logger name="cleb.library" level="ALL" additivity="TRUE">
 			<AppenderRef ref="Library-RAF-Appender" level="ALL" />
-		</Logger>
-
-		<!-- Logger for BookDAO class -->
-		<Logger name="cleb.book.dao.BookDAO" level="ALL" additivity="TRUE">
-			<AppenderRef ref="BookDAO-RAF-Appender" level="ERROR" />
+			<AppenderRef ref="Library-RAF-Errors-Appender" level="ERROR" />
 		</Logger>
 
 		<!-- Logger for security package -->
@@ -109,5 +117,12 @@
 			<AppenderRef ref="Security-RAF-Appender" level="ALL" />
 			<AppenderRef ref="Security-RAF-Errors-Appender" level="ERROR" />
 		</Logger>
+
+		<!-- Logger for BookDAO class -->
+		<Logger name="cleb.book.dao.BookDAO" level="ALL" additivity="TRUE">
+			<AppenderRef ref="BookDAO-RAF-Appender" level="ERROR" />
+		</Logger>
+
 	</Loggers>
+
 </Configuration>

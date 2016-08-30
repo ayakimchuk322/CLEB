@@ -158,8 +158,7 @@ public class IndexServlet extends HttpServlet {
         try {
             annotation = FileUtils.readFileToString(annoFile, "UTF-8");
         } catch (IOException e) {
-            logger.error("Can not load annotation for book \"{}\"", bookName,
-                e);
+            // Silently ignore, there is no annotation for this book
         }
 
         return annotation;

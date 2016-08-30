@@ -15,15 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// TODO add javadoc
-// TODO replace printstacktrace
+/**
+ * This class transfers request read book to appropriate reader.
+ */
 public class Reader extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     private String folderPath;
-    private String annotationsPath;
-    private String coversPath;
 
     @Override
     public void init() throws ServletException {
@@ -34,15 +33,11 @@ public class Reader extends HttpServlet {
             .getResourceAsStream("/WEB-INF/classes/props.properties")) {
             properties.load(propIn);
         } catch (IOException e) {
-            e.printStackTrace();
+            // Silently ignore
         }
 
         // Directory with books
         folderPath = properties.getProperty("book-store");
-        // Directory with annotations
-        annotationsPath = properties.getProperty("book-annotations");
-        // Directory with covers
-        coversPath = properties.getProperty("book-covers");
     }
 
     @Override

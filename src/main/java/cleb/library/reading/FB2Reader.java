@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// TODO add javadoc
 // TODO replace printstacktrace
 public class FB2Reader extends HttpServlet implements IReader {
 
@@ -89,6 +88,7 @@ public class FB2Reader extends HttpServlet implements IReader {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
+        // Forward request to doGet method
         doGet(request, response);
     }
 
@@ -118,7 +118,6 @@ public class FB2Reader extends HttpServlet implements IReader {
         XMLOutputter xmlOutputter = new XMLOutputter();
 
         xmlOutputter.setFormat(Format.getPrettyFormat());
-        // xmlOutputter.getFormat().setTextMode(Format.TextMode.NORMALIZE);
 
         // Output text to String
         try (StringWriter stringOut = new StringWriter()) {
@@ -131,6 +130,13 @@ public class FB2Reader extends HttpServlet implements IReader {
         return bookText;
     }
 
+    /**
+     * Replaces tags specific to fb2 format with html tags.
+     *
+     * @param text {@code String} to normalize.
+     *
+     * @return {@code String} with replaced tags.
+     */
     private String normalizeTags(String text) {
         text = StringUtils.replace(text, "<body>", "", 1);
         text = StringUtils.replace(text, "</body>", "", 1);

@@ -23,19 +23,6 @@
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
 
-	<!-- Filter for correct UTF-8 support -->
-	<filter>
-		<filter-name>CharEncodingFilter</filter-name>
-		<display-name>CharEncodingFilter</display-name>
-		<description>Force the request character encoding to UTF-8</description>
-		<filter-class>cleb.util.CharEncodingFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>CharEncodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping>
-
 	<servlet>
 		<servlet-name>Uploader</servlet-name>
 		<display-name>Uploader</display-name>

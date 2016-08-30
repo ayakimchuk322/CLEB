@@ -23,6 +23,7 @@
 
 <!-- Custom CLEB css -->
 <link rel="stylesheet" href="../../css/cleb.css" th:href="@{/css/cleb.css}">
+<link rel="stylesheet" href="../../css/cleb-reading.css" th:href="@{/css/cleb-reading.css}">
 
 </head>
 
@@ -56,6 +57,9 @@
 
     <div class="jumbotron">
       <div class="container">
+        <div class="crcoverdiv" th:if="${not #strings.isEmpty(covername)}">
+          <img class="crcoverimg" th:src="@{/covers/} + ${covername}">
+        </div>
         <div>
           <p th:utext="${booktext}"></p>
         </div>

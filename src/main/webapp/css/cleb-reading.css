@@ -1,0 +1,14 @@
+/* Center cover */
+.crcoverdiv {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 0px;
+	height: 300px;
+}
+
+.crcoverimg {
+	margin-left: auto;
+	margin-right: auto;
+	height: 300px;
+}

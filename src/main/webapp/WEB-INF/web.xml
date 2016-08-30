@@ -196,7 +196,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Reader</servlet-name>
-		<url-pattern>/reader</url-pattern>
+		<url-pattern>/read</url-pattern>
 	</servlet-mapping>
 
 	<!-- Welcome page -->

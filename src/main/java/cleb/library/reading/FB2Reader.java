@@ -12,7 +12,6 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -130,7 +129,10 @@ public class FB2Reader extends HttpServlet implements IReader {
             xmlOutputter.output(body, stringOut);
             bookText = stringOut.toString();
         } catch (IOException e) {
-            logger.error("Can not output book text", e);
+            logger.error("Can not output book \"{}\" text", bookFile.getName(),
+                e);
+
+            return bookText;
         }
 
         return normalizeTags(bookText);

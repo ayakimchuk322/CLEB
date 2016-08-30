@@ -3,6 +3,8 @@ package cleb.library.reading;
 import static cleb.security.dao.UserDAO.getUserNameBySubject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.jdom2.Document;
@@ -26,10 +28,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// TODO replace printstacktrace
 public class FB2Reader extends HttpServlet implements IReader {
 
     private static final long serialVersionUID = 1L;
+
+    // Logger for this class
+    private static final Logger logger = LogManager
+        .getLogger(FB2Reader.class.getName());
 
     private ServletContext servletContext;
     private ServletContextTemplateResolver templateResolver;
@@ -96,20 +101,20 @@ public class FB2Reader extends HttpServlet implements IReader {
     public String read(File bookFile) {
         String bookText = "";
 
-        Document bookDoc = null;
+        Document book = null;
 
         SAXBuilder builder = new SAXBuilder();
 
         try {
-            bookDoc = builder.build(bookFile);
+            book = builder.build(bookFile);
         } catch (JDOMException e) {
-            e.printStackTrace();
+            logger.error("Book \"{}\" is corrupted", bookFile.getName(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Can not read book \"{}\"", bookFile.getName(), e);
         }
 
         // Document root and namespace
-        Element root = bookDoc.getRootElement();
+        Element root = book.getRootElement();
         Namespace ns = root.getNamespace();
 
         // Get element with book text
@@ -123,8 +128,8 @@ public class FB2Reader extends HttpServlet implements IReader {
         try (StringWriter stringOut = new StringWriter()) {
             xmlOutputter.output(body, stringOut);
             bookText = stringOut.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Can not output book text", e);
         }
 
         return bookText;

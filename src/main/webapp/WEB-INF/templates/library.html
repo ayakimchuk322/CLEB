@@ -92,7 +92,7 @@
                 <td>
                   <!-- Cover -->
                   <div class="clzoom" th:if="${not #strings.isEmpty(book.coverName)}">
-                    <img src="cover.png" th:src="@{/covers/} + ${book.coverName}">
+                    <img th:src="@{/covers/} + ${book.coverName}">
                   </div>
                   <div class="clzoomoff" th:if="${#strings.isEmpty(book.coverName)}">
                     <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">

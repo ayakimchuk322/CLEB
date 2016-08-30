@@ -108,8 +108,12 @@ public class FB2Reader extends HttpServlet implements IReader {
             book = builder.build(bookFile);
         } catch (JDOMException e) {
             logger.error("Book \"{}\" is corrupted", bookFile.getName(), e);
+
+            return bookText;
         } catch (IOException e) {
             logger.error("Can not read book \"{}\"", bookFile.getName(), e);
+
+            return bookText;
         }
 
         // Document root and namespace

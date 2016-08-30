@@ -75,6 +75,9 @@
                 <th>Published</th>
                 <th>Cover</th>
                 <th></th>
+                <!-- Read button -->
+                <th></th>
+                <!-- Download button -->
               </tr>
             </thead>
             <tbody>
@@ -84,8 +87,10 @@
                 <td th:text="${book.seqName}">series</td>
                 <td th:text="${book.genre}">genre</td>
                 <td th:text="${book.published}">published</td>
+
                 <!--/* Access to directory outside webapp context tweaked in Tomcat's server.xml */-->
                 <td>
+                  <!-- Cover -->
                   <div class="clzoom" th:if="${not #strings.isEmpty(book.coverName)}">
                     <img src="cover.png" th:src="@{/covers/} + ${book.coverName}">
                   </div>
@@ -93,12 +98,26 @@
                     <img src="../../icons/bookph.png" th:src="@{/icons/bookph.png}">
                   </div>
                 </td>
+
                 <td>
-                  <div class="cldownloaddiv">
-                    <a th:href="@{/books/} +${book.fileName}"><img class="cldownloadimg"
-                      src="../../icons/download.png" th:src="@{/icons/download.png}" title="Download"></a>
+                  <!-- Read 'button' -->
+                  <div class="clicondiv">
+                    <form method="post" action="read" class="inline">
+                      <input type="hidden" name="book" th:value="${book.fileName}">
+                      <input class="cliconimg" type="image" src="../../icons/read.png" th:src="@{/icons/read.png}"
+                        th:title="Read + ' ' + ${book.title}">
+                    </form>
                   </div>
                 </td>
+
+                <td>
+                  <!-- Download 'button' -->
+                  <div class="clicondiv">
+                    <a th:href="@{/books/} +${book.fileName}"><img class="cliconimg" src="../../icons/download.png"
+                      th:src="@{/icons/download.png}" title="Download"></a>
+                  </div>
+                </td>
+
               </tr>
             </tbody>
           </table>

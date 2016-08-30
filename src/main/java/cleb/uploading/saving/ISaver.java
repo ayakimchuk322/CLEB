@@ -38,9 +38,9 @@ public interface ISaver {
      * extension.
      *
      * @param annotationHolder {@code Object} that can be parsed for annotation.
-     * @param name {@code String} book file name.
+     * @param fileName {@code String} uploaded book file name.
      */
-    public void saveAnnotation(Object annotationHolder, String name);
+    public void saveAnnotation(Object annotationHolder, String fileName);
 
     /**
      * Implementation of this method should get cover from uploaded book and
@@ -50,11 +50,11 @@ public interface ISaver {
      * name or empty {@code String} if there is no cover for this book.
      *
      * @param book {@code Object} representing actual book.
-     * @param name {@code String} book file name.
+     * @param fileName {@code String} book file name.
      *
      * @return {@code String} cover file name.
      */
-    public String saveCover(Object book, String name);
+    public String saveCover(Object book, String fileName);
 
     /**
      * Moves book from temporary to storing directory.

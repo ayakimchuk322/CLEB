@@ -39,8 +39,6 @@ public class DuplicateChecker extends HttpServlet {
 
     private String tempFolderPath;
 
-    private String fileName;
-
     private String errorDesc;
 
     // Prepared query (statement)
@@ -78,18 +76,16 @@ public class DuplicateChecker extends HttpServlet {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        fileName = (String) request.getAttribute("file");
+        String fileName = (String) request.getAttribute("file");
 
-        String tempBookPath = tempFolderPath
-            + (String) request.getAttribute("file");
-        File tempBookFile = new File(tempBookPath);
+        File tempBookFile = new File(tempFolderPath + fileName);
 
-        String md5sum = getMd5sum(tempBookFile);
+        String md5sum = getMD5sum(tempBookFile, fileName);
 
         if (md5sum != null) {
             long fileSize = tempBookFile.length();
 
-            if (checkBookPresence(md5sum, fileSize)) {
+            if (checkBookPresence(md5sum, fileSize, fileName)) {
                 // There is already this book in library, delete this book in
                 // temporary directory and inform user
                 FileUtils.deleteQuietly(tempBookFile);
@@ -125,10 +121,11 @@ public class DuplicateChecker extends HttpServlet {
      * This method calculates temporarily uploaded book md5 sum.
      *
      * @param file Previously uploaded book in temporary directory.
+     * @param fileName {@code String} uploaded book file name.
      *
      * @return {@code String} representing this book md5 sum value.
      */
-    private String getMd5sum(File file) {
+    private String getMD5sum(File file, String fileName) {
         String md5sum = null;
 
         try (FileInputStream fileIn = new FileInputStream(file);
@@ -151,13 +148,15 @@ public class DuplicateChecker extends HttpServlet {
      *        already uploaded books.
      * @param fileSize {@code long} representing new book file size to check
      *        among already uploaded books.
+     * @param fileName {@code String} uploaded book file name.
      *
      * @return {@code true}, if database already contains book with given md5
      *         sum and file size, otherwise - {@code false}.
      *
      * @see cleb.uploading.util.JDBCPoolUtil#getConnection()
      */
-    private boolean checkBookPresence(String md5sum, long fileSize) {
+    private boolean checkBookPresence(String md5sum, long fileSize,
+        String fileName) {
         boolean present = false;
 
         try (Connection connection = getConnection();

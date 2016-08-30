@@ -47,8 +47,6 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     private String annotationsPath;
     private String coversPath;
 
-    private String fileName;
-
     private String errorDesc;
 
     @Override
@@ -89,7 +87,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        fileName = (String) request.getAttribute("file");
+        String fileName = (String) request.getAttribute("file");
 
         String tempBookPath = tempFolderPath + fileName;
         String bookPath = folderPath + fileName;
@@ -127,7 +125,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         Object book) {
 
         // Information about file, will go into db
-        // file attribute extracted in doPost method
+        String fileName = (String) request.getAttribute("file");
         String md5 = (String) request.getAttribute("md5");
         Long fileSize = (Long) request.getAttribute("size");
         String fileType = (String) request.getAttribute("type");
@@ -231,7 +229,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     }
 
     @Override
-    public void saveAnnotation(Object annotationHolder, String name) {
+    public void saveAnnotation(Object annotationHolder, String fileName) {
         // Necessary cast to process with annotation extraction
         Document doc = (Document) annotationHolder;
 
@@ -252,7 +250,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
                 .trim();
 
             // File to store extracted annotation
-            File annoFile = new File(annotationsPath + name + ".txt");
+            File annoFile = new File(annotationsPath + fileName + ".txt");
 
             // Write out
             FileUtils.writeStringToFile(annoFile, annotation, "UTF-8");
@@ -265,7 +263,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     }
 
     @Override
-    public String saveCover(Object book, String name) {
+    public String saveCover(Object book, String fileName) {
         // Necessary cast to process with book
         ZipFile zip = (ZipFile) book;
 
@@ -274,40 +272,42 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         // which will result in additional parsing of 2 xml files)
         // simply try extract it with a few most used names
         try {
-            zip.extractFile("cover.jpeg", coversPath, null, name + ".jpeg");
-            return name + ".jpeg";
+            zip.extractFile("cover.jpeg", coversPath, null, fileName + ".jpeg");
+            return fileName + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
-            zip.extractFile("OPS/cover.jpeg", coversPath, null, name + ".jpeg");
-            return name + ".jpeg";
+            zip.extractFile("OPS/cover.jpeg", coversPath, null,
+                fileName + ".jpeg");
+            return fileName + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/images/cover.jpeg", coversPath, null,
-                name + ".jpeg");
-            return name + ".jpeg";
+                fileName + ".jpeg");
+            return fileName + ".jpeg";
         } catch (ZipException e) {
         }
 
         try {
-            zip.extractFile("cover.png", coversPath, null, name + ".png");
-            return name + ".png";
+            zip.extractFile("cover.png", coversPath, null, fileName + ".png");
+            return fileName + ".png";
         } catch (ZipException e) {
         }
 
         try {
-            zip.extractFile("OPS/cover.png", coversPath, null, name + ".png");
-            return name + ".png";
+            zip.extractFile("OPS/cover.png", coversPath, null,
+                fileName + ".png");
+            return fileName + ".png";
         } catch (ZipException e) {
         }
 
         try {
             zip.extractFile("OPS/images/cover.png", coversPath, null,
-                name + ".png");
-            return name + ".png";
+                fileName + ".png");
+            return fileName + ".png";
         } catch (ZipException e) {
             logger.warn("Book \"{}\" has no cover", fileName);
         }

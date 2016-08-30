@@ -1,7 +1,5 @@
 package cleb.uploading.validating;
 
-import java.io.File;
-
 /**
  * This interface contains method to validate uploaded book. Any concrete
  * validator should implement this interface and override its
@@ -12,11 +10,11 @@ public interface IValidator {
     /**
      * Validates given book.
      *
-     * @param file book to validate.
+     * @param fileName {@code String} uploaded book file name.
      *
-     * @return {@code true}, if given file is valid book, otherwise -
-     *         {@code false}.
+     * @return {@code Object} validated book if is is a valid book, otherwise -
+     *         {@code null}.
      */
-    public boolean validateBook(File file);
+    public Object validateBook(String fileName);
 
 }

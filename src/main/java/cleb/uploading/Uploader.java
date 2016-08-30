@@ -40,9 +40,6 @@ public class Uploader extends HttpServlet {
 
     private String tempFolderPath;
 
-    private String fileName;
-    private String fileType;
-
     private String errorDesc;
 
     @Override
@@ -85,10 +82,11 @@ public class Uploader extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        // Check that we have a file upload request
+        // Check if request is a file upload request
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
-        if (!isMultipart || !getFile(request)) {
+        if (!isMultipart) {
+            // Not a file upload request
             // Inform user about error
             request.setAttribute("errordesc", errorDesc);
             request.setAttribute("previouspage", "/upload");
@@ -98,15 +96,33 @@ public class Uploader extends HttpServlet {
 
             dispatcher.forward(request, response);
         } else {
-            // Forward request to next servlet - DuplicateChecker, including
-            // reference for uploaded book
-            request.setAttribute("file", fileName);
-            request.setAttribute("type", fileType);
+            String fileName = null;
+            String fileType = null;
 
-            RequestDispatcher dispatcher = getServletContext()
-                .getRequestDispatcher("/DuplicateChecker");
+            fileName = getFile(request);
 
-            dispatcher.forward(request, response);
+            if (fileName != null) {
+                // Forward request to next servlet - DuplicateChecker, including
+                // file name and file type for uploaded book
+                fileType = FilenameUtils.getExtension(fileName);
+                request.setAttribute("file", fileName);
+                request.setAttribute("type", fileType);
+
+                RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/DuplicateChecker");
+
+                dispatcher.forward(request, response);
+            } else {
+                // Something wrong (see log) with the book
+                // Inform user about error
+                request.setAttribute("errordesc", errorDesc);
+                request.setAttribute("previouspage", "/upload");
+
+                RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/error");
+
+                dispatcher.forward(request, response);
+            }
         }
     }
 
@@ -117,12 +133,14 @@ public class Uploader extends HttpServlet {
      * @param request {@code HttpServletRequest} passed down from {@code doPost}
      *        method to extract the file.
      *
-     * @return {@code true}, if file type is supported and the file was
-     *         successfully written, otherwise - {@code false}.
+     * @return {@code String} with book file name if file type is supported and
+     *         the file was successfully written, otherwise - {@code null}.
      *
      * @see cleb.book.BookType
      */
-    private boolean getFile(HttpServletRequest request) {
+    private String getFile(HttpServletRequest request) {
+
+        String fileName = null;
 
         File file = null;
 
@@ -145,7 +163,7 @@ public class Uploader extends HttpServlet {
                 if (!fi.isFormField()) {
                     // Get the uploaded file name and extension
                     fileName = fi.getName();
-                    fileType = FilenameUtils.getExtension(fileName);
+                    String fileType = FilenameUtils.getExtension(fileName);
 
                     // Check if the file type supported by library
                     // Unsupported file types or files without extension will
@@ -156,11 +174,11 @@ public class Uploader extends HttpServlet {
                         logger.error("File type \"{}\" is not supported",
                             fileType, e);
 
-                        return false;
+                        return null;
                     } catch (NullPointerException e) {
                         logger.error("No file type provided", e);
 
-                        return false;
+                        return null;
                     }
 
                     // File type is supported, OK to write the file
@@ -179,16 +197,16 @@ public class Uploader extends HttpServlet {
         } catch (FileUploadException e) {
             logger.error("Can not upload file", e);
 
-            return false;
+            return null;
         } catch (Exception e) {
             logger.error("Can not write file \"{}\"", file, e);
 
-            return false;
+            return null;
         }
 
         logger.info("File \"{}\" uploaded", file);
 
-        return true;
+        return fileName;
     }
 
 }

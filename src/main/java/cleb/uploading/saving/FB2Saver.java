@@ -47,9 +47,6 @@ public class FB2Saver extends HttpServlet implements ISaver {
 
     private String errorDesc;
 
-    // FIXME rework fields for concurrency
-    private String fileName;
-
     @Override
     public void init() throws ServletException {
         // Load properties
@@ -88,7 +85,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        fileName = (String) request.getAttribute("file");
+        String fileName = (String) request.getAttribute("file");
 
         String tempBookPath = tempFolderPath + fileName;
         String bookPath = folderPath + fileName;
@@ -231,7 +228,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
     }
 
     @Override
-    public void saveAnnotation(Object annotationHolder, String name) {
+    public void saveAnnotation(Object annotationHolder, String fileName) {
         // Necessary cast to process with annotation extraction
         Document doc = (Document) annotationHolder;
 
@@ -251,7 +248,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
                 .trim();
 
             // File to store extracted annotation
-            File annoFile = new File(annotationsPath + name + ".txt");
+            File annoFile = new File(annotationsPath + fileName + ".txt");
 
             // Write out
             FileUtils.writeStringToFile(annoFile, annotation, "UTF-8");
@@ -264,7 +261,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
     }
 
     @Override
-    public String saveCover(Object book, String name) {
+    public String saveCover(Object book, String fileName) {
         // Necessary cast to process with book
         Document doc = (Document) book;
 
@@ -341,7 +338,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
         }
 
         // Write out decoded image into appropriate file
-        File cover = new File(coversPath + name + extension);
+        File cover = new File(coversPath + fileName + extension);
         try (FileOutputStream fileOut = new FileOutputStream(cover);
              BufferedOutputStream bufferOut = new BufferedOutputStream(
                  fileOut);) {
@@ -350,7 +347,7 @@ public class FB2Saver extends HttpServlet implements ISaver {
             logger.error("Can not save cover for book\"{}\"", fileName, e);
         }
 
-        return name + extension;
+        return fileName + extension;
     }
 
 }

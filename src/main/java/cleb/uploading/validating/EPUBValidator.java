@@ -30,10 +30,6 @@ public class EPUBValidator extends HttpServlet implements IValidator {
 
     private String tempFolderPath;
 
-    private String fileName;
-
-    private ZipFile book;
-
     private String errorDesc;
 
     @Override
@@ -62,12 +58,11 @@ public class EPUBValidator extends HttpServlet implements IValidator {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        fileName = (String) request.getAttribute("file");
+        String fileName = (String) request.getAttribute("file");
 
-        String tempBookPath = tempFolderPath + fileName;
-        File tempBookFile = new File(tempBookPath);
+        Object book = validateBook(fileName);
 
-        if (validateBook(tempBookFile)) {
+        if (book != null) {
             request.setAttribute("book", book);
             RequestDispatcher dispatcher = request
                 .getRequestDispatcher("/EPUBSaver");
@@ -85,13 +80,16 @@ public class EPUBValidator extends HttpServlet implements IValidator {
     }
 
     @Override
-    public boolean validateBook(File file) {
-        boolean validated = false;
+    public Object validateBook(String fileName) {
+
+        ZipFile book = null;
+
+        File tempBookFile = new File(tempFolderPath + fileName);
 
         // Valid epub book should be valid zip archive with certain directory
         // structure inside
         try {
-            book = new ZipFile(file);
+            book = new ZipFile(tempBookFile);
 
             if (book.isValidZipFile()) {
                 try {
@@ -99,25 +97,23 @@ public class EPUBValidator extends HttpServlet implements IValidator {
                     book.getFileHeader("META-INF/container.xml").getFileName();
                     book.getFileHeader("mimetype").getFileName();
 
-                    validated = true;
-
                     logger.info("Book \"{}\" successfully validated", fileName);
                 } catch (NullPointerException e) {
-                    validated = false;
-
                     logger.error("Book \"{}\" is not a valid epub book",
                         fileName, e);
+
+                    return null;
                 }
             } else {
-                validated = false;
-
                 logger.warn("Book \"{}\" is not a valid epub book", fileName);
+
+                return null;
             }
         } catch (ZipException e) {
             logger.error("Can not validate book \"{}\"", fileName, e);
         }
 
-        return validated;
+        return book;
     }
 
 }

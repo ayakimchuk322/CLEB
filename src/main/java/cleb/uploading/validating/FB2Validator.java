@@ -30,10 +30,6 @@ public class FB2Validator extends HttpServlet implements IValidator {
 
     private String tempFolderPath;
 
-    private String fileName;
-
-    private Document book;
-
     private String errorDesc;
 
     @Override
@@ -62,12 +58,11 @@ public class FB2Validator extends HttpServlet implements IValidator {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 
-        fileName = (String) request.getAttribute("file");
+        String fileName = (String) request.getAttribute("file");
 
-        String tempBookPath = tempFolderPath + fileName;
-        File tempBookFile = new File(tempBookPath);
+        Object book = validateBook(fileName);
 
-        if (validateBook(tempBookFile)) {
+        if (book != null) {
             request.setAttribute("book", book);
             RequestDispatcher dispatcher = request
                 .getRequestDispatcher("/FB2Saver");
@@ -85,7 +80,7 @@ public class FB2Validator extends HttpServlet implements IValidator {
     }
 
     @Override
-    public boolean validateBook(File file) {
+    public Object validateBook(String fileName) {
 
         // Currently this method simply builds DOM tree from given file (fb2
         // internally uses XML) and catches exceptions, if no exception is
@@ -94,26 +89,27 @@ public class FB2Validator extends HttpServlet implements IValidator {
         // For now, not all books pass validation against xsd, maybe it is
         // caused by using different schemas while creating those books
 
-        boolean validated = false;
+        Document book = null;
+
+        File tempBookFile = new File(tempFolderPath + fileName);
 
         SAXBuilder builder = new SAXBuilder();
-        try {
-            book = builder.build(file);
 
-            validated = true;
+        try {
+            book = builder.build(tempBookFile);
 
             logger.info("Book \"{}\" successfully validated", fileName);
         } catch (JDOMException e) {
-            validated = false;
-
             logger.error("Book \"{}\" is not a valid fb2 book", fileName, e);
-        } catch (IOException e) {
-            validated = false;
 
+            return null;
+        } catch (IOException e) {
             logger.error("Can not validate book \"{}\"", fileName, e);
+
+            return null;
         }
 
-        return validated;
+        return book;
     }
 
 }

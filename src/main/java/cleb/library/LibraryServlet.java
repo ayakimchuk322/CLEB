@@ -2,6 +2,7 @@ package cleb.library;
 
 import static cleb.security.dao.UserDAO.getUserNameBySubject;
 import static cleb.book.dao.BookDAO.getAllBooks;
+import static cleb.book.dao.BookDAO.getBooks;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -61,10 +62,21 @@ public class LibraryServlet extends HttpServlet {
             webContext.setVariable("username", userName);
         }
 
-        // Load all books from database
-        List<Book> allBooks = getAllBooks();
+        List<Book> books = null;
+
+        String searchRequest = request.getParameter("searchrequest");
+
+        // Check if user requested search
+        if (searchRequest != null && !searchRequest.isEmpty()) {
+            // Load requested books
+            books = getBooks(searchRequest);
+        } else {
+            // Load all books from database
+            books = getAllBooks();
+        }
+
         // Set books variable
-        webContext.setVariable("books", allBooks);
+        webContext.setVariable("books", books);
 
         // For correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");
@@ -76,6 +88,9 @@ public class LibraryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
+
+        // Transfer contol to doGet method
+        doGet(request, response);
     }
 
 }

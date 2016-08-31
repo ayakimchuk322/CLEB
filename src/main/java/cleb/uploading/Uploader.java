@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import cleb.book.BookType;
 
 /**
- * This servlet handles uploading user books onto server.
+ * This servlet class handles uploading user books onto server.
  */
 public class Uploader extends HttpServlet {
 

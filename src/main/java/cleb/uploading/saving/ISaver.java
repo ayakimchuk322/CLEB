@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * This interface contains methods to get information about uploaded book and
  * save it's cover. Any concrete saver class should implement this interface and
- * provide specific implementations for {@code getBasicInfo} and
- * {@code saveCover} methods based on book type.
+ * provide specific implementations for {@code getBasicInfo},
+ * {@code saveAnnotation} and {@code saveCover} methods based on book type.
  *
  * This interface also contains default method for saving book in storing
  * directory.
@@ -20,14 +20,15 @@ public interface ISaver {
 
     /**
      * Implementation of this method should retrieve all information about
-     * uploaded book according to its type. book parameter should be cast to its
-     * actual type depending on book type and exctraction logic.
+     * uploaded book according to its type. {@code book} parameter should be
+     * cast to its actual type depending on book type and exctraction logic.
      *
      * @param request {@code HttpServletRequest} from {@code doPost} method to
      *        retrieve information about file.
      * @param book {@code Object} representing actual book.
      *
-     * @return boolean value returned by storeInDB method.
+     * @return boolean value returned by concrete saver {@code storeInDB}
+     *         method.
      */
     public boolean getBasicInfo(HttpServletRequest request, Object book);
 

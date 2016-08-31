@@ -63,6 +63,19 @@
           yours!
         </p>
 
+        <!-- search form -->
+        <div class="clsearchdiv">
+          <form class="navbar-form" role="search" action="library">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search CLEB" name="searchrequest"> <span
+                class="input-group-btn">
+                <button type="submit" class="btn btn-default">Search</button>
+              </span>
+            </div>
+          </form>
+        </div>
+        <!-- /search form -->
+
         <!-- table with books -->
         <div>
           <table class="table table-striped">
@@ -103,10 +116,9 @@
                   <!-- Read 'button' -->
                   <div class="clicondiv">
                     <form method="post" action="read" class="inline">
-                      <input type="hidden" name="filename" th:value="${book.fileName}">
-                      <input type="hidden" name="covername" th:value="${book.coverName}">
-                      <input class="cliconimg" type="image" src="../../icons/read.png" th:src="@{/icons/read.png}"
-                        th:title="Read + ' ' + ${book.title}">
+                      <input type="hidden" name="filename" th:value="${book.fileName}"> <input type="hidden"
+                        name="covername" th:value="${book.coverName}"> <input class="cliconimg" type="image"
+                        src="../../icons/read.png" th:src="@{/icons/read.png}" th:title="Read + ' ' + ${book.title}">
                     </form>
                   </div>
                 </td>

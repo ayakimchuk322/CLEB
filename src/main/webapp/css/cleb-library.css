@@ -10,6 +10,14 @@
 	text-align: center;
 }
 
+/* Search form */
+.clsearchdiv {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 25px;
+}
+
 /* Zoom covers on mouse hover */
 /* OFF */
 .clzoom img {

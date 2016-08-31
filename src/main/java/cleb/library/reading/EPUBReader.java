@@ -33,7 +33,7 @@ import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
 
 /**
- * This class reads epub books.
+ * This servlet class reads epub books.
  */
 public class EPUBReader extends HttpServlet implements IReader {
 
@@ -88,7 +88,7 @@ public class EPUBReader extends HttpServlet implements IReader {
         // Set cover variable
         webContext.setVariable("covername", coverName);
 
-        // For correct display of cyrillic charachters
+        // Set encoding for correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");
 
         // Show reading.html page
@@ -119,8 +119,8 @@ public class EPUBReader extends HttpServlet implements IReader {
 
             fileHeaders = book.getFileHeaders();
 
-            for (Object o : fileHeaders) {
-                FileHeader fileHeader = (FileHeader) o;
+            for (Object obj : fileHeaders) {
+                FileHeader fileHeader = (FileHeader) obj;
 
                 // Chapters in epub book is XHTML files
                 if (fileHeader.getFileName().contains(".xhtml")) {

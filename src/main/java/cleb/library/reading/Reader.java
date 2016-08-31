@@ -41,6 +41,15 @@ public class Reader extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest request,
+        HttpServletResponse response) throws ServletException, IOException {
+
+        // Show library
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/library");
+        dispatcher.forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
 

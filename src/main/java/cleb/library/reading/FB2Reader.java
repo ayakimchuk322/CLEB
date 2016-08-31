@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class reads fb2 books.
+ * This servlet class reads fb2 books.
  */
 public class FB2Reader extends HttpServlet implements IReader {
 
@@ -83,7 +83,7 @@ public class FB2Reader extends HttpServlet implements IReader {
         // Set cover variable
         webContext.setVariable("covername", coverName);
 
-        // For correct display of cyrillic charachters
+        // Set encoding for correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");
 
         // Show reading.html page

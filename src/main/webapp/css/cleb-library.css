@@ -37,6 +37,7 @@
 /* Zoom covers on mouse hover */
 /* OFF */
 .clzoom img {
+	z-index: 98;
 	margin: 0px;
 	height: 50px;
 	-moz-transition: -moz-transform 0.5s ease-in;
@@ -46,6 +47,8 @@
 
 /* ON */
 .clzoom img:hover {
+	z-index: 99;
+	position: relative;
 	-moz-transform: scale(5);
 	-webkit-transform: scale(5);
 	-o-transform: scale(5);

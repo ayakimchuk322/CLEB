@@ -26,8 +26,8 @@ public class UserRoleDAO {
         .getLogger(UserRoleDAO.class.getName());
 
     /**
-     * Returns {@link java.util.List List} of all roles assigned to user with
-     * specified email.
+     * Returns {@code List} with all roles assigned to user with specified
+     * email.
      *
      * @param email {@code String} representing user email.
      *
@@ -60,7 +60,8 @@ public class UserRoleDAO {
                 .setParameter(0, email).list();
             transaction.commit();
         } catch (Exception e) {
-            logger.error("Can not get user roles from database", e);
+            logger.error("Can not get roles for user \"{}\" from database",
+                email, e);
         } finally {
             closeConnection(connection);
         }
@@ -99,7 +100,8 @@ public class UserRoleDAO {
                 transaction.rollback();
             }
 
-            logger.error("Can not add new role to database", e);
+            logger.error("Can not add new role for user \"{}\" to database",
+                role.getEmail(), e);
         } finally {
             closeConnection(connection);
         }

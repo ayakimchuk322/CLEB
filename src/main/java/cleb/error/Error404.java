@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class serves standard 404.html page to users in case requested page is
- * unavailable.
+ * This servlet class serves standard 404.html page to users in case requested
+ * page is unavailable.
  */
 public class Error404 extends HttpServlet {
 

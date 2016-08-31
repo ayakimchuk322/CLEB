@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This servlet checks if newly uploading book is not already in library.
+ * This servlet class checks if newly uploading book is not already in library.
  */
 public class DuplicateChecker extends HttpServlet {
 
@@ -104,7 +104,7 @@ public class DuplicateChecker extends HttpServlet {
                 request.setAttribute("md5", md5sum);
                 request.setAttribute("size", fileSize);
 
-                // Get the string reference for concrete validator
+                // Get the string reference for appropriate validator
                 String type = (String) request.getAttribute("type");
                 String validator = getValidatorReference(type);
 

@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import cleb.book.Book;
 
 /**
- * This class serves index.html page to users.
+ * This servlet class serves index.html page to users.
  */
 public class IndexServlet extends HttpServlet {
 
@@ -64,7 +64,7 @@ public class IndexServlet extends HttpServlet {
             logger.error("Can not load properties", e);
         }
 
-        // Directory to store books annotations
+        // Directory with books annotations
         annotationsPath = properties.getProperty("book-annotations");
 
         // Initialize Thymeleaf for this servlet
@@ -142,7 +142,7 @@ public class IndexServlet extends HttpServlet {
             // Silently ignore
         }
 
-        // For correct display of cyrillic charachters
+        // Set encoding for correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");
 
         // Show index.html page

@@ -114,16 +114,17 @@
                 <th>Series</th>
                 <th>Genre</th>
                 <th>Published</th>
-                <th class="no-sort">Cover</th>
+                <!-- Cover -->
                 <th class="no-sort"></th>
                 <!-- Read button -->
                 <th class="no-sort"></th>
                 <!-- Download button -->
+                <th class="no-sort"></th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="book : ${books}">
-                <td th:text="${book.title}">title</td>
+                <td><span class="clbooktitle" th:text="${book.title}" th:title="${book.title}">title</span></td>
                 <td th:text="${book.authorFirstName + ' ' + book.authorLastName}">author</td>
                 <td th:text="${book.seqName}">series</td>
                 <td th:text="${book.genre}">genre</td>

@@ -18,6 +18,15 @@
 	margin-bottom: 25px;
 }
 
+/* Limit book title length */
+.clbooktitle {
+	display: block;
+	width: 30%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 /* Zoom covers on mouse hover */
 /* OFF */
 .clzoom img {

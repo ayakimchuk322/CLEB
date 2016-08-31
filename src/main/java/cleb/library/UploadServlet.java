@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class serves upload.html page to users.
+ * This servlet class serves upload.html page to users.
  */
 public class UploadServlet extends HttpServlet {
 

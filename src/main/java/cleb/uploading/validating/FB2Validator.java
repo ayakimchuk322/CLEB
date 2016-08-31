@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This servlet validates new fb2 books.
+ * This servlet class validates new fb2 books.
  */
 public class FB2Validator extends HttpServlet implements IValidator {
 

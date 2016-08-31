@@ -1,8 +1,8 @@
 package cleb.library;
 
-import static cleb.security.dao.UserDAO.getUserNameBySubject;
 import static cleb.book.dao.BookDAO.getAllBooks;
 import static cleb.book.dao.BookDAO.getBooks;
+import static cleb.security.dao.UserDAO.getUserNameBySubject;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import cleb.book.Book;
 
 /**
- * This class serves library.html page to users.
+ * This servlet class serves library.html page to users.
  */
 public class LibraryServlet extends HttpServlet {
 
@@ -78,7 +78,7 @@ public class LibraryServlet extends HttpServlet {
         // Set books variable
         webContext.setVariable("books", books);
 
-        // For correct display of cyrillic charachters
+        // Set encoding for correct display of cyrillic charachters
         response.setCharacterEncoding("UTF-8");
 
         // Show library.html page

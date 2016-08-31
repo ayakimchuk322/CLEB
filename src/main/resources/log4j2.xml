@@ -18,8 +18,8 @@
 		</Console>
 
 		<!-- Appender for saving into file -->
-		<!-- For uploading package -->
-		<RandomAccessFile name="Uploading-RAF-Appender" fileName="${log-path}/uploading.log">
+		<!-- For book package -->
+		<RandomAccessFile name="Book-RAF-Appender" fileName="${log-path}/book.log">
 			<PatternLayout>
 				<pattern>
 					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg %ex{short}%n%n
@@ -28,8 +28,8 @@
 		</RandomAccessFile>
 
 		<!-- Appender for saving into file -->
-		<!-- For uploading package - only ERRORs -->
-		<RandomAccessFile name="Uploading-RAF-Errors-Appender" fileName="${log-path}/uploading_errors.log">
+		<!-- For book package - only ERRORs -->
+		<RandomAccessFile name="Book-RAF-Errors-Appender" fileName="${log-path}/book_errors.log">
 			<PatternLayout>
 				<pattern>
 					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
@@ -78,9 +78,18 @@
 		</RandomAccessFile>
 
 		<!-- Appender for saving into file -->
-		<!-- For BookDAO class -->
-		<!-- It will output only errors -->
-		<RandomAccessFile name="BookDAO-RAF-Appender" fileName="${log-path}/bookdao.log">
+		<!-- For uploading package -->
+		<RandomAccessFile name="Uploading-RAF-Appender" fileName="${log-path}/uploading.log">
+			<PatternLayout>
+				<pattern>
+					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg %ex{short}%n%n
+				</pattern>
+			</PatternLayout>
+		</RandomAccessFile>
+
+		<!-- Appender for saving into file -->
+		<!-- For uploading package - only ERRORs -->
+		<RandomAccessFile name="Uploading-RAF-Errors-Appender" fileName="${log-path}/uploading_errors.log">
 			<PatternLayout>
 				<pattern>
 					[%level] %d{yyyy-MM-dd HH:mm:ss} %c{1} - %M - %msg%n%ex%n
@@ -100,10 +109,10 @@
 		<Logger name="org.hibernate" level="OFF">
 		</Logger>
 
-		<!-- Logger for uploading package -->
-		<Logger name="cleb.uploading" level="ALL" additivity="TRUE">
-			<AppenderRef ref="Uploading-RAF-Appender" level="ALL" />
-			<AppenderRef ref="Uploading-RAF-Errors-Appender" level="ERROR" />
+		<!-- Logger for book package -->
+		<Logger name="cleb.book" level="ALL" additivity="TRUE">
+			<AppenderRef ref="Book-RAF-Appender" level="ALL" />
+			<AppenderRef ref="Book-RAF-Errors-Appender" level="ERROR" />
 		</Logger>
 
 		<!-- Logger for library package -->
@@ -118,9 +127,10 @@
 			<AppenderRef ref="Security-RAF-Errors-Appender" level="ERROR" />
 		</Logger>
 
-		<!-- Logger for BookDAO class -->
-		<Logger name="cleb.book.dao.BookDAO" level="ALL" additivity="TRUE">
-			<AppenderRef ref="BookDAO-RAF-Appender" level="ERROR" />
+		<!-- Logger for uploading package -->
+		<Logger name="cleb.uploading" level="ALL" additivity="TRUE">
+			<AppenderRef ref="Uploading-RAF-Appender" level="ALL" />
+			<AppenderRef ref="Uploading-RAF-Errors-Appender" level="ERROR" />
 		</Logger>
 
 	</Loggers>

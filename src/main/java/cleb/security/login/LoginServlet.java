@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This servlet manages users log in ang log out to/from site.
+ * This servlet class manages users log-in ang log-out to/from site.
  */
 public class LoginServlet extends HttpServlet {
 
@@ -69,6 +69,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
+
         response.setContentType("text/html");
 
         // If called with parameter 'logout' - logs out current user
@@ -113,7 +114,6 @@ public class LoginServlet extends HttpServlet {
         // input tag
         if (email.length() == 0 || password.length() == 0 || email == null
             || password == null) {
-            // Inform user about wrong parameters
 
             logger.warn("Empty user email and/or password");
         } else {

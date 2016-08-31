@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class transfers request read book to appropriate reader.
+ * This servlet class transfers request read book to appropriate reader.
  */
 public class Reader extends HttpServlet {
 
@@ -63,7 +63,7 @@ public class Reader extends HttpServlet {
         request.setAttribute("bookfile", bookFile);
         request.setAttribute("covername", coverName);
 
-        // Get the string reference for concrete reader
+        // Get the string reference for appropriate reader
         String reader = getReaderReference(fileType);
 
         // Forward request with file reference to corresponding reader

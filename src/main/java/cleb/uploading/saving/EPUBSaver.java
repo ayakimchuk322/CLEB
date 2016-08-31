@@ -17,8 +17,6 @@ import org.jdom2.input.SAXBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
 import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
@@ -29,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.FileHeader;
 
 /**
  * This servlet stores basic information about epub book in database and places
@@ -146,37 +145,39 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         // Necessary cast to process with book
         ZipFile zip = (ZipFile) book;
 
-        // Add random suffix to temporary directory based on current time
-        String suffix = String
-            .valueOf(Instant.now().get(ChronoField.MILLI_OF_SECOND));
-
-        // Extract META-INF/container.xml and get the location of content.opf
-        // It's location inside book differs from book to book
-        // content.opf has the neccessary information about the book
-        String containerxmlPath = tempFolderPath + "/" + suffix + "/";
+        Document contentopfDoc = null;
 
         try {
-            zip.extractFile("META-INF/container.xml", containerxmlPath);
+            // Get container.xml to find content.opf file inside book
+            FileHeader containerxmlFH = zip
+                .getFileHeader("META-INF/container.xml");
 
-            SAXBuilder builder = new SAXBuilder();
+            try (InputStream containerxmlIn = zip
+                .getInputStream(containerxmlFH)) {
 
-            Document containerxmlDoc = builder
-                .build(new File(containerxmlPath + "/META-INF/container.xml"));
+                SAXBuilder builder = new SAXBuilder();
 
-            // container.xml root and namespace
-            Element containerxmlRoot = containerxmlDoc.getRootElement();
-            Namespace containerxmlNs = containerxmlRoot.getNamespace();
+                Document containerxmlDoc = builder.build(containerxmlIn);
 
-            // content.opf location inside epub book
-            String contentopfPath = containerxmlRoot
-                .getChild("rootfiles", containerxmlNs)
-                .getChild("rootfile", containerxmlNs)
-                .getAttributeValue("full-path");
+                // container.xml root and namespace
+                Element containerxmlRoot = containerxmlDoc.getRootElement();
+                Namespace containerxmlNs = containerxmlRoot.getNamespace();
 
-            zip.extractFile(contentopfPath, containerxmlPath);
+                // content.opf location inside epub book
+                String contentopfPath = containerxmlRoot
+                    .getChild("rootfiles", containerxmlNs)
+                    .getChild("rootfile", containerxmlNs)
+                    .getAttributeValue("full-path");
 
-            Document contentopfDoc = builder
-                .build(new File(containerxmlPath + contentopfPath));
+                // Get content.opf with information about book
+                FileHeader contentopfFH = zip.getFileHeader(contentopfPath);
+
+                try (InputStream contentopIn = zip
+                    .getInputStream(contentopfFH);) {
+
+                    contentopfDoc = builder.build(contentopIn);
+                }
+            }
 
             // content.opf root and namespace
             Element contentopfRoot = contentopfDoc.getRootElement();
@@ -219,8 +220,6 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         } catch (IOException e) {
             logger.error("Can not read information about book \"{}\"", fileName,
                 e);
-        } finally {
-            cleanTmpDir(containerxmlPath);
         }
 
         return storeInDB(fileName, md5, fileSize, fileType, genre,
@@ -315,12 +314,4 @@ public class EPUBSaver extends HttpServlet implements ISaver {
         return "";
     }
 
-    /**
-     * Deletes temporarily extracted files from epub book.
-     *
-     * @param path Directory to delete.
-     */
-    private void cleanTmpDir(String path) {
-        FileUtils.deleteQuietly(new File(path));
-    }
 }

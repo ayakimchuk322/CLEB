@@ -1,3 +1,10 @@
+/* Make title the same height as the navigation */
+.crlibrarytitle {
+	margin-top: 0;
+	margin-bottom: 40px;
+	line-height: 40px;
+}
+
 /* Center cover */
 .crcoverdiv {
 	display: flex;

@@ -30,8 +30,8 @@ import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
 
 /**
- * This servlet stores basic information about epub book in database and places
- * the book into storing directory.
+ * This servlet class stores basic information about epub book in database and
+ * places the book into storing directory.
  */
 public class EPUBSaver extends HttpServlet implements ISaver {
 
@@ -78,6 +78,7 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     @Override
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
+
         // Redirect back to upload page
         response.sendRedirect("upload");
     }
@@ -123,13 +124,13 @@ public class EPUBSaver extends HttpServlet implements ISaver {
     public synchronized boolean getBasicInfo(HttpServletRequest request,
         Object book) {
 
-        // Information about file, will go into db
+        // Information about file, will go into database
         String fileName = (String) request.getAttribute("file");
         String md5 = (String) request.getAttribute("md5");
         Long fileSize = (Long) request.getAttribute("size");
         String fileType = (String) request.getAttribute("type");
 
-        // Information about book, will go into db
+        // Information about book, will go into database
         String genre = "";
         String authorFirstName = "";
         String authorLastName = "";

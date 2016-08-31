@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This servlet registers new users.
+ * This servlet class registers new users.
  */
 public class RegisterServlet extends HttpServlet {
 
@@ -75,7 +75,7 @@ public class RegisterServlet extends HttpServlet {
         Subject currentUser = SecurityUtils.getSubject();
 
         if (currentUser.isAuthenticated()) {
-            // Users not permitted to register while already logged-in
+            // Users are not permitted to register while already logged-in
             // Show index.html page
             response.sendRedirect("index");
         } else {
@@ -99,11 +99,10 @@ public class RegisterServlet extends HttpServlet {
         // input tag
         if (name.length() == 0 || email.length() == 0 || password.length() == 0
             || name == null || email == null || password == null) {
-            // Inform user about wrong parameters
 
             logger.warn("Empty user name, email and/or password");
         } else {
-            // Proceed with saving in db
+            // Proceed with saving to database
             if (register(name, email, password)) {
                 // Redirect to login page
                 response.sendRedirect("login");

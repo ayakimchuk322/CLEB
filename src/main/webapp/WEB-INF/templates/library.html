@@ -29,9 +29,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <!-- DataTables plugin -->
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.css" />
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.js"></script>
@@ -39,7 +42,13 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#bookstable').dataTable();
+		$('#bookstable').dataTable({
+			"bFilter" : false,
+			"columnDefs" : [ {
+				"targets" : 'no-sort',
+				"orderable" : false
+			} ]
+		});
 	});
 </script>
 <!-- /DataTables plugin -->
@@ -105,10 +114,10 @@
                 <th>Series</th>
                 <th>Genre</th>
                 <th>Published</th>
-                <th>Cover</th>
-                <th></th>
+                <th class="no-sort">Cover</th>
+                <th class="no-sort"></th>
                 <!-- Read button -->
-                <th></th>
+                <th class="no-sort"></th>
                 <!-- Download button -->
               </tr>
             </thead>
@@ -157,7 +166,6 @@
         <!-- /table with books -->
 
       </div>
-
     </div>
 
     <footer class="footer">

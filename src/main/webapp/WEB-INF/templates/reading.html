@@ -60,7 +60,7 @@
         <div class="crcoverdiv" th:if="${not #strings.isEmpty(covername)}">
           <img class="crcoverimg" th:src="@{/covers/} + ${covername}">
         </div>
-        <div>
+        <div class="crscroll">
           <p th:utext="${booktext}"></p>
         </div>
       </div>

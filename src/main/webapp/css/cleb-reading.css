@@ -19,3 +19,9 @@
 	margin-right: auto;
 	height: 350px;
 }
+
+/* Add vertival scrollbar */
+.crscroll {
+	overflow-y: auto;
+	height: 600px;
+}

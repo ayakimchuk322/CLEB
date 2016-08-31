@@ -42,7 +42,8 @@ public class BookDAO {
      * @param published
      * @param uploadedBy
      *
-     * @return true if transaction was successful and false - otherwise.
+     * @return {@code true} if transaction was successful, otherwise -
+     *         {@code false}.
      *
      * @see cleb.book.util.GenresLoader#getGenreNormal(String)
      * @see cleb.uploading.util.JDBCPoolUtil#closeConnection(Connection)
@@ -225,7 +226,7 @@ public class BookDAO {
      *
      * @param searchRequest {@code String} user search request.
      *
-     * @return @code List} with requested books.
+     * @return {@code List} with requested books.
      */
     @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
     public static List<Book> getBooks(String searchRequest) {

@@ -18,7 +18,7 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
 /**
- * This servlet validates new epub books.
+ * This servlet class validates new epub books.
  */
 public class EPUBValidator extends HttpServlet implements IValidator {
 

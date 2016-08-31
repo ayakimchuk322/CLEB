@@ -10,9 +10,9 @@ import java.util.Properties;
 import javax.servlet.http.HttpServlet;
 
 /**
- * This class loads at server startup list of genres abbreviations along with
- * their normal, full names from properties file. Loaded propertiies should be
- * used to normalize genres names in database during saving information about
+ * This servlet class loads at server startup list of genres abbreviations along
+ * with their normal, full names from properties file. Loaded propertiies should
+ * be used to normalize genres names in database during saving information about
  * book.
  */
 public class GenresLoader extends HttpServlet {

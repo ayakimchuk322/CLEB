@@ -14,8 +14,8 @@ import java.util.Properties;
 import javax.servlet.http.HttpServlet;
 
 /**
- * This utility class instantiates connection pool and provides methods for
- * working with connections.
+ * This utility servlet class instantiates connection pool and provides methods
+ * for working with connections.
  */
 public class JDBCPoolUtil extends HttpServlet {
 

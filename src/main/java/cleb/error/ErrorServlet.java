@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class handles some exceptional situations and shows user page with brief
- * error descripion.
+ * This servlet class handles some exceptional situations with user interaction
+ * and shows user page with brief error descripion.
  *
  * Classes that want to show user such information should forward request and
  * response with two additional attributes - brief error description and name of
@@ -78,6 +78,7 @@ public class ErrorServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException, IOException {
+
         // Simply transfers control to doGet method
         doGet(request, response);
     }

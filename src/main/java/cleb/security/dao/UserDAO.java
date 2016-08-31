@@ -1,7 +1,7 @@
 package cleb.security.dao;
 
-import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 import static cleb.uploading.util.JDBCPoolUtil.closeConnection;
+import static cleb.uploading.util.JDBCPoolUtil.getConnection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,7 +63,7 @@ public class UserDAO {
                 .setParameter(0, email).uniqueResult();
             transaction.commit();
         } catch (Exception e) {
-            logger.error("Can not get user from database", e);
+            logger.error("Can not get user \"{}\" from database", email, e);
         } finally {
             closeConnection(connection);
         }
@@ -96,7 +96,7 @@ public class UserDAO {
      * @param plainTextPassword {@code String} with user password, not
      *        encrypted.
      *
-     * @return {@code true}, if user was successfully added to database
+     * @return {@code true}, if user was successfully added to database,
      *         otherwise - {@code false}.
      *
      * @see #generatePassword(User, String)
@@ -110,7 +110,7 @@ public class UserDAO {
         String plainTextPassword) {
         boolean registered = false;
 
-        // Check if no user with same email already exists in db
+        // Check if no user with same email already exists in database
         User checked = getUserByEmail(email);
         if (checked != null) {
             logger.warn("User with email \"{}\" already registered", email);
@@ -131,7 +131,7 @@ public class UserDAO {
         role.setEmail(email);
         role.setRoleName("reader");
 
-        // Proceed with db
+        // Proceed with database
         // Create session and transaction
         SessionFactory factory = new Configuration().configure()
             .buildSessionFactory();
@@ -145,10 +145,10 @@ public class UserDAO {
 
         try (Session session = builder.openSession()) {
             transaction = session.beginTransaction();
-            // Save user in db
+            // Save user in database
             session.save(user);
 
-            // Save role in db
+            // Save role in database
             session.save(role);
 
             transaction.commit();

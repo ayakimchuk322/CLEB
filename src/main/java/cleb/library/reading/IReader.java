@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * This interface contains method to get text from book and return it as a
  * {@code String} to caller. Any concrete reader class should implement this
- * interface and provide specific implementations for {@code read} method based
+ * interface and provide specific implementation for {@code read} method based
  * on book type.
  */
 public interface IReader {

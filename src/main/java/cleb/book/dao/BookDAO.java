@@ -176,6 +176,11 @@ public class BookDAO {
         return books;
     }
 
+    /**
+     * Returns {@code List} with 3 latest uploaded books.
+     *
+     * @return {@code List} with latest books.
+     */
     @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
     public static Book[] getLatestBooks() {
         List books = null;
@@ -213,6 +218,54 @@ public class BookDAO {
         }
 
         return booksArray;
+    }
+
+    /**
+     * Returns {@code List} with requested {@code searchRequest} books.
+     *
+     * @param searchRequest {@code String} user search request.
+     *
+     * @return @code List} with requested books.
+     */
+    @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
+    public static List<Book> getBooks(String searchRequest) {
+        List books = null;
+
+        // Create session and transaction
+        SessionFactory factory = new Configuration().configure()
+            .buildSessionFactory();
+
+        SessionBuilder builder = factory.withOptions();
+        // Supply connection from connection pool
+        Connection connection = getConnection();
+        builder.connection(connection);
+
+        Transaction transaction = null;
+
+        try (Session session = builder.openSession()) {
+            transaction = session.beginTransaction();
+            //@formatter:off
+            books = session
+                .createQuery(
+                    "FROM Book "
+                    + "WHERE lower(genre) LIKE lower(:searchrequest)"
+                    + " OR lower(authorFirstName) LIKE lower(:searchrequest)"
+                    + " OR lower(authorLastName) LIKE lower(:searchrequest)"
+                    + " OR lower(title) LIKE lower(:searchrequest)"
+                    + " OR lower(seqName) LIKE lower(:searchrequest)")
+                .setParameter("searchrequest", "%" + searchRequest + "%")
+                .list();
+            //@formatter:on
+            transaction.commit();
+        } catch (Exception e) {
+            logger.error(
+                "Can not retrieve information about requested books from database",
+                e);
+        } finally {
+            closeConnection(connection);
+        }
+
+        return books;
     }
 
 }

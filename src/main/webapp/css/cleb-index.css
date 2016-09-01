@@ -3,19 +3,7 @@
 	font-family: 'Courgette', cursive;
 }
 
-/* For table with buttons on index.html page */
-.cibutons {
-	text-align: center;
-	width: 100%;
-	margin: 0 auto;
-}
-
-/* For each button in tabel on index.html page */
-.citablebtn {
-	text-align: center;
-	width: 200px;
-}
-
+/* Latest uploads header */
 .ciheader {
 	margin-bottom: 25px;
 }

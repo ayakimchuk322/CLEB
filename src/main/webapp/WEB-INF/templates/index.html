@@ -76,21 +76,12 @@
           library for e-books'</span> and start your journey today!
       </p>
 
-      <table class="cibutons">
-        <tr>
-          <td>
-            <p>
-              <a class="btn btn-lg btn-success citablebtn" href="register" role="button">Join library!</a>
-            </p>
-          </td>
-
-          <td>
-            <p>
-              <a class="btn btn-lg btn-success citablebtn" href="library" role="button">Go to library</a>
-            </p>
-          </td>
-        </tr>
-      </table>
+      <div>
+        <p>
+          <a class="btn btn-lg btn-success" href="register" role="button" th:if="${#strings.isEmpty(username)}">Join
+            library!</a>
+        </p>
+      </div>
 
     </div>
 
